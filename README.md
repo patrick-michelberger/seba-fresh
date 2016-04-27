@@ -30,3 +30,30 @@ Run `grunt build` for building and `grunt serve` for preview.
 ## Testing
 
 Running `npm test` will run the unit tests with karma.
+
+
+## SEBA Fresh Configurations
+
+**General**
+
+* Build Systems: `Gulp`
+* Testing: 
+  * `Jasmine`
+
+**Client**
+
+* Scripts: `Babel`
+* Markup:  `HTML`
+* Stylesheets: `Sass`
+* Angular Routers: `ui-router`
+* CSS Frameworks: `Bootstrap`
+  * Option to include `UI Bootstrap`
+
+**Server**
+
+* Scripts: `Babel`
+* Database:
+  * `MongoDB`
+    * Authentication boilerplate: `Yes`
+    * oAuth integrations: `Facebook`
+    * Socket.io integration: `Yes`
