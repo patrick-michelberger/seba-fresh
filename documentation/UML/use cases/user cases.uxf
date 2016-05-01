@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="13.2">
+  <help_text>// Uncomment the following line to change the fontsize and font:
+// fontsize=14
+fontfamily=Monospaced //possible: SansSerif,Serif,Monospaced
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+// Welcome to UMLet!
+//
+// Double-click on elements to add them to the diagram, or to copy them
+// Edit elements by modifying the text in this panel
+// Hold Cmd to select multiple elements
+// Use Cmd+mouse to select via lasso
+//
+// Use +/- or Cmd+mouse wheel to zoom
+// Drag a whole relation at its central square icon
+//
+// Press Cmd+C to copy the whole diagram to the system clipboard (then just paste it to, eg, Word)
+// Edit the files in the "palettes" directory to create your own element palettes
+//
+// Select "Custom Elements &gt; New..." to create new element types
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// This text will be stored with each diagram;  use it for notes.</help_text>
+  <zoom_level>5</zoom_level>
+  <element>
+    <type>com.baselet.element.old.element.Systemborder</type>
+    <coordinates>
+      <x>155</x>
+      <y>70</y>
+      <w>420</w>
+      <h>465</h>
+    </coordinates>
+    <panel_attributes>SebaFresh</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Actor</type>
+    <coordinates>
+      <x>50</x>
+      <y>270</y>
+      <w>40</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>User</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.UseCase</type>
+    <coordinates>
+      <x>170</x>
+      <y>165</y>
+      <w>95</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>BrowseAssortment
+bg=blue
+fg=white</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.UseCase</type>
+    <coordinates>
+      <x>170</x>
+      <y>250</y>
+      <w>95</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>AddToBasket
+bg=blue
+fg=white</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.UseCase</type>
+    <coordinates>
+      <x>170</x>
+      <y>340</y>
+      <w>95</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>ProceedOrder
+bg=blue
+fg=white</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.UseCase</type>
+    <coordinates>
+      <x>170</x>
+      <y>415</y>
+      <w>95</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>AcceptPayment
+bg=blue
+fg=white</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>80</x>
+      <y>170</y>
+      <w>94</w>
+      <h>109</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>85;15;15;100</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>80</x>
+      <y>250</y>
+      <w>94</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>85;15;15;35</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>80</x>
+      <y>285</y>
+      <w>89</w>
+      <h>74</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>80;65;15;15</additional_attributes>
+  </element>
+  <element>
+    <type>com.baselet.element.old.element.Relation</type>
+    <coordinates>
+      <x>80</x>
+      <y>305</y>
+      <w>94</w>
+      <h>124</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>85;115;15;15</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>210</x>
+      <y>125</y>
+      <w>60</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+
+&lt;&lt;includes&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;70.0;20.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>180</x>
+      <y>90</y>
+      <w>105</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>ScrapeProducts</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>260</x>
+      <y>135</y>
+      <w>70</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+
+&lt;&lt;includes&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;70.0;60.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>280</x>
+      <y>110</y>
+      <w>105</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>ListProducts</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>315</x>
+      <y>165</y>
+      <w>105</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>ShowProductDetails</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>265</x>
+      <y>170</y>
+      <w>55</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+
+
+&lt;&lt;includes&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;90.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>300</x>
+      <y>215</y>
+      <w>105</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>AddToGroupBasket</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>305</x>
+      <y>265</y>
+      <w>105</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>AddToSingleBasket</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>255</x>
+      <y>265</y>
+      <w>55</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+
+
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;90.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>255</x>
+      <y>235</y>
+      <w>50</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+
+  
+  &lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;30.0;80.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>310</x>
+      <y>365</y>
+      <w>105</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>AddItemsToCheckout</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>315</x>
+      <y>315</y>
+      <w>105</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>RedirectToCheckout</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>265</x>
+      <y>330</y>
+      <w>60</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+
+
+  &lt;&lt;includes&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;40.0;100.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>260</x>
+      <y>360</y>
+      <w>55</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+
+
+&lt;&lt;includes&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;90.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>205</x>
+      <y>445</y>
+      <w>55</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+ &lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;20.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>265</x>
+      <y>420</y>
+      <w>50</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+
+
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;80.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>310</x>
+      <y>415</y>
+      <w>105</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>AcceptSharePayment</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>170</x>
+      <y>485</y>
+      <w>105</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>AcceptSinglePayment</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>460</x>
+      <y>435</y>
+      <w>105</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>CreatePayRequest</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>455</x>
+      <y>385</y>
+      <w>105</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>SplitPay</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>410</x>
+      <y>405</y>
+      <w>50</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+
+  
+  &lt;&lt;includes&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;30.0;80.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>410</x>
+      <y>435</y>
+      <w>55</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+
+
+&lt;&lt;includes&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;90.0;30.0</additional_attributes>
+  </element>
+</diagram>
