@@ -9,8 +9,9 @@ angular.module('sebaFreshApp', [
   'ngSanitize',
   'btford.socket-io',
   'ui.router',
-  'ui.bootstrap',
-  'validation.match'
+  'validation.match',
+  'ngAnimate',
+  'ngMaterial'
 ])
   .config(function($urlRouterProvider, $locationProvider) {
     $urlRouterProvider
