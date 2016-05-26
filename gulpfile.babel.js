@@ -645,10 +645,10 @@ grunt.initConfig({
             message: 'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
         },
         heroku: {
-            options: {
-                remote: 'heroku',
-                branch: 'master'
-            }
+          options: {
+            branch: 'master',
+            remote: 'https://git.heroku.com/sebafresh.git'
+          }
         },
         openshift: {
             options: {
