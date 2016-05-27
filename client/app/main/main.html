@@ -1,7 +1,6 @@
 <md-content layout-padding>
-  <div layout-xs="column" layout="row">
-    <div ng-repeat="thing in $ctrl.awesomeThings" flex-xs flex-gt-xs="50" layout="column">
-        <md-card>
+  <div layout-xs="column" layout="row" layout-wrap>
+        <md-card ng-repeat="thing in $ctrl.awesomeThings" flex="50" layout="column">
           <md-card-title>
             <md-card-title-text>
               <span class="md-headline">{{thing.name}}</span>
@@ -15,8 +14,7 @@
             <md-button ng-click="$ctrl.deleteThing(thing)">&times;</md-button>
           </md-card-actions>
         </md-card>
-    </div>
-  </div>
+´  </div>
   <div layout="row">
     <form>
       <h3 class="md-headline">Syncs in realtime across clients</h3>

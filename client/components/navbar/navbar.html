@@ -5,7 +5,7 @@
         <i class="material-icons">menu</i>
     </md-button>
     <h2>
-      <span>SEBA fresh</span>
+      <a class="sf-brand" href="/">SEBA <span>fresh</span></a>
     </h2>
   </div>
 </md-toolbar>
@@ -13,13 +13,23 @@
 <!-- Sidebar -->
 <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
   <md-toolbar>
-    <h1 class="md-toolbar-tools">SEBA fresh</h1>
+    <h1 class="md-toolbar-tools sf-brand">SEBA <span>fresh</span></h1>
   </md-toolbar>
-  <md-content layout-padding>
-    <li ng-hide="nav.isLoggedIn()" ui-sref-active="active"><a ui-sref="signup" ng-click="nav.close()">Sign up</a></li>
-    <li ng-hide="nav.isLoggedIn()" ui-sref-active="active"><a ui-sref="login" ng-click="nav.close()">Login</a></li>
-    <li ng-show="nav.isLoggedIn()"><p class="navbar-text">Hello {{ nav.getCurrentUser().name }}</p> </li>
-    <li ng-show="nav.isLoggedIn()" ui-sref-active="active"><a ui-sref="settings" ng-click="nav.close()"><span class="glyphicon glyphicon-cog"></span></a></li>
-    <li ng-show="nav.isLoggedIn()"><a ui-sref="logout" ng-click="nav.close()">Logout</a></li>
-  </md-content>
+  <section class="sf-sidebar-nav">
+    <md-list-item ng-hide="nav.isLoggedIn()" ui-sref-active="active" ng-click="nav.close()" ui-sref="signup">
+      <p>Sign up</p>
+    </md-list-item>
+    <md-list-item ng-hide="nav.isLoggedIn()" ui-sref-active="active" ng-click="nav.close()" ui-sref="login">
+      <p>Login</p>
+    </md-list-item>
+    <md-list-item ng-show="nav.isLoggedIn()">
+      <p class="navbar-text">Hello {{ nav.getCurrentUser().name }}</p>
+    </md-list-item>
+    <md-list-item ng-show="nav.isLoggedIn()" ui-sref-active="active" ng-click="nav.close()" ui-sref="settings">
+      <p>Settings</p>
+    </md-list-item>
+    <md-list-item ng-show="nav.isLoggedIn()" ui-sref-active="active" ng-click="nav.close()" ui-sref="logout">
+      <p>Logout</p>
+    </md-list-item>
+  </section>
 </md-sidenav>

@@ -11,9 +11,17 @@
   padding: 0.2em 0;
 }
 
+/* SEBA fresh CI Colors */
+$sf-color-blue: #007DC6;
+$sf-color-green: #94BF54;
+$sf-color-red: #D94848;
+$sf-color-orange: #F47421;
+$sf-color-yellow: #FFC120;
+
 // Component styles are injected through grunt
 /* inject:scss */
 @import 'admin/admin';
 @import 'main/main';
 @import '../components/footer/footer';
+@import '../components/navbar/navbar';
 /* endinject */

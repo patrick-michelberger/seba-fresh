@@ -1,0 +1,24 @@
+navbar md-toolbar {
+  position: fixed;
+}
+
+navbar .sf-brand {
+  font-weight: bold;
+}
+
+navbar .sf-brand span {
+  color: $sf-color-yellow;
+}
+
+navbar .sf-sidebar-nav {
+  margin-top: 60px;
+}
+
+navbar md-sidenav {
+  background: $sf-color-blue;
+}
+
+navbar md-list-item a {
+  margin: 0!important;
+  color: #fff!important;
+}
