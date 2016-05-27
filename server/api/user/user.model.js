@@ -6,22 +6,27 @@ mongoose.Promise = require('bluebird');
 import {Schema} from 'mongoose';
 
 var UserSchema = new Schema({
-  name: String,
-  email: {
-    type: String,
-    lowercase: true,
-    required: true
-  },
-  role: {
-    type: String,
-    default: 'user'
-  },
-  password: {
-    type: String,
-    required: true
-  },
-  provider: String,
-  salt: String
+user_name: String,
+last_name: String,
+first_name: String,
+email: String,
+auto_payment: Boolean,
+Paypal_id: String,
+date_joined: String,
+status: Boolean,
+activated: Boolean,
+user_id: String,
+date_of_birth: String,
+room: Number,
+building: Number,
+Address_1: String,
+Address_2: String,
+city: String,
+state: String,
+postal_code: String,
+country: String,
+phone: Number,
+password: String
 });
 
 /**
