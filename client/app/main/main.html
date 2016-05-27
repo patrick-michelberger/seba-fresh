@@ -1,28 +1,32 @@
-<header class="hero-unit" id="banner">
-  <div class="container">
-    <h1>SEBA fresh</h1>
-    <p class="lead">Kick-start your next web app with Angular Fullstack</p>
-    <img src="assets/images/yeoman.png" alt="I'm Yeoman">
-  </div>
-</header>
-
-<div class="container">
-  <div class="row">
-    <div class="col-lg-12">
-      <h1 class="page-header">Features:</h1>
-      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="thing in $ctrl.awesomeThings">
-        <li><a href="#" uib-tooltip="{{thing.info}}">{{thing.name}}<button type="button" class="close" ng-click="$ctrl.deleteThing(thing)">&times;</button></a></li>
-      </ul>
+<md-content layout-padding>
+  <div layout-xs="column" layout="row">
+    <div ng-repeat="thing in $ctrl.awesomeThings" flex-xs flex-gt-xs="50" layout="column">
+        <md-card>
+          <md-card-title>
+            <md-card-title-text>
+              <span class="md-headline">{{thing.name}}</span>
+              <span class="md-subhead">Large</span>
+            </md-card-title-text>
+            <md-card-title-media>
+              <div class="md-media-lg card-media"></div>
+            </md-card-title-media>
+          </md-card-title>
+          <md-card-actions layout="row" layout-align="end center">
+            <md-button ng-click="$ctrl.deleteThing(thing)">&times;</md-button>
+          </md-card-actions>
+        </md-card>
     </div>
   </div>
-
-  <form class="thing-form">
-    <label>Syncs in realtime across clients</label>
-    <p class="input-group">
-      <input type="text" class="form-control" placeholder="Add a new thing here." ng-model="$ctrl.newThing">
-      <span class="input-group-btn">
-        <button type="submit" class="btn btn-primary" ng-click="$ctrl.addThing()">Add New</button>
-      </span>
-    </p>
-  </form>
-</div>
+  <div layout="row">
+    <form>
+      <h3 class="md-headline">Syncs in realtime across clients</h3>
+      <md-input-container class="md-docs-dark-theme md-input-has-value" layout="row">
+        <label for="input_151">Product name</label>
+        <input ng-model="$ctrl.newThing" class="ng-pristine ng-valid md-input ng-touched" placeholder="Add a new product here." aria-invalid="false" style=""><div class="md-errors-spacer"></div>
+      </md-input-container>
+      <div layout="row">
+        <button ng-click="$ctrl.addThing()" class="md-raised md-button md-ink-ripple" type="button" aria-label="Add New Product"><span class="ng-scope"></span>Add New</button>
+      </div>
+    </form>
+  </div>
+</md-content>
