@@ -23,7 +23,7 @@
       <p>Login</p>
     </md-list-item>
     <md-list-item ng-show="nav.isLoggedIn()">
-      <p class="navbar-text">Hello {{ nav.getCurrentUser().name }}</p>
+      <p class="navbar-text">Hello {{ nav.getCurrentUser().first_name }} {{nav.getCurrentUser().last_name }}</p>
     </md-list-item>
     <md-list-item ng-show="nav.isLoggedIn()" ui-sref-active="active" ng-click="nav.close()" ui-sref="settings">
       <p>Settings</p>

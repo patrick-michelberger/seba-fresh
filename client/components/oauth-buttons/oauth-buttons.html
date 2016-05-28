@@ -1,0 +1,6 @@
+<section layout-xs="column" layout="row">
+  <md-button class="md-raised md-primary md-raised" flex ng-click="OauthButtons.loginOauth('facebook')" >
+    <span ng-show="OauthButtons.$state.includes('signup')">sign up with Facebook</span>
+    <span ng-show="OauthButtons.$state.includes('login')">login with Facebook</span>
+  </md-button>
+</section>

@@ -18,7 +18,8 @@ navbar md-sidenav {
   background: $sf-color-blue;
 }
 
-navbar md-list-item a {
+navbar md-list-item a,
+navbar md-list-item p {
   margin: 0!important;
   color: #fff!important;
 }

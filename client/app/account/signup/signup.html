@@ -4,13 +4,24 @@
       <h1>Sign up</h1>
     </div>
     <form name="form" ng-submit="vm.register(form)" novalidate>
-    <!-- Name Input -->
-    <md-input-container class="md-block" ng-class="{ 'has-success': form.name.$valid && vm.submitted,
-                                        'has-error': form.name.$invalid && vm.submitted }">
-      <label for="input_name">Name</label>
-      <input ng-model="vm.user.name" type="text" class="md-input" id="input_name">
-      <div class="md-errors-spacer" ng-show="form.name.$error.required && vm.submitted">
-        A name is required
+
+    <!-- First Name Input -->
+    <md-input-container class="md-block" ng-class="{ 'has-success': form.first_name.$valid && vm.submitted,
+                                        'has-error': form.first_name.$invalid && vm.submitted }">
+      <label for="input_first_name">First name</label>
+      <input ng-model="vm.user.first_name" type="text" class="md-input" id="input_first_name">
+      <div class="md-errors-spacer" ng-show="form.first_name.$error.required && vm.submitted">
+        A first name is required
+      </div>
+    </md-input-container>
+
+    <!-- Last Name Input -->
+    <md-input-container class="md-block" ng-class="{ 'has-success': form.last_name.$valid && vm.submitted,
+                                        'has-error': form.last_name.$invalid && vm.submitted }">
+      <label for="input_last_name">Last Name</label>
+      <input ng-model="vm.user.last_name" type="text" class="md-input" id="input_last_name">
+      <div class="md-errors-spacer" ng-show="form.last_name.$error.required && vm.submitted">
+        A last name is required
       </div>
     </md-input-container>
 
@@ -67,5 +78,8 @@
     </section>
 
     </form>
+
+    <!-- OAuth services -->
+    <oauth-buttons classes="btn-block" flex></oauth-buttons>
   </div>
 </md-content>

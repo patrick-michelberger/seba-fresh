@@ -39,7 +39,19 @@ var all = {
         safe: true
       }
     }
-  }
+  },
+
+  facebook: {
+    clientID: process.env.FACEBOOK_ID || 'id',
+    clientSecret: process.env.FACEBOOK_SECRET || 'secret',
+    callbackURL: (process.env.DOMAIN || '') + '/auth/facebook/callback'
+  },
+
+  paypal: {
+    clientId: process.env.PAYPAL_APP_ID || 'id',
+    clientSecret: process.env.PAYPAL_APP_SECRET || 'secret',
+    callbackURL: (process.env.DOMAIN || '') + '/auth/paypal/callback'
+  },
 };
 
 // Export the config object based on the NODE_ENV

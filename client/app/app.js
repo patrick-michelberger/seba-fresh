@@ -3,6 +3,7 @@
 angular.module('sebaFreshApp', [
   'sebaFreshApp.auth',
   'sebaFreshApp.admin',
+  'sebaFreshApp.oauth-buttons',
   'sebaFreshApp.constants',
   'ngCookies',
   'ngResource',
