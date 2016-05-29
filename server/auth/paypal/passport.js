@@ -8,10 +8,22 @@ export function setup(User, config) {
     callbackURL: config.paypal.callbackURL
   },
   function(accessToken, refreshToken, profile, done) {
-    console.log("accessToken: ", accessToken);
-      User.findOrCreate({ 'paypal.id': profile.id }, function (err, user) {
-        console.log("found user: ", user);
-        return done(err, user);
-      });
+    User.findOne({'paypal.id': profile.id}).exec()
+      .then(user => {
+        if (user) {
+          return done(null, user);
+        }
+        user = new User({
+          first_name: profile.name.givenName,
+          last_name: profile.name.familyName,
+          role: 'user',
+          provider: 'paypal',
+          facebook: profile._json
+        });
+        user.save()
+          .then(user => done(null, user))
+          .catch(err => done(err));
+      })
+      .catch(err => done(err));
   }));
 }

@@ -9,7 +9,7 @@
     <md-input-container class="md-block" ng-class="{ 'has-success': form.first_name.$valid && vm.submitted,
                                         'has-error': form.first_name.$invalid && vm.submitted }">
       <label for="input_first_name">First name</label>
-      <input ng-model="vm.user.first_name" type="text" class="md-input" id="input_first_name">
+      <input ng-model="vm.user.first_name" type="text" class="md-input" id="input_first_name" required mongoose-error>
       <div class="md-errors-spacer" ng-show="form.first_name.$error.required && vm.submitted">
         A first name is required
       </div>
@@ -19,7 +19,7 @@
     <md-input-container class="md-block" ng-class="{ 'has-success': form.last_name.$valid && vm.submitted,
                                         'has-error': form.last_name.$invalid && vm.submitted }">
       <label for="input_last_name">Last Name</label>
-      <input ng-model="vm.user.last_name" type="text" class="md-input" id="input_last_name">
+      <input ng-model="vm.user.last_name" type="text" class="md-input" id="input_last_name" required mongoose-error>
       <div class="md-errors-spacer" ng-show="form.last_name.$error.required && vm.submitted">
         A last name is required
       </div>
