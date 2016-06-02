@@ -15,6 +15,8 @@ var ProductSchema = new mongoose.Schema({
   productUrl: String,
   stock: String,
   addToCartUrl: String
+}, {
+  collection: 'seba-products'
 });
 
 module.exports = mongoose.model('Product', ProductSchema);

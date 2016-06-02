@@ -5,7 +5,7 @@
     constructor($scope, socket, ProductService) {
       this.socket = socket;
       this.ProductService = ProductService;
-      this.products = []
+      this.products = [];
       $scope.$on('$destroy', function () {
         socket.unsyncUpdates('product');
       });
@@ -13,7 +13,6 @@
 
     $onInit() {
       this.products = this.ProductService.query();
-      console.log("product: ", products[0]);
     }
   }
 

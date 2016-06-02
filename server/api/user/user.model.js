@@ -40,6 +40,8 @@ var UserSchema = new Schema({
   phone: Number,
   password: String,
   salt: String
+}, {
+  collection: 'seba-users'
 });
 
 /**

@@ -11,6 +11,8 @@ var PaymentSchema = new mongoose.Schema({
   amount_due: Number,
   amount_paid: Number,
   auto_payment: Boolean,
+}, {
+  collection: 'seba-payments'
 });
 
 export default mongoose.model('Payment', PaymentSchema);
