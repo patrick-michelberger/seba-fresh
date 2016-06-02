@@ -9,6 +9,7 @@ var ProductSchema = new mongoose.Schema({
   categoryPath: String,
   description: String,
   brand: String,
+  quantity: Number,
   thumbnailImage: String,
   mediumImage: String,
   largeImage: String,

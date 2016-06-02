@@ -3,11 +3,11 @@
 import crypto from 'crypto';
 import mongoose from 'mongoose';
 mongoose.Promise = require('bluebird');
-import {Schema} from 'mongoose';
+import {
+  Schema
+} from 'mongoose';
 
 var UserSchema = new Schema({
-  first_name: String,
-  last_name: String,
   email: {
     type: String,
     lowercase: true
@@ -19,8 +19,26 @@ var UserSchema = new Schema({
     type: String,
     default: 'user'
   },
+  last_name: String,
+  first_name: String,
+  email: String,
+  auto_payment: Boolean,
+  Paypal_id: String,
+  date_joined: String,
+  status: Boolean,
+  activated: Boolean,
+  user_id: String,
+  date_of_birth: String,
+  room: Number,
+  building: Number,
+  Address_1: String,
+  Address_2: String,
+  city: String,
+  state: String,
+  postal_code: String,
+  country: String,
+  phone: Number,
   password: String,
-  provider: String,
   salt: String
 });
 
@@ -31,7 +49,7 @@ var UserSchema = new Schema({
 // Public profile information
 UserSchema
   .virtual('profile')
-  .get(function() {
+  .get(function () {
     return {
       'name': this.name,
       'role': this.role
@@ -41,7 +59,7 @@ UserSchema
 // Non-sensitive info we'll be putting in the token
 UserSchema
   .virtual('token')
-  .get(function() {
+  .get(function () {
     return {
       '_id': this._id,
       'role': this.role
@@ -55,24 +73,26 @@ UserSchema
 // Validate empty email
 UserSchema
   .path('email')
-  .validate(function(email) {
+  .validate(function (email) {
     return email.length;
   }, 'Email cannot be blank');
 
 // Validate empty password
 UserSchema
   .path('password')
-  .validate(function(password) {
+  .validate(function (password) {
     return password.length;
   }, 'Password cannot be blank');
 
 // Validate email is not taken
 UserSchema
   .path('email')
-  .validate(function(value, respond) {
+  .validate(function (value, respond) {
     var self = this;
-    return this.constructor.findOne({ email: value }).exec()
-      .then(function(user) {
+    return this.constructor.findOne({
+        email: value
+      }).exec()
+      .then(function (user) {
         if (user) {
           if (self.id === user.id) {
             return respond(true);
@@ -81,12 +101,12 @@ UserSchema
         }
         return respond(true);
       })
-      .catch(function(err) {
+      .catch(function (err) {
         throw err;
       });
   }, 'The specified email address is already in use.');
 
-var validatePresenceOf = function(value) {
+var validatePresenceOf = function (value) {
   return value && value.length;
 };
 
@@ -94,7 +114,7 @@ var validatePresenceOf = function(value) {
  * Pre-save hook
  */
 UserSchema
-  .pre('save', function(next) {
+  .pre('save', function (next) {
     // Handle new/update passwords
     if (!this.isModified('password')) {
       return next();
@@ -208,7 +228,7 @@ UserSchema.methods = {
 
     if (!callback) {
       return crypto.pbkdf2Sync(password, salt, defaultIterations, defaultKeyLength)
-                   .toString('base64');
+        .toString('base64');
     }
 
     return crypto.pbkdf2(password, salt, defaultIterations, defaultKeyLength, (err, key) => {
