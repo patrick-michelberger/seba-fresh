@@ -1,21 +1,19 @@
 'use strict';
 
-import mongoose from 'mongoose';
+var mongoose = require('mongoose');
 
 var ProductSchema = new mongoose.Schema({
-  id: Number,
+  id: String,
   name: String,
   price: Number,
-  categoryPath: String,
+  categoryPath: {},
   description: String,
   brand: String,
-  quantity: Number,
-  thumbnailImage: String,
-  mediumImage: String,
-  largeImage: String,
+  quantityOptions: [],
+  imageUrl: String,
   productUrl: String,
   stock: Boolean,
   addToCartUrl: String
 });
 
-export default mongoose.model('Product', ProductSchema);
+module.exports = mongoose.model('Product', ProductSchema);

@@ -48,10 +48,14 @@ var all = {
   },
 
   paypal: {
-    clientId: process.env.PAYPAL_APP_ID || 'id',
-    clientSecret: process.env.PAYPAL_APP_SECRET || 'secret',
+    clientId: process.env.PAYPAL_APP_ID ||  'id',
+    clientSecret: process.env.PAYPAL_APP_SECRET ||  'secret',
     callbackURL: (process.env.DOMAIN || '') + '/auth/paypal/callback'
   },
+
+  walmart: {
+    key: process.env.WALMART_API_KEY || 'id'
+  }
 };
 
 // Export the config object based on the NODE_ENV
