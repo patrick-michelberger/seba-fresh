@@ -6,13 +6,14 @@ var ProductSchema = new mongoose.Schema({
   id: String,
   name: String,
   price: Number,
-  categoryPath: {},
+  categoryPath: String,
   description: String,
   brand: String,
-  quantityOptions: [],
-  imageUrl: String,
+  thumbnailImage: String,
+  mediumImage: String,
+  largeImage: String,
   productUrl: String,
-  stock: Boolean,
+  stock: String,
   addToCartUrl: String
 });
 

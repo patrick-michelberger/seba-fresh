@@ -11,6 +11,7 @@ var config = {
 // DEPENDENCIES
 var walmart = require('walmart')(config.walmart.key);
 var mongoose = require('mongoose');
+var async = require('async');
 Product = require('../api/product/product.model');
 
 // CONNECT TO SEBA DATABASE
@@ -18,28 +19,40 @@ mongoose.connect(config.mongoURI);
 
 // RUNNING CODE
 console.log("Crawling products from Walmart API ...");
-walmart.getItem(10449075).then(function (item) {
-  var product = item.product;
 
-  product = {
-    id: product.productId,
-    name: product.productName,
-    price: product.buyingOptions.price.currencyAmount,
-    categoryPath: product.categoryPath,
-    description: product.longDescription,
-    brand: product.brand,
-    quantityOptions: product.buyingOptions.quantityOptions,
-    imageUrl: product.imageAssets.primaryImageUrl,
-    productUrl: "http://www.walmart.com/ip/" + product.usItemId,
-    stock: true,
-    addToCartUrl: "http://www.walmart.com/ip/" + product.usItemId
-  };
+// Returns an array of items of the best-sellers on the specified category.
+// Food category id = 976759
+walmart.feeds.bestSellers(976759).then(function (response) {
+  async.each(response.items, function (product, cb) {
 
-  Product.create(product, function (err, savedProduct) {
+    // Parse product for SEBA product model
+    product = {
+      id: product.itemId,
+      name: product.name,
+      price: product.salePrice,
+      categoryPath: product.categoryPath,
+      description: product.shortDescription,
+      brand: product.brandName,
+      thumbnailImage: product.thumbnailImage,
+      mediumImage: product.mediumImage,
+      largeImage: product.largeImage,
+      productUrl: product.productUrl,
+      stock: product.stock,
+      addToCartUrl: product.addToCartUrl
+    };
+
+    Product.create(product, function (err, savedProduct) {
+      if (err) {
+        console.log("Error: saving product: ", err);
+      }
+      cb();
+    });
+  }, function (err) {
     if (err) {
-      console.log("Error: saving product: ", err);
+      console.log("Error: ", err);
     } else {
-      console.log("Product saved: ", savedProduct);
+      console.log("All products saved!");
+      process.exit();
     }
   });
 });
