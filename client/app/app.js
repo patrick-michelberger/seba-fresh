@@ -3,6 +3,7 @@
 angular.module('sebaFreshApp', [
   'sebaFreshApp.auth',
   'sebaFreshApp.admin',
+  'sebaFreshApp.assortment',
   'sebaFreshApp.oauth-buttons',
   'sebaFreshApp.constants',
   'ngCookies',
@@ -14,7 +15,7 @@ angular.module('sebaFreshApp', [
   'ngAnimate',
   'ngMaterial'
 ])
-  .config(function($urlRouterProvider, $locationProvider, $mdThemingProvider) {
+  .config(function ($urlRouterProvider, $locationProvider, $mdThemingProvider) {
     $urlRouterProvider
       .otherwise('/');
 
@@ -36,11 +37,11 @@ angular.module('sebaFreshApp', [
       'A200': '007DC6',
       'A400': '007DC6',
       'A700': '007DC6',
-      'contrastDefaultColor': 'light',    // whether, by default, text (contrast)
-                                          // on this palette should be dark or light
+      'contrastDefaultColor': 'light', // whether, by default, text (contrast)
+      // on this palette should be dark or light
       'contrastDarkColors': ['50', '100', //hues which contrast should be 'dark' by default
        '200', '300', '400', 'A100'],
-      'contrastLightColors': undefined    // could also specify this if default was 'dark'
+      'contrastLightColors': undefined // could also specify this if default was 'dark'
     });
 
     $mdThemingProvider.definePalette('sebaAccentPalette', {
@@ -58,11 +59,11 @@ angular.module('sebaFreshApp', [
       'A200': 'FFC120',
       'A400': 'FFC120',
       'A700': 'FFC120',
-      'contrastDefaultColor': 'light',    // whether, by default, text (contrast)
-                                          // on this palette should be dark or light
+      'contrastDefaultColor': 'light', // whether, by default, text (contrast)
+      // on this palette should be dark or light
       'contrastDarkColors': ['50', '100', //hues which contrast should be 'dark' by default
        '200', '300', '400', 'A100'],
-      'contrastLightColors': undefined    // could also specify this if default was 'dark'
+      'contrastLightColors': undefined // could also specify this if default was 'dark'
     });
 
     $mdThemingProvider.definePalette('sebaWarnPalette', {
@@ -80,11 +81,11 @@ angular.module('sebaFreshApp', [
       'A200': 'D94848',
       'A400': 'D94848',
       'A700': 'D94848',
-      'contrastDefaultColor': 'light',    // whether, by default, text (contrast)
-                                          // on this palette should be dark or light
+      'contrastDefaultColor': 'light', // whether, by default, text (contrast)
+      // on this palette should be dark or light
       'contrastDarkColors': ['50', '100', //hues which contrast should be 'dark' by default
        '200', '300', '400', 'A100'],
-      'contrastLightColors': undefined    // could also specify this if default was 'dark'
+      'contrastLightColors': undefined // could also specify this if default was 'dark'
     });
 
     $mdThemingProvider.theme('default')

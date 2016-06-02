@@ -6,6 +6,6 @@ angular.module('sebaFreshApp.auth', [
   'ngCookies',
   'ui.router'
 ])
-  .config(function($httpProvider) {
+  .config(function ($httpProvider) {
     $httpProvider.interceptors.push('authInterceptor');
   });
