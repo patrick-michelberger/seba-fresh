@@ -1,26 +1,27 @@
 <md-content layout-padding>
   <div layout-xs="column" layout="row" layout-wrap>
-        <md-card ng-repeat="thing in $ctrl.awesomeThings" flex="50" layout="column">
-          <md-card-title>
-            <md-card-title-text>
-              <span class="md-headline">{{thing.name}}</span>
-              <span class="md-subhead">Large</span>
-            </md-card-title-text>
-            <md-card-title-media>
-              <div class="md-media-lg card-media"></div>
-            </md-card-title-media>
-          </md-card-title>
-          <md-card-actions layout="row" layout-align="end center">
-            <md-button ng-click="$ctrl.deleteThing(thing)">&times;</md-button>
-          </md-card-actions>
-        </md-card>
-´  </div>
+    <md-card ng-repeat="thing in $ctrl.awesomeThings" flex="50" layout="column">
+      <md-card-title>
+        <md-card-title-text>
+          <span class="md-headline">{{thing.name}}</span>
+          <span class="md-subhead">Large</span>
+        </md-card-title-text>
+        <md-card-title-media>
+          <div class="md-media-lg card-media"></div>
+        </md-card-title-media>
+      </md-card-title>
+      <md-card-actions layout="row" layout-align="end center">
+        <md-button ng-click="$ctrl.deleteThing(thing)">&times;</md-button>
+      </md-card-actions>
+    </md-card>
+    ´ </div>
   <div layout="row">
     <form>
       <h3 class="md-headline">Syncs in realtime across clients</h3>
       <md-input-container class="md-docs-dark-theme md-input-has-value" layout="row">
         <label for="input_151">Product name</label>
-        <input ng-model="$ctrl.newThing" class="ng-pristine ng-valid md-input ng-touched" placeholder="Add a new product here." aria-invalid="false" style=""><div class="md-errors-spacer"></div>
+        <input ng-model="$ctrl.newThing" class="ng-pristine ng-valid md-input ng-touched" placeholder="Add a new product here." aria-invalid="false" style="">
+        <div class="md-errors-spacer"></div>
       </md-input-container>
       <div layout="row">
         <button ng-click="$ctrl.addThing()" class="md-raised md-button md-ink-ripple" type="button" aria-label="Add New Product"><span class="ng-scope"></span>Add New</button>

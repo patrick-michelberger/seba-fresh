@@ -1,16 +1,40 @@
-<md-card ng-repeat="product in $ctrl.products" md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
-  <md-card-title>
-    <md-card-title-text>
-      <span class="md-headline">{{product.name}}</span>
-      <span class="md-subhead">{{product.brand}}</span>
-    </md-card-title-text>
-    <md-card-title-media>
-      <img ng-src="{{product.mediumImage}}" />
-    </md-card-title-media>
-  </md-card-title>
-  <md-card-actions layout="row" layout-align="end center">
-    <a ng-href="{{product.addToCartUrl}}" target="_blank">
-      <md-button>Add to cart</md-button>
-    </a>
-  </md-card-actions>
-</md-card>
+<!--<md-grid-list layout-fill flex md-cols-sm="1" md-cols-md="2" md-cols-gt-md="5">
+  <md-grid-tile ng-repeat=" product in $ctrl.products">
+    <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }} " layout-fill>
+      <md-card-title>
+        <md-card-title-text>
+          <span class="md-headline ">{{product.name}}</span>
+          <span class="md-subhead ">{{product.brand}}</span>
+        </md-card-title-text>
+        <md-card-title-media>
+          <img ng-src="{{product.mediumImage}} " />
+        </md-card-title-media>
+      </md-card-title>
+      <md-card-actions layout="row " layout-align="end center ">
+        <a ng-href="{{product.addToCartUrl}} " target="_ blank ">
+          <md-button class="md-raised md-primary ">Add to cart</md-button>
+        </a>
+      </md-card-actions>
+    </md-card>
+  </md-grid-tile>
+</md-grid-list>-->
+<md-grid-list layout-fill flex md-cols-xs="2" md-cols-md="4" md-cols-gt-md="5" md-row-height="450px">
+  <md-grid-tile ng-repeat=" product in $ctrl.products">
+    <md-card layout-fill>
+      <md-card-title>
+        <md-card-title-text>
+          <span class="md-headline ">{{product.name}}</span>
+          <span class="md-subhead ">{{product.brand}}</span>
+        </md-card-title-text>
+        <md-card-title-media>
+          <img ng-src="{{product.mediumImage}} " />
+        </md-card-title-media>
+      </md-card-title>
+      <md-card-actions layout="row " layout-align="end center ">
+        <a ng-href="{{product.addToCartUrl}} " target="_ blank ">
+          <md-button class="md-raised md-primary ">Add to cart</md-button>
+        </a>
+      </md-card-actions>
+    </md-card>
+  </md-grid-tile>
+</md-grid-list>
