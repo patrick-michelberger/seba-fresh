@@ -22,6 +22,15 @@
     <md-list-item ng-hide="nav.isLoggedIn()" ui-sref-active="active" ng-click="nav.close()" ui-sref="login">
       <p>Login</p>
     </md-list-item>
+    <md-list-item ng-hide="nav.isLoggedIn()" ui-sref-active="active" ng-click="nav.close()" ui-sref="about">
+      <p>About</p>
+    </md-list-item>
+    <md-list-item ng-hide="nav.isLoggedIn()" ui-sref-active="active" ng-click="nav.close()" ui-sref="help">
+      <p>Help</p>
+    </md-list-item>
+    <md-list-item ng-hide="nav.isLoggedIn()" ui-sref-active="active" ng-click="nav.close()" ui-sref="contactus">
+      <p>Contact Us</p>
+    </md-list-item>
     <md-list-item ng-show="nav.isLoggedIn()">
       <p class="navbar-text">Hello {{ nav.getCurrentUser().first_name }} {{nav.getCurrentUser().last_name }}</p>
     </md-list-item>
