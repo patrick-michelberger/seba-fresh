@@ -2,7 +2,7 @@
 <md-toolbar>
   <div class="md-toolbar-tools">
     <md-button ng-click="nav.toggleLeft()" class="md-icon-button" aria-label="Settings">
-        <i class="material-icons">menu</i>
+      <i class="material-icons">menu</i>
     </md-button>
     <h2>
       <a class="sf-brand" href="/">SEBA <span>fresh</span></a>
@@ -21,6 +21,9 @@
     </md-list-item>
     <md-list-item ng-hide="nav.isLoggedIn()" ui-sref-active="active" ng-click="nav.close()" ui-sref="login">
       <p>Login</p>
+    </md-list-item>
+    <md-list-item ui-sref-active="active" ng-click="nav.close()" ui-sref="contact">
+      <p>Contact</p>
     </md-list-item>
     <md-list-item ng-show="nav.isLoggedIn()">
       <p class="navbar-text">Hello {{ nav.getCurrentUser().first_name }} {{nav.getCurrentUser().last_name }}</p>
