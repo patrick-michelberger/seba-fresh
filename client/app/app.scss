@@ -21,6 +21,7 @@ $sf-color-yellow: #FFC120;
 // Component styles are injected through grunt
 /* inject:scss */
 @import 'admin/admin';
+@import 'contact/contact';
 @import 'main/main';
 @import 'products/products';
 @import '../components/footer/footer';
