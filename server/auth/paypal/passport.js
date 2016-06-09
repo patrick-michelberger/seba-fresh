@@ -17,7 +17,7 @@ export function setup(User, config) {
           if (user) {
             return done(null, user);
           }
-          console.log("received user: ", user);
+          console.log("received profile: ", profile);
           user = new User({
             first_name: profile.name.givenName,
             last_name: profile.name.familyName,
