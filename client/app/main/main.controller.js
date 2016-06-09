@@ -8,6 +8,7 @@
       this.$http = $http;
       this.socket = socket;
       this.isLoggedIn = Auth.isLoggedIn;
+      this.getCurrentUser = Auth.getCurrentUser;
     }
   }
 
