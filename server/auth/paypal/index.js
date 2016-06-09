@@ -2,17 +2,19 @@
 
 import express from 'express';
 import passport from 'passport';
-import { setTokenCookie } from '../auth.service';
+import {
+  setTokenCookie
+} from '../auth.service';
 
 var router = express.Router();
 
 router
-    .get('/', passport.authenticate('paypal', {
-      "scope": ['email', 'openid', 'profile']
-    }))
-    .get('/callback', passport.authenticate('paypal', {
-        failureRedirect: '/signup',
-        session: false
-    }), setTokenCookie);
+  .get('/', passport.authenticate('paypal', {
+    "scope": ['email', 'openid', 'profile', 'picture', 'address']
+  }))
+  .get('/callback', passport.authenticate('paypal', {
+    failureRedirect: '/signup',
+    session: false
+  }), setTokenCookie);
 
 export default router;
