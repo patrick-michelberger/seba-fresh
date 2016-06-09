@@ -6,8 +6,8 @@
         <span class="sf-healine-2">Together <b>With Your Flatmates</b>.</span>
       </h1>
       <div class="sf-actions">
-        <md-button class="md-raised md-warn" ui-sref="signup">Signup</md-button>
-        <md-button class="md-raised md-default" ui-sref="login">Login</md-button>
+        <md-button ng-hide="vm.isLoggedIn()" class="md-raised md-warn" ui-sref="signup">Signup</md-button>
+        <md-button ng-hide="vm.isLoggedIn()" class="md-raised md-default" ui-sref="login">Login</md-button>
         <md-button class="md-raised md-default" ui-sref="products">Browse</md-button>
       </div>
     </div>
