@@ -1,20 +1,13 @@
+main {
+  margin: 0;
+  width: 100%;
+  min-height: 100%;
+  height: calc(100vh - 45px);
+}
+
 #sf-main   {
   background-color: $sf-color-blue;
   color: #fff;
-  position:absolute;
-  width: 100%;
-  height: calc(100% - 50px);
-}
-
-#sf-main .sf-hero-headline {
-  position: relative;
-  padding: 60px 35px;
-}
-
-#sf-main .sf-hero-headline h1 {
-  position: absolute;
-  top: 50%;
-  margin-top: -60px;
 }
 
 #sf-main .sf-hero-headline .sf-headline-1 {
@@ -24,15 +17,4 @@
 #sf-main .sf-hero-headline .sf-headline-1 b,
 #sf-main .sf-hero-headline .sf-headline-2 b  {
   color: $sf-color-yellow;
-}
-
-#sf-main .sf-hero-image-container {
-  padding: 60px 35px;
-  position: relative;
-}
-
-#sf-main .sf-actions {
-  position: absolute;
-  top: 50%;
-  margin-top: 60px;
 }
