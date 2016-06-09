@@ -5,7 +5,7 @@
   class ContactController {
 
     constructor() {
-      this.title = "Hallo Welt";
+      this.title = "Contact us!";
     }
 
     $onInit() {

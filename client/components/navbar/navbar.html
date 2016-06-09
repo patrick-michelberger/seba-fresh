@@ -25,6 +25,10 @@
     <md-list-item ui-sref-active="active" ng-click="nav.close()" ui-sref="contact">
       <p>Contact</p>
     </md-list-item>
+<!-- About Page -->
+<md-list-item ui-sref-active="active" ng-click="nav.close()" ui-sref="about">
+  <p>About</p>
+</md-list-item>
     <md-list-item ng-show="nav.isLoggedIn()">
       <p class="navbar-text">Hello {{ nav.getCurrentUser().first_name }} {{nav.getCurrentUser().last_name }}</p>
     </md-list-item>
