@@ -1,0 +1,23 @@
+<!-- Sidebar -->
+<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
+  <md-toolbar>
+    <h1 class="md-toolbar-tools sf-brand">SEBA <span>fresh</span></h1>
+  </md-toolbar>
+  <section class="sf-sidebar-nav">
+    <md-list-item ng-hide="nav.isLoggedIn()" ui-sref-active="active" ng-click="nav.close()" ui-sref="signup">
+      <p>Sign up</p>
+    </md-list-item>
+    <md-list-item ng-hide="nav.isLoggedIn()" ui-sref-active="active" ng-click="nav.close()" ui-sref="login">
+      <p>Login</p>
+    </md-list-item>
+    <md-list-item ng-show="nav.isLoggedIn()">
+      <p class="navbar-text">Hello {{ nav.getCurrentUser().first_name }} {{nav.getCurrentUser().last_name }}</p>
+    </md-list-item>
+    <md-list-item ng-show="nav.isLoggedIn()" ui-sref-active="active" ng-click="nav.close()" ui-sref="settings">
+      <p>Settings</p>
+    </md-list-item>
+    <md-list-item ng-show="nav.isLoggedIn()" ui-sref-active="active" ng-click="nav.close()" ui-sref="logout">
+      <p>Logout</p>
+    </md-list-item>
+  </section>
+</md-sidenav>

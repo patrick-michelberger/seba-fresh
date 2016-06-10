@@ -1,0 +1,13 @@
+sidebar .sf-sidebar-nav {
+  margin-top: 60px;
+}
+
+sidebar md-sidenav {
+  background: $sf-color-blue;
+}
+
+sidebar md-list-item a,
+sidebar md-list-item p {
+  margin: 0!important;
+  color: #fff!important;
+}
