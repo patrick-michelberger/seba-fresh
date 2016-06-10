@@ -4,19 +4,19 @@
     <h1 class="md-toolbar-tools sf-brand">SEBA <span>fresh</span></h1>
   </md-toolbar>
   <section class="sf-sidebar-nav">
-    <md-list-item ng-hide="nav.isLoggedIn()" ui-sref-active="active" ng-click="nav.close()" ui-sref="signup">
+    <md-list-item ng-hide="vm.isLoggedIn()" ui-sref-active="active" ng-click="vm.close()" ui-sref="signup">
       <p>Sign up</p>
     </md-list-item>
-    <md-list-item ng-hide="nav.isLoggedIn()" ui-sref-active="active" ng-click="nav.close()" ui-sref="login">
+    <md-list-item ng-hide="vm.isLoggedIn()" ui-sref-active="active" ng-click="vm.close()" ui-sref="login">
       <p>Login</p>
     </md-list-item>
-    <md-list-item ng-show="nav.isLoggedIn()">
-      <p class="navbar-text">Hello {{ nav.getCurrentUser().first_name }} {{nav.getCurrentUser().last_name }}</p>
+    <md-list-item ng-show="vm.isLoggedIn()">
+      <p class="navbar-text">Hello {{ vm.getCurrentUser().first_name }} {{vm.getCurrentUser().last_name }}</p>
     </md-list-item>
-    <md-list-item ng-show="nav.isLoggedIn()" ui-sref-active="active" ng-click="nav.close()" ui-sref="settings">
+    <md-list-item ng-show="vm.isLoggedIn()" ui-sref-active="active" ng-click="vm.close()" ui-sref="settings">
       <p>Settings</p>
     </md-list-item>
-    <md-list-item ng-show="nav.isLoggedIn()" ui-sref-active="active" ng-click="nav.close()" ui-sref="logout">
+    <md-list-item ng-show="vm.isLoggedIn()" ui-sref-active="active" ng-click="vm.close()" ui-sref="logout">
       <p>Logout</p>
     </md-list-item>
   </section>
