@@ -10,7 +10,7 @@ var router = express.Router();
 
 router
   .get('/', passport.authenticate('paypal', {
-    "scope": ['email', 'openid', 'profile', 'picture', 'address']
+    "scope": ['email', 'openid', 'profile']
   }))
   .get('/callback', passport.authenticate('paypal', {
     failureRedirect: '/signup',
