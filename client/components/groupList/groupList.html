@@ -1,0 +1,17 @@
+<md-card ng-repeat="group in groupListCtrl.groups" ng-controller="GroupCellController as cellCtrl">
+  <img ng-src="{{imagePath}}" class="md-card-image">
+  <md-card-title>
+    <md-card-title-text>
+      <span class="md-headline">{{group.name}}</span>
+    </md-card-title-text>
+  </md-card-title>
+  <md-card-content>
+    <p>
+      {{group.address.street}} {{group.address.street_number}}, {{group.address.postcode}} {{group.address.city}}
+    </p>
+  </md-card-content>
+  <md-card-actions layout="row" layout-align="end center">
+    <md-button class="md-raised md-warn" ng-click="cellCtrl.inviteFriends(group)">Invite Flatmate</md-button>
+    <md-button class="md-raised" ng-click="cellCtrl.deleteGroup(group)">Delete</md-button>
+  </md-card-actions>
+</md-card>
