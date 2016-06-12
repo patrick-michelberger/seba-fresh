@@ -9,6 +9,7 @@ import User from '../api/user/user.model';
 import product from '../api/product/product.model';
 import payment from '../api/payment/payment.model';
 import order from '../api/order/order.model';
+import category from '../api/category/category.model';   // addition for category scraping
 
 Thing.find({}).remove()
   .then(() => {
