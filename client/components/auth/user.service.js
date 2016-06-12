@@ -1,27 +1,34 @@
 'use strict';
 
-(function() {
+(function () {
 
-function UserResource($resource) {
-  return $resource('/api/users/:id/:controller', {
-    id: '@_id'
-  }, {
-    changePassword: {
-      method: 'PUT',
-      params: {
-        controller: 'password'
+  function UserResource($resource) {
+    return $resource('/api/users/:id/:controller', {
+      id: '@_id'
+    }, {
+      changePassword: {
+        method: 'PUT',
+        params: {
+          controller: 'password'
+        }
+      },
+      get: {
+        method: 'GET',
+        params: {
+          id: 'me'
+        }
+      },
+      getFriends: {
+        method: 'GET',
+        params: {
+          id: 'me',
+          controller: 'friends'
+        }
       }
-    },
-    get: {
-      method: 'GET',
-      params: {
-        id: 'me'
-      }
-    }
-  });
-}
+    });
+  }
 
-angular.module('sebaFreshApp.auth')
-  .factory('User', UserResource);
+  angular.module('sebaFreshApp.auth')
+    .factory('User', UserResource);
 
 })();

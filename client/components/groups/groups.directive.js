@@ -5,7 +5,8 @@ angular.module('sebaFreshApp')
     return {
       templateUrl: 'components/groups/groups.html',
       restrict: 'EA',
-      link: function (scope, element, attrs) {
-      }
+      link: function (scope, element, attrs) {},
+      controller: 'GroupsController',
+      controllerAs: 'groupsCtrl'
     };
   });

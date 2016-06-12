@@ -4,17 +4,18 @@ import User from './user.model';
 import passport from 'passport';
 import config from '../../config/environment';
 import jwt from 'jsonwebtoken';
+import request from 'request';
 
 function validationError(res, statusCode) {
   statusCode = statusCode || 422;
-  return function(err) {
+  return function (err) {
     res.status(statusCode).json(err);
   }
 }
 
 function handleError(res, statusCode) {
   statusCode = statusCode || 500;
-  return function(err) {
+  return function (err) {
     res.status(statusCode).send(err);
   };
 }
@@ -39,11 +40,15 @@ export function create(req, res, next) {
   newUser.provider = 'local';
   newUser.role = 'user';
   newUser.save()
-    .then(function(user) {
-      var token = jwt.sign({ _id: user._id }, config.secrets.session, {
+    .then(function (user) {
+      var token = jwt.sign({
+        _id: user._id
+      }, config.secrets.session, {
         expiresIn: 60 * 60 * 5
       });
-      res.json({ token });
+      res.json({
+        token
+      });
     })
     .catch(validationError(res));
 }
@@ -70,7 +75,7 @@ export function show(req, res, next) {
  */
 export function destroy(req, res) {
   return User.findByIdAndRemove(req.params.id).exec()
-    .then(function() {
+    .then(function () {
       res.status(204).end();
     })
     .catch(handleError(res));
@@ -105,7 +110,9 @@ export function changePassword(req, res, next) {
 export function me(req, res, next) {
   var userId = req.user._id;
 
-  return User.findOne({ _id: userId }, '-salt -password').exec()
+  return User.findOne({
+      _id: userId
+    }, '-salt -password -facebook').exec()
     .then(user => { // don't ever give out the password or salt
       if (!user) {
         return res.status(401).end();
@@ -114,6 +121,36 @@ export function me(req, res, next) {
     })
     .catch(err => next(err));
 }
+
+/**
+ * Get user's friends
+ */
+export function friends(req, res, next) {
+  var userId = req.user._id;
+  return User.findOne({
+      _id: userId
+    }, '-salt -password').exec()
+    .then(user => { // don't ever give out the password or salt
+      if (!user || !user.facebook || !user.facebook.id || !user.facebook.accessToken) {
+        return res.status(401).end();
+      }
+      var url = "https://graph.facebook.com/" + user.facebook.id + "/friends";
+      var query = {
+        accessToken: user.facebook.accessToken
+      };
+      console.log("query: ", query);
+      console.log("Url: ", url);
+      request.get({
+        url: url,
+        qs: query
+      }, function (error, response, body) {
+        console.log("Body: ", body);
+        res.json(user);
+      })
+    })
+    .catch(err => next(err));
+}
+
 
 /**
  * Authentication callback

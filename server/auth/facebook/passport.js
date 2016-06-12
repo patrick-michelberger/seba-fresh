@@ -1,4 +1,6 @@
 import passport from 'passport';
+import _ from 'lodash';
+import request from 'request';
 import {
   Strategy as FacebookStrategy
 } from 'passport-facebook';
@@ -18,13 +20,20 @@ export function setup(User, config) {
           if (user) {
             return done(null, user);
           }
+
+          console.log("refreshToken: ", refreshToken);
+
+          var facebook = _.extend(profile._json, {
+            accessToken: accessToken,
+            refreshToken: refreshToken
+          });
           user = new User({
             first_name: profile.name.givenName,
             last_name: profile.name.familyName,
             role: 'user',
             provider: 'facebook',
             picture: 'https://graph.facebook.com/' + profile.id + '/picture?width=600&height=600',
-            facebook: profile._json
+            facebook: facebook
           });
           user.save()
             .then(user => done(null, user))

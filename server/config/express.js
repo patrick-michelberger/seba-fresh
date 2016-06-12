@@ -21,14 +21,16 @@ import connectMongo from 'connect-mongo';
 import mongoose from 'mongoose';
 var MongoStore = connectMongo(session);
 
-export default function(app) {
+export default function (app) {
   var env = app.get('env');
 
   app.set('views', config.root + '/server/views');
   app.engine('html', require('ejs').renderFile);
   app.set('view engine', 'html');
   app.use(compression());
-  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(bodyParser.urlencoded({
+    extended: false
+  }));
   app.use(bodyParser.json());
   app.use(methodOverride());
   app.use(cookieParser());
@@ -67,6 +69,7 @@ export default function(app) {
   }
 
   app.set('appPath', path.join(config.root, 'client'));
+  app.set('serverPath', path.join(config.root, 'server'));
 
   if ('production' === env) {
     app.use(favicon(path.join(config.root, 'client', 'favicon.ico')));

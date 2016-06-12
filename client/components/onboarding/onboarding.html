@@ -1,1 +1,25 @@
-<div>this is the onboarding directive</div>
+<md-content layout-fill>
+  <md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always" md-selected="onboarding.selectedIndex" layout-fill>
+    <md-tab label="Create Group" layout-fulfill>
+      <md-content layout-padding layout="row">
+        <div flex-xs="100" flex="33" flex-offset-gt-xs="33">
+          <groups></groups>
+        </div>
+      </md-content>
+    </md-tab>
+    <md-tab label="Invite Friends" ng-disabled="onboarding.showInviteFriends">
+      <md-content class="md-padding">
+        <md-content layout-padding layout="row">
+          <div flex-xs="100" flex="33" flex-offset-gt-xs="33">
+          </div>
+        </md-content>
+    </md-tab>
+    <md-tab label="Buy Groceries" ng-disabled="true">
+      <md-content class="md-padding">
+        <h1 class="md-display-2">Browse Products</h1>
+        <p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie dictum. Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi. Cras eu fermentum nunc. Sed id ante eu orci
+          commodo volutpat non ac est. Praesent ligula diam, congue eu enim scelerisque, finibus commodo lectus.</p>
+      </md-content>
+    </md-tab>
+  </md-tabs>
+  </md-content>

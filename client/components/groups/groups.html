@@ -1,1 +1,65 @@
-<div>this is the groups directive</div>
+<success-check ng-show="groupsCtrl.showSuccessMessage"></success-check>
+<form name="form" ng-submit="groupsCtrl.createGroup(form)" ng-hide="groupsCtrl.showSuccessMessage" novalidate>
+  <!-- Group Name Input -->
+  <md-input-container class="md-block" ng-class="{ 'has-success': form.name.$valid && groupsCtrl.submitted,
+                                    'has-error': form.name.$invalid && groupsCtrl.submitted }">
+    <label for="input_name">Group Name</label>
+    <input ng-model="groupsCtrl.group.name" type="text" class="md-input" id="input_name" required mongoose-error>
+    <div class="md-errors-spacer" ng-show="form.name.$error.required && groupsCtrl.submitted">
+      A group name is required
+    </div>
+  </md-input-container>
+
+  <!-- Street Input -->
+  <md-input-container class="md-block" ng-class="{ 'has-success': form.street.$valid && groupsCtrl.submitted,
+                                    'has-error': form.street.$invalid && groupsCtrl.submitted }">
+    <label for="input_street">Street</label>
+    <input ng-model="groupsCtrl.group.street" autocomplete="street-address" type="text" class="md-input" id="input_street" required mongoose-error>
+    <div class="md-errors-spacer" ng-show="form.street.$error.required && groupsCtrl.submitted">
+      A street is required
+    </div>
+  </md-input-container>
+
+  <!-- Street Number Input -->
+  <md-input-container class="md-block" ng-class="{ 'has-success': form.street_number.$valid && groupsCtrl.submitted,
+                                    'has-error': form.street_number.$invalid && groupsCtrl.submitted }">
+    <label for="input_street_number">Street Number</label>
+    <input ng-model="groupsCtrl.group.street_number" autocomplete="address-line1" type="text" class="md-input" id="input_street_number" required mongoose-error>
+    <div class="md-errors-spacer" ng-show="form.street_number.$error.required && groupsCtrl.submitted">
+      A street number is required
+    </div>
+  </md-input-container>
+
+  <!-- Additional Address Input -->
+  <md-input-container class="md-block" ng-class="{ 'has-success': form.additional_address.$valid && groupsgroupsCtrl.submitted,
+                                    'has-error': form.additional_address.$invalid && groupsCtrl.submitted }">
+    <label for="input_additional_address">Additional Address Info</label>
+    <input ng-model="groupsCtrl.group.additional_address" autocomplete="address-line2" type="text" class="md-input" id="input_additional_address" mongoose-error>
+  </md-input-container>
+
+  <!-- Postcode Input -->
+  <md-input-container class="md-block" ng-class="{ 'has-success': form.postcode.$valid && groupsCtrl.submitted,
+                                    'has-error': form.postcode.$invalid && groupsCtrl.submitted }">
+    <label for="input_postcode">Postcode</label>
+    <input ng-model="groupsCtrl.group.postcode" autocomplete="postal-code" type="text" class="md-input" id="input_postcode" required mongoose-error>
+    <div class="md-errors-spacer" ng-show="form.postcode.$error.required && groupsCtrl.submitted">
+      A postcode is required
+    </div>
+  </md-input-container>
+
+  <!-- City Input -->
+  <md-input-container class="md-block" ng-class="{ 'has-success': form.city.$valid && groupsCtrl.submitted,
+                                      'has-error': form.city.$invalid && groupsCtrl.submitted }">
+    <label for="input_city">City</label>
+    <input ng-model="groupsCtrl.group.city" autocomplete="city" name="city" type="text" class="md-input" id="input_city" required mongoose-error>
+    <div class="md-errors-spacer" ng-show="form.city.$error.required && groupsCtrl.submitted">
+      An city is required
+    </div>
+  </md-input-container>
+
+  <!-- Action buttons -->
+  <section layout-xs="column" layout="row">
+    <md-button ng-disabled="form.$invalid" class="md-raised md-block" flex type="submit">Create Group</md-button>
+  </section>
+
+</form>

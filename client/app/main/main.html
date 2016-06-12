@@ -1,22 +1,41 @@
-<div flex layout="column" layout-fill id="sf-main">
+<!-- User is logged out -->
+<div ng-hide="vm.isLoggedIn()" flex layout="column" layout-fill id="sf-main">
   <div flex layout="row" layout-padding layout-align="center center" class="sf-hero-unit">
     <div class="sf-hero-headline" flex-gt-xs="50">
-      <h1 ng-show="vm.isLoggedIn()">
-        <span class="sf-headline-1">Hello {{vm.getCurrentUser().first_name}}.</span><br/>
-        <span class="sf-healine-2">Thanks for joining SEBA fresh.</span>
-      </h1>
-      <h1 ng-hide="vm.isLoggedIn()">
+      <h1>
         <span class="sf-headline-1"><b>Buy Groceries</b> Online.</span><br/>
         <span class="sf-healine-2">Together <b>With Your Flatmates</b>.</span>
       </h1>
       <div class="sf-actions">
-        <md-button ng-hide="vm.isLoggedIn()" class="md-raised md-warn" ui-sref="signup">Signup</md-button>
-        <md-button ng-hide="vm.isLoggedIn()" class="md-raised md-default" ui-sref="login">Login</md-button>
+        <md-button class="md-raised md-warn" ui-sref="signup">Signup</md-button>
+        <md-button class="md-raised md-default" ui-sref="login">Login</md-button>
+      </div>
+    </div>
+    <div class="sf-hero-image-container" hide-xs flex="50">
+      <img src="assets/images/sf-front-page-illustration.png" width="100%" height="auto" />
+    </div>
+  </div>
+</div>
+
+<!-- User is logged in -->
+<div ng-show="vm.isLoggedIn()" flex layout="column" layout-fill id="sf-main">
+  <onboarding layout-fill></onboarding>
+
+
+  <!--<div flex layout="row" layout-padding layout-align="center center" class="sf-hero-unit">
+    <div class="sf-hero-headline" flex-gt-xs="50">
+      <h1 ng-show="vm.isLoggedIn()">
+          <span class="sf-headline-1">Hello {{vm.getCurrentUser().first_name}}.</span><br/>
+          <span class="sf-healine-2">Thanks for joining SEBA fresh.</span>
+        </h1>
+
+      <div class="sf-actions">
         <md-button class="md-raised md-default" ui-sref="products">Browse Assortment</md-button>
       </div>
     </div>
     <div class="sf-hero-image-container" hide-xs flex="50">
-      <img ng-hide="vm.isLoggedIn()" src="assets/images/sf-front-page-illustration.png" width="100%" height="auto" />
-      <img ng-show="vm.isLoggedIn()" ng-src="{{vm.getCurrentUser().picture}}" />
+      <img ng-src="{{vm.getCurrentUser().picture}}" />
     </div>
   </div>
+-->
+</div>

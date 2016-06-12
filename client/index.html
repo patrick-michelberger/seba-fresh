@@ -27,6 +27,7 @@
 </head>
 
 <body ng-app="sebaFreshApp" ng-cloak>
+  <div id="fb-root"></div>
   <!--[if lt IE 7]>
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -34,7 +35,7 @@
   <!-- Add your site or application content here -->
   <navbar></navbar>
   <sidebar></sidebar>
-  <div style="padding-top:45px;" ui-view=""></div>
+  <div style="padding-top:65px;" ui-view=""></div>
 
   <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
   <script>
@@ -60,18 +61,25 @@
     <![endif]-->
   <!-- build:js({client,node_modules}) app/vendor.js -->
   <!-- bower:js -->
-  <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/angular-resource/angular-resource.js"></script>
-  <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-  <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-  <script src="bower_components/lodash/dist/lodash.compat.js"></script>
-  <script src="bower_components/angular-socket-io/socket.js"></script>
-  <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-  <script src="bower_components/angular-validation-match/dist/angular-validation-match.min.js"></script>
-  <script src="bower_components/angular-animate/angular-animate.js"></script>
-  <script src="bower_components/angular-aria/angular-aria.js"></script>
-  <script src="bower_components/angular-messages/angular-messages.js"></script>
-  <script src="bower_components/angular-material/angular-material.js"></script>
+  <script src='bower_components/angular/angular.js'></script>
+  <script src='bower_components/angular-resource/angular-resource.js'></script>
+  <script src='bower_components/angular-cookies/angular-cookies.js'></script>
+  <script src='bower_components/angular-sanitize/angular-sanitize.js'></script>
+  <script src='bower_components/lodash/lodash.js'></script>
+  <script src='bower_components/angular-socket-io/socket.js'></script>
+  <script src='bower_components/angular-ui-router/release/angular-ui-router.js'></script>
+  <script src='bower_components/angular-validation-match/dist/angular-validation-match.min.js'></script>
+  <script src='bower_components/angular-animate/angular-animate.js'></script>
+  <script src='bower_components/angular-aria/angular-aria.js'></script>
+  <script src='bower_components/angular-messages/angular-messages.js'></script>
+  <script src='bower_components/angular-material/angular-material.js'></script>
+  <script src='bower_components/angular-simple-logger/dist/angular-simple-logger.js'></script>
+  <script src='bower_components/markerclustererplus/src/markerclusterer.js'></script>
+  <script src='bower_components/google-maps-utility-library-v3-markerwithlabel/dist/markerwithlabel.js'></script>
+  <script src='bower_components/google-maps-utility-library-v3-infobox/dist/infobox.js'></script>
+  <script src='bower_components/google-maps-utility-library-v3-keydragzoom/dist/keydragzoom.js'></script>
+  <script src='bower_components/js-rich-marker/src/richmarker.js'></script>
+  <script src='bower_components/angular-google-maps/dist/angular-google-maps.js'></script>
   <!-- endbower -->
   <script src="socket.io-client/socket.io.js"></script>
   <!-- endbuild -->
@@ -82,6 +90,7 @@
   <script src="components/assortment/assortment.module.js"></script>
   <script src="components/auth/auth.module.js"></script>
   <script src="components/oauth-buttons/oauth-buttons.module.js"></script>
+  <script src="components/services/services.module.js"></script>
   <script src="components/util/util.module.js"></script>
   <script src="app/account/account.js"></script>
   <script src="app/account/login/login.controller.js"></script>
@@ -92,6 +101,8 @@
   <script src="app/app.constant.js"></script>
   <script src="app/contact/contact.controller.js"></script>
   <script src="app/contact/contact.js"></script>
+  <script src="app/join/join.controller.js"></script>
+  <script src="app/join/join.js"></script>
   <script src="app/main/main.controller.js"></script>
   <script src="app/main/main.js"></script>
   <script src="app/products/products.controller.js"></script>
@@ -102,16 +113,25 @@
   <script src="components/auth/router.decorator.js"></script>
   <script src="components/auth/user.service.js"></script>
   <script src="components/footer/footer.directive.js"></script>
+  <script src="components/groups/groups-cell-controller.js"></script>
+  <script src="components/groups/groups.controller.js"></script>
+  <script src="components/groups/groups.directive.js"></script>
   <script src="components/mongoose-error/mongoose-error.directive.js"></script>
   <script src="components/navbar/navbar.controller.js"></script>
   <script src="components/navbar/navbar.directive.js"></script>
   <script src="components/oauth-buttons/oauth-buttons.controller.js"></script>
   <script src="components/oauth-buttons/oauth-buttons.directive.js"></script>
+  <script src="components/onboarding/onboarding.controller.js"></script>
+  <script src="components/onboarding/onboarding.directive.js"></script>
+  <script src="components/services/facebook.service.js"></script>
+  <script src="components/services/group.service.js"></script>
   <script src="components/sidebar/sidebar.controller.js"></script>
   <script src="components/sidebar/sidebar.directive.js"></script>
   <script src="components/socket/socket.service.js"></script>
+  <script src="components/success-check/success-check.directive.js"></script>
   <script src="components/util/util.service.js"></script>
   <!-- endinjector -->
+  <!--<script src='//maps.googleapis.com/maps/api/js?sensor=false'></script>-->
   <!-- endbuild -->
 </body>
 

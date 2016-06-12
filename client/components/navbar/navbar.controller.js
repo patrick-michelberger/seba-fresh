@@ -20,32 +20,32 @@ class NavbarController {
   close() {
     var self = this;
     this.$mdSidenav('left').close()
-    .then(function () {});
+      .then(function () {});
   }
 
   /**
-    * Supplies a function that will continue to operate until the
-    * time is up.
-    */
-   debounce(func, wait, context) {
-     var timer;
-     return function debounced() {
-       var self = this,
-           args = Array.prototype.slice.call(arguments);
-       self.$timeout.cancel(timer);
-       timer = self.$timeout(function() {
-         timer = undefined;
-         func.apply(context, args);
-       }, wait || 10);
-     };
-   }
+   * Supplies a function that will continue to operate until the
+   * time is up.
+   */
+  debounce(func, wait, context) {
+    var timer;
+    return function debounced() {
+      var self = this,
+        args = Array.prototype.slice.call(arguments);
+      self.$timeout.cancel(timer);
+      timer = self.$timeout(function () {
+        timer = undefined;
+        func.apply(context, args);
+      }, wait || 10);
+    };
+  }
 
   /**
    * Build handler to open/close a SideNav
    */
   buildDelayedToggler(navID) {
     var self = this;
-    return self.debounce(function() {
+    return self.debounce(function () {
       self.$mdSidenav(navID)
         .toggle()
         .then(function () {});

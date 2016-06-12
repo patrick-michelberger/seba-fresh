@@ -9,3 +9,22 @@ navbar .sf-brand {
 navbar .sf-brand span {
   color: $sf-color-yellow;
 }
+
+.md-toolbar-tools {
+  height: 65px;
+  max-height: 65px;
+}
+
+@media only screen and (max-width: 959px) and (min-width: 0) and (orientation: portrait) {
+  .md-toolbar-tools {
+    height: 65px;
+    max-height: 65px;
+  }
+}
+
+@media only screen and (max-width: 959px) and (min-width: 0) and (orientation: landscape){
+  .md-toolbar-tools {
+    height: 65px;
+    max-height: 65px;
+  }
+}
