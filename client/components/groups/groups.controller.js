@@ -2,7 +2,7 @@
 
 class GroupsController {
 
-  constructor($rootScope, $scope, $http, $timeout, $q, $log, socket, Group, FacebookService, uiGmapGoogleMapApi) {
+  constructor($rootScope, $scope, $http, $timeout, $q, $log, socket, Group, FacebookService) {
     var self = this;
     this.errors = [];
     this.groups = [];
