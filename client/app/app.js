@@ -14,7 +14,8 @@ angular.module('sebaFreshApp', [
   'ui.router',
   'validation.match',
   'ngAnimate',
-  'ngMaterial'
+  'ngMaterial',
+  'ngMap'
 ])
   .config(function ($urlRouterProvider, $locationProvider, $mdThemingProvider) {
     $urlRouterProvider
