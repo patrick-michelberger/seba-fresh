@@ -7,12 +7,16 @@ class SignupController {
   submitted = false;
   //end-non-standard
 
-  constructor(Auth, $state) {
+  constructor(Auth, $state, $stateParams, $location) {
+    console.log("$stateParams: ", $stateParams);
+    this.$stateParams = $stateParams;
     this.Auth = Auth;
     this.$state = $state;
+    this.$location = $location;
   }
 
   register(form) {
+    var self = this;
     this.submitted = true;
 
     if (form.$valid) {
@@ -23,18 +27,25 @@ class SignupController {
           password: this.user.password
         })
         .then(() => {
-          // Account created, redirect to home
-          this.$state.go('products');
+          console.log("redirectUrl: ", self.$stateParams);
+          // Account created, redirect to next page
+          if (self.$stateParams.redirectUrl) {
+            console.log("redirect to ", self.$stateParams.redirectUrl);
+            self.$location.path(self.$stateParams.redirectUrl);
+          } else {
+            self.$state.go('products');
+          }
         })
         .catch(err => {
           err = err.data;
-          this.errors = {};
+          self.errors = {};
+          console.log("err: ", err.data);
 
           // Update validity of form fields that match the mongoose errors
-          angular.forEach(err.errors, (error, field) => {
+          /*angular.forEach(err.errors, (error, field) => {
             form[field].$setValidity('mongoose', false);
-            this.errors[field] = error.message;
-          });
+            self.errors[field] = error.message;
+          });*/
         });
     }
   }

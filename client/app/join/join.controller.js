@@ -34,7 +34,7 @@
             self.Group.declineInvitation($scope.group._id);
           } else {
             $state.go('login', {
-              "redirectUrl": "/join/" + $scope.group._id + "/decline"
+              'redirectUrl': '/group/' + $scope.group._id + '/decline'
             });
           }
         };
@@ -52,7 +52,7 @@
             }).$promise;
           } else {
             $state.go('signup', {
-              "redirectUrl": "/join/" + $scope.group._id + "/accept"
+              'redirectUrl': '/group/' + $scope.group._id + '/accept'
             });
           }
         };

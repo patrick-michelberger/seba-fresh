@@ -17,7 +17,7 @@ class GroupCellController {
   }
 
   inviteFriends(group) {
-    var url = this.baseShareUrl + '/join/' + group._id + '/' + this.Auth.getCurrentUser()._id;
+    var url = this.baseShareUrl + '/group/' + group._id + '/invite';
     console.log("url: ", url);
     //this.FacebookService.sendMessage(url);
   }
@@ -25,7 +25,7 @@ class GroupCellController {
   share(service, group) {
     console.log("share..");
     var url = "";
-    var shareUrl = this.baseShareUrl + '/join/' + group._id + '/' + this.Auth.getCurrentUser()._id;
+    var shareUrl = this.baseShareUrl + '/group/' + group._id + '/invite';
     var refUrl = "";
 
     switch (service) {
