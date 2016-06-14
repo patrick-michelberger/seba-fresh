@@ -6,7 +6,7 @@ var CategorySchema = new mongoose.Schema({
   id: String,
   name: String,
   categoryPath: String,
-  children: [{
+  childrens: [{
     id: String,
     name: String
   }]
