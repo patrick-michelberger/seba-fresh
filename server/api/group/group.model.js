@@ -9,7 +9,20 @@ var GroupSchema = new mongoose.Schema({
     street_number: String,
     additional_address: String,
     postcode: String,
-    city: String
+    city: String,
+    geolocation: {
+      latitude: String,
+      longitude: String
+    }
+  },
+  users: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    default: []
+  }],
+  admin: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   }
 }, {
   collection: 'seba-groups'
