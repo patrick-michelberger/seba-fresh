@@ -7,10 +7,10 @@
         </div>
       </md-content>
     </md-tab>
-    <md-tab label="Invite Friends" ng-disabled="onboarding.showInviteFriends">
+    <md-tab label="Invite Friends" ng-disabled="onboarding.disableInviteFriends()">
       <md-content class="md-padding">
         <md-content layout-padding layout="row">
-          <div flex-xs="100" flex="33" flex-offset-gt-xs="33">
+          <div flex-xs="100" flex="70" flex-offset-gt-xs="15">
             <group-list groups="onboarding.groups"></group-list>
           </div>
         </md-content>

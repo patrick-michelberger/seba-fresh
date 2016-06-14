@@ -2,8 +2,11 @@
 
 class GroupListController {
 
-  constructor($scope) {
-    this.groups = $scope.groups;
+  constructor() {
+    this.isMobile = false;
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+      this.isMobile = true;
+    }
   }
 }
 

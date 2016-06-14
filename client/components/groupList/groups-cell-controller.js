@@ -2,9 +2,13 @@
 
 class GroupCellController {
 
-  constructor($scope, FacebookService, $http) {
+  constructor($scope, $window, FacebookService, $http, Auth) {
+    this.baseShareUrl = location.protocol + '//' + location.hostname + ':' + location.port;
     this.FacebookService = FacebookService;
     this.$http = $http;
+    this.Auth = Auth;
+    this.$window = $window;
+    this.getCurrentUser = Auth.getCurrentUser;
   }
 
   deleteGroup(group) {
@@ -13,9 +17,31 @@ class GroupCellController {
   }
 
   inviteFriends(group) {
-    var url = location.protocol + '//' + location.hostname + ':' + location.port + '/join/' + group._id;
-    this.FacebookService.sendMessage(url);
+    var url = this.baseShareUrl + '/join/' + group._id + '/' + this.Auth.getCurrentUser()._id;
+    console.log("url: ", url);
+    //this.FacebookService.sendMessage(url);
   }
+
+  share(service, group) {
+    console.log("share..");
+    var url = "";
+    var shareUrl = this.baseShareUrl + '/join/' + group._id + '/' + this.Auth.getCurrentUser()._id;
+    var refUrl = "";
+
+    switch (service) {
+    case "facebook":
+      url = "http://m.facebook.com/sharer.php?u=" + shareUrl;
+      break;
+    case "whatsapp":
+      url = "whatsapp://send?text=" + shareUrl;
+      break;
+    default:
+      url = "mailto:?subject=LOVE this from ABOUT YOU!&amp;body=Hallo! Guck mal hier: auf " + shareUrl + " gefällt Dir bestimmt. Viel Spaß damit!";
+    }
+    this.$window.open(url, '_blank');
+  };
+
+
 }
 
 angular.module('sebaFreshApp')

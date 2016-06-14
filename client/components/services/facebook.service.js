@@ -9,6 +9,7 @@
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
           FB.ui({
             method: 'share',
+            mobile_iframe: true,
             href: url,
           }, function (response) {
             if (!response || response.error) {

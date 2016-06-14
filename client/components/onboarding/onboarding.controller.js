@@ -14,7 +14,6 @@ class OnboardingController {
     });
 
     $rootScope.$on('onboarding:next', function () {
-      console.log("next slide...");
       self._updateIndex();
     });
   }
@@ -29,7 +28,8 @@ class OnboardingController {
   }
 
   disableInviteFriends() {
-    return !this.groups || !this.groups[0];
+    var result = !this.groups || !this.groups[0];
+    return result;
   }
 
   _updateIndex() {

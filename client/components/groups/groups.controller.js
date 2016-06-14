@@ -2,14 +2,16 @@
 
 class GroupsController {
 
-  constructor($rootScope, $scope, $http, $timeout, $q, $log, socket, Group) {
+  constructor($rootScope, $scope, $http, $timeout, $q, $log, socket, Group, Auth, NgMap) {
     var self = this;
     this.errors = [];
     this.groups = [];
     this.socket = socket;
+    this.NgMap = NgMap;
     this.$http = $http;
     this.$scope = $scope;
     this.$timeout = $timeout;
+    this.getCurrentUser = Auth.getCurrentUser;
     this.$rootScope = $rootScope;
     self.Group = Group;
     self.simulateQuery = true;
@@ -38,43 +40,55 @@ class GroupsController {
       this.submitted = true;
       this.isSending = true;
 
-      var group = {
-        name: this.group.name,
-        address: {
-          street: this.group.street,
-          street_number: this.group.street_number,
-          postcode: this.group.postcode,
-          city: this.group.city
+      var query = this.group.street + " " + this.group.street_number + " " + this.group.postcode + " " + this.group.city;
+
+      self.NgMap.getGeoLocation(query).then(function (geolocation) {
+        var latitude = geolocation.lat();
+        var longitude = geolocation.lng();
+
+        var group = {
+          name: self.group.name,
+          admin: self.getCurrentUser()._id,
+          address: {
+            street: self.group.street,
+            street_number: self.group.street_number,
+            postcode: self.group.postcode,
+            city: self.group.city,
+            geolocation: {
+              latitude: latitude,
+              longitude: longitude
+            }
+          }
+        };
+
+        if (self.group.additional_address) {
+          group.address.additional_address = self.group.additional_address;
         }
-      };
 
-      if (this.group.additional_address) {
-        group.address.additional_address = this.group.additional_address;
-      }
+        self.Group.save(group,
+          function () {
+            self.isSending = false;
+            self.showSuccessMessage = true;
+            form.$setUntouched();
+            form.$setPristine();
+            self.group = {};
+            self.$timeout(function () {
+              console.log("emit event");
+              self.$rootScope.$emit('onboarding:next');
+            }, 1500);
+          },
+          function (err) {
+            self.isSending = false;
+            err = err.data;
+            self.errors = {};
 
-      this.Group.save(group,
-        function () {
-          self.isSending = false;
-          self.showSuccessMessage = true;
-          form.$setUntouched();
-          form.$setPristine();
-          self.group = {};
-          self.$timeout(function () {
-            console.log("emit event");
-            self.$rootScope.$emit('onboarding:next');
-          }, 1500);
-        },
-        function (err) {
-          this.isSending = false;
-          err = err.data;
-          self.errors = {};
-
-          // Update validity of form fields that match the mongoose errors
-          angular.forEach(err.errors, (error, field) => {
-            form[field].$setValidity('mongoose', false);
-            self.errors[field] = error.message;
+            // Update validity of form fields that match the mongoose errors
+            angular.forEach(err.errors, (error, field) => {
+              form[field].$setValidity('mongoose', false);
+              self.errors[field] = error.message;
+            });
           });
-        });
+      });
     }
   }
 }
