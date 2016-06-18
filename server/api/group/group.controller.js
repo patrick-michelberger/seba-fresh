@@ -76,7 +76,16 @@ function handleError(res, statusCode) {
 
 // Gets a list of Groups
 export function index(req, res) {
-  return Group.find().exec()
+  var userId = req.user._id;
+  return Group.find({
+      "$or": [{
+        admin: userId
+      }, {
+        users: userId
+      }]
+    })
+    .populate('admin', 'first_name last_name picture')
+    .exec()
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
