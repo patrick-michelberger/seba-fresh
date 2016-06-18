@@ -6,7 +6,9 @@
     </md-card-title-text>
   </md-card-title>
   <md-card-content>
-    <ng-map zoom="15" center="{{group.address.geolocation.latitude}},{{group.address.geolocation.longitude}}" zoom="3"></ng-map>
+    <ng-map zoom="15" center="{{group.address.geolocation.latitude}},{{group.address.geolocation.longitude}}" zoom="3">
+      <marker position="[{{group.address.geolocation.latitude}},{{group.address.geolocation.longitude}}]"></marker>
+    </ng-map>
     <p>
       {{group.address.street}} {{group.address.street_number}}, {{group.address.postcode}} {{group.address.city}}
     </p>

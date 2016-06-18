@@ -18,7 +18,9 @@
         </div>
       </div>
       <div flex>
-        <ng-map ng-if="refreshMap" zoom="15" center="{{group.address.geolocation.latitude}},{{group.address.geolocation.longitude}}" zoom="3"></ng-map>
+        <ng-map ng-if="refreshMap" zoom="15" center="{{group.address.geolocation.latitude}},{{group.address.geolocation.longitude}}" zoom="3" scrollwheel="false">
+          <marker position="[{{group.address.geolocation.latitude}},{{group.address.geolocation.longitude}}]"></marker>
+        </ng-map>
       </div>
       <span flex></span>
     </md-dialog-content>
