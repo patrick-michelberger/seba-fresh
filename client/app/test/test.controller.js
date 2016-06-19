@@ -3,6 +3,7 @@
 
   class TestController {
     constructor($scope, socket, CategoryService) {
+      this.defaultCategory = 'food';
       this.socket = socket;
       this.CategoryService = CategoryService;
       this.categories = [];
@@ -10,6 +11,10 @@
       $scope.$on('$destroy', function () {
         socket.unsyncUpdates('category');
       });
+
+      this.query1 = {
+        "name" : this.defaultCategory
+      };
 //   $scope.clearValue = function() {
 //   $scope.myModel = undefined;
 // };
@@ -20,7 +25,7 @@
     }
 
     $onInit() {
-      this.categories = this.CategoryService.query(function(data){
+      this.categories = this.CategoryService.query(this.query1, function(data){
         console.log(data);
       });
     }

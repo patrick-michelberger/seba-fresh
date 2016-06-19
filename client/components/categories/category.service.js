@@ -3,6 +3,8 @@
 (function () {
 
   function CategoryResource($resource) {
+
+
     return $resource('/api/categories/:id/:controller', {
       id: '@_id'
     }, {
@@ -11,6 +13,7 @@
       }
     });
   }
+
 
   angular.module('sebaFreshApp.assortment')
     .factory('CategoryService', CategoryResource);
