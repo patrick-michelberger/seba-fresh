@@ -9,17 +9,9 @@
     <ng-map zoom="15" center="{{group.address.geolocation.latitude}},{{group.address.geolocation.longitude}}" zoom="3">
       <marker position="[{{group.address.geolocation.latitude}},{{group.address.geolocation.longitude}}]"></marker>
     </ng-map>
-    <div class="sf-group-address">
+    <p class="sf-group-address">
       {{group.address.street}} {{group.address.street_number}}, {{group.address.postcode}} {{group.address.city}}
-      </p>
-      <div layout="row" class="sf-group-members">
-        <div flex="25" class="sf-group-admin sf-group-member ">
-          <img ng-src="{{group.admin.picture}}" />
-        </div>
-        <div flex="25" class="sf-group-member" ng-repeat="member in group.users">
-          <img ng-src="{{member.picture}}" />
-        </div>
-      </div>
+    </p>
   </md-card-content>
   <md-card-actions layout="row" layout-align="end center">
     <md-button ng-hide="groupListCtrl.isMobile" class="md-raised md-warn" ng-click="cellCtrl.inviteFriends(group)">Invite Flatmate</md-button>

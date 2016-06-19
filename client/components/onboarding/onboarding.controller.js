@@ -19,7 +19,7 @@ class OnboardingController {
       self.showSuccessMessage = true;
       self.$timeout(function () {
         self.showSuccessMessage = false;
-        //self._updateIndex();
+        self._updateIndex();
       }, 1500);
     });
   }
