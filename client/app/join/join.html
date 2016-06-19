@@ -1,1 +1,6 @@
-<div>This is the join view.</div>
+<div class="background" layout="column" flex layout-align="center center">
+  <div>
+    <h1>{{vm.group.admin.first_name}} {{vm.group.admin.last_name}} <br/> has invited you to {{vm.group.name}}.</h1>
+    <md-button class="sf-btn-join md-raised md-warn" ng-click="vm.showJoinGroupDialog()">Join Group</md-button>
+  </div>
+</div>

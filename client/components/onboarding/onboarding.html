@@ -1,16 +1,17 @@
 <md-content layout-fill>
-  <md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always" md-selected="onboarding.selectedIndex" layout-fill>
-    <md-tab label="Create Group" layout-fulfill>
+  <md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always" md-selected="onboarding.selectedIndex">
+    <md-tab label="Create Group">
       <md-content layout-padding layout="row">
         <div flex-xs="100" flex="33" flex-offset-gt-xs="33">
           <groups></groups>
         </div>
       </md-content>
     </md-tab>
-    <md-tab label="Invite Friends" ng-disabled="onboarding.showInviteFriends">
+    <md-tab label="Invite Friends" ng-disabled="onboarding.disableInviteFriends()">
       <md-content class="md-padding">
         <md-content layout-padding layout="row">
-          <div flex-xs="100" flex="33" flex-offset-gt-xs="33">
+          <div flex-xs="100" flex="70" flex-offset-gt-xs="15">
+            <group-list groups="onboarding.groups"></group-list>
           </div>
         </md-content>
     </md-tab>

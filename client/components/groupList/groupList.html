@@ -1,0 +1,30 @@
+<md-card ng-repeat="group in groups" ng-controller="GroupCellController as cellCtrl">
+  <img ng-src="{{imagePath}}" class="md-card-image">
+  <md-card-title>
+    <md-card-title-text>
+      <span class="md-headline">{{group.name}}</span>
+    </md-card-title-text>
+  </md-card-title>
+  <md-card-content>
+    <ng-map zoom="15" center="{{group.address.geolocation.latitude}},{{group.address.geolocation.longitude}}" zoom="3">
+      <marker position="[{{group.address.geolocation.latitude}},{{group.address.geolocation.longitude}}]"></marker>
+    </ng-map>
+    <div class="sf-group-address">
+      {{group.address.street}} {{group.address.street_number}}, {{group.address.postcode}} {{group.address.city}}
+      </p>
+      <div layout="row" class="sf-group-members">
+        <div flex="25" class="sf-group-admin sf-group-member ">
+          <img ng-src="{{group.admin.picture}}" />
+        </div>
+        <div flex="25" class="sf-group-member" ng-repeat="member in group.users">
+          <img ng-src="{{member.picture}}" />
+        </div>
+      </div>
+  </md-card-content>
+  <md-card-actions layout="row" layout-align="end center">
+    <md-button ng-hide="groupListCtrl.isMobile" class="md-raised md-warn" ng-click="cellCtrl.inviteFriends(group)">Invite Flatmate</md-button>
+    <md-button ng-show="groupListCtrl.isMobile" class="md-raised" ng-click="cellCtrl.share('whatsapp', group)">
+      Whatsapp </md-button>
+    <md-button class="md-raised" ng-click="cellCtrl.deleteGroup(group)">Delete</md-button>
+  </md-card-actions>
+</md-card>

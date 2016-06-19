@@ -1,5 +1,10 @@
 navbar md-toolbar {
   position: fixed;
+  background: sf-color-blue;
+}
+
+navbar md-toolbar.sf-transparent {
+  background: transparent;
 }
 
 navbar .sf-brand {
@@ -10,9 +15,33 @@ navbar .sf-brand span {
   color: $sf-color-yellow;
 }
 
-.md-toolbar-tools {
-  height: 65px;
-  max-height: 65px;
+navbar .md-toolbar-tools {
+  height: 60px;
+  max-height: 60px;
+}
+
+navbar .sf-navigation-bar .sf-call-to-action {
+  border: 2px solid #fff;
+  line-height: 30px!important;
+  position: relative;
+  top: -11px;
+}
+
+navbar .sf-navigation-bar .md-button {
+  line-height: 60px;
+  padding: 0 19px;
+}
+
+navbar .sf-navigation-bar .md-button:hover {
+  background: none!important;
+}
+
+navbar .sf-navigation-bar {
+  position: absolute;
+  right: 0;
+}
+
+navbar .sf-navigation-bar .md-button {
 }
 
 @media only screen and (max-width: 959px) and (min-width: 0) and (orientation: portrait) {

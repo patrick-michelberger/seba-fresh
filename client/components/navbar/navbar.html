@@ -1,11 +1,20 @@
 <!-- Top navbar -->
-<md-toolbar>
+<md-toolbar ng-class="{'sf-transparent': navbar.transparent && !vm.isLoggedIn()}">
   <div class="md-toolbar-tools">
-    <md-button ng-click="nav.toggleLeft()" class="md-icon-button" aria-label="Settings">
+    <md-button hide-gt-xs ng-click="nav.toggleLeft()" class="md-icon-button" aria-label="Settings">
       <i class="material-icons">menu</i>
     </md-button>
     <h2>
       <a class="sf-brand" href="/">SEBA <span>fresh</span></a>
     </h2>
-  </div>
+    <div class="sf-navigation-bar" hide-xs>
+      <div ng-hide="vm.isLoggedIn()">
+        <md-button class="sf-call-to-action" ui-sref="signup">Create Shopping Group</md-button>
+        <md-button ui-sref="signup">Signup</md-button>
+        <md-button ui-sref="login">Login</md-button>
+      </div>
+      <div ng-show="vm.isLoggedIn()">
+        <md-button ui-sref="logout">Logout</md-button>
+      </div>
+    </div>
 </md-toolbar>

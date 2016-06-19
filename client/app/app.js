@@ -15,18 +15,13 @@ angular.module('sebaFreshApp', [
   'validation.match',
   'ngAnimate',
   'ngMaterial',
-  'uiGmapgoogle-maps'
+  'ngMap'
 ])
-  .config(function ($urlRouterProvider, $locationProvider, $mdThemingProvider, uiGmapGoogleMapApiProvider) {
+  .config(function ($urlRouterProvider, $locationProvider, $mdThemingProvider) {
     $urlRouterProvider
       .otherwise('/');
 
     $locationProvider.html5Mode(true);
-
-    // Google Maps configuration
-    uiGmapGoogleMapApiProvider.configure({
-      key: 'AIzaSyD7JP2KfX5AyCeTXHeUFgFcE8UvYIvkDhA'
-    });
 
     // SEBA fresh CSS theme configuration
     $mdThemingProvider.definePalette('sebaPrimaryPalette', {
@@ -99,10 +94,12 @@ angular.module('sebaFreshApp', [
       .primaryPalette('sebaPrimaryPalette')
       .accentPalette('sebaAccentPalette')
       .warnPalette('sebaWarnPalette');
-  }).run(['$rootScope', '$window',
-    function ($rootScope, $window) {
+  }).run(['$rootScope', '$window', 'Auth',
+    function ($rootScope, $window, Auth) {
 
+      // Global variables and methods
       $rootScope.user = {};
+      $rootScope.isLoggedIn = Auth.isLoggedIn;
 
       $window.fbAsyncInit = function () {
         // Executed when the SDK is loaded

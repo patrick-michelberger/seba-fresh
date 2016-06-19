@@ -14,7 +14,7 @@ import Group from './group.model';
 
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
-  return function(entity) {
+  return function (entity) {
     if (entity) {
       res.status(statusCode).json(entity);
     }
@@ -22,7 +22,7 @@ function respondWithResult(res, statusCode) {
 }
 
 function saveUpdates(updates) {
-  return function(entity) {
+  return function (entity) {
     var updated = _.merge(entity, updates);
     return updated.save()
       .then(updated => {
@@ -31,8 +31,23 @@ function saveUpdates(updates) {
   };
 }
 
+function saveInvitee(invitee) {
+  var userId = invitee.id;
+  return function (entity) {
+    console.log("save entity: ", entity);
+    console.log("userId: ", userId);
+    entity.users.push(userId);
+    console.log("new entity: ", entity);
+    return entity.save()
+      .then(updated => {
+        return updated;
+      });
+  };
+}
+
+
 function removeEntity(res) {
-  return function(entity) {
+  return function (entity) {
     if (entity) {
       return entity.remove()
         .then(() => {
@@ -43,7 +58,7 @@ function removeEntity(res) {
 }
 
 function handleEntityNotFound(res) {
-  return function(entity) {
+  return function (entity) {
     if (!entity) {
       res.status(404).end();
       return null;
@@ -54,21 +69,32 @@ function handleEntityNotFound(res) {
 
 function handleError(res, statusCode) {
   statusCode = statusCode || 500;
-  return function(err) {
+  return function (err) {
     res.status(statusCode).send(err);
   };
 }
 
 // Gets a list of Groups
 export function index(req, res) {
-  return Group.find().exec()
+  var userId = req.user._id;
+  return Group.find({
+      "$or": [{
+        admin: userId
+      }, {
+        users: userId
+      }]
+    })
+    .populate('admin', 'first_name last_name picture')
+    .exec()
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
 
 // Gets a single Group from the DB
 export function show(req, res) {
-  return Group.findById(req.params.id).exec()
+  return Group.findById(req.params.id)
+    .populate('admin', 'first_name last_name picture')
+    .exec()
     .then(handleEntityNotFound(res))
     .then(respondWithResult(res))
     .catch(handleError(res));
@@ -78,6 +104,15 @@ export function show(req, res) {
 export function create(req, res) {
   return Group.create(req.body)
     .then(respondWithResult(res, 201))
+    .catch(handleError(res));
+}
+
+// Adds a user to a group
+export function acceptInvitation(req, res) {
+  return Group.findById(req.params.id).exec()
+    .then(handleEntityNotFound(res))
+    .then(saveInvitee(req.body))
+    .then(respondWithResult(res))
     .catch(handleError(res));
 }
 
