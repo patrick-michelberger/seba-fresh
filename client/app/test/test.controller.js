@@ -2,18 +2,27 @@
 (function () {
 
   class TestController {
-    constructor($scope) {
+    constructor($scope, socket, CategoryService) {
+      this.socket = socket;
+      this.CategoryService = CategoryService;
+      this.categories = [];
+      this.selectedCategory = "";
+      $scope.$on('$destroy', function () {
+        socket.unsyncUpdates('category');
+      });
+//   $scope.clearValue = function() {
+//   $scope.myModel = undefined;
+// };
 
-  $scope.clearValue = function() {
-  $scope.myModel = undefined;
-};
-
-$scope.save = function() {
-  alert('Form was valid!');
-};
+// $scope.save = function() {
+//   alert('Form was valid!');
+// };
     }
 
     $onInit() {
+      this.categories = this.CategoryService.query(function(data){
+        console.log(data);
+      });
     }
   }
 

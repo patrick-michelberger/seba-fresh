@@ -19,7 +19,8 @@
   angular.module('sebaFreshApp')
     .component('products', {
       templateUrl: 'app/products/products.html',
-      controller: ProductsComponent
+      controller: ProductsComponent,
+      controllerAs: 'vm'
     });
 
 })();
