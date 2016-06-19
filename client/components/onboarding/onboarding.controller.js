@@ -2,19 +2,25 @@
 
 class OnboardingController {
 
-  constructor($http, socket, $scope, $rootScope) {
+  constructor($http, $timeout, socket, $scope, $rootScope) {
     var self = this;
     this.groups = [];
     this.socket = socket;
     this.$http = $http;
+    this.$timeout = $timeout;
     this.selectedIndex = 0;
+    this.showSuccessMessage = false;
 
     $scope.$on('$destroy', function () {
       socket.unsyncUpdates('group');
     });
 
     $rootScope.$on('onboarding:next', function () {
-      self._updateIndex();
+      self.showSuccessMessage = true;
+      self.$timeout(function () {
+        self.showSuccessMessage = false;
+        //self._updateIndex();
+      }, 1500);
     });
   }
 
@@ -33,6 +39,7 @@ class OnboardingController {
   }
 
   _updateIndex() {
+    console.log("update index");
     if (this.groups && this.groups[0]) {
       this.selectedIndex = 1;
     }

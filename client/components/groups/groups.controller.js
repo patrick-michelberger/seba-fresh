@@ -2,7 +2,7 @@
 
 class GroupsController {
 
-  constructor($rootScope, $scope, $http, $timeout, $q, $log, socket, Group, Auth, NgMap) {
+  constructor($rootScope, $scope, $http, $q, $log, socket, Group, Auth, NgMap) {
     var self = this;
     this.errors = [];
     this.groups = [];
@@ -10,16 +10,13 @@ class GroupsController {
     this.NgMap = NgMap;
     this.$http = $http;
     this.$scope = $scope;
-    this.$timeout = $timeout;
     this.getCurrentUser = Auth.getCurrentUser;
     this.$rootScope = $rootScope;
     self.Group = Group;
     self.simulateQuery = true;
     self.isDisabled = false;
-    self.showSuccessMessage = false;
     self.$log = $log;
     self.$q = $q;
-    self.$timeout = $timeout;
 
     $scope.$on('$destroy', function () {
       socket.unsyncUpdates('group');
@@ -68,14 +65,10 @@ class GroupsController {
         self.Group.save(group,
           function () {
             self.isSending = false;
-            self.showSuccessMessage = true;
             form.$setUntouched();
             form.$setPristine();
             self.group = {};
-            self.$timeout(function () {
-              console.log("emit event");
-              self.$rootScope.$emit('onboarding:next');
-            }, 1500);
+            self.$rootScope.$emit('onboarding:next');
           },
           function (err) {
             self.isSending = false;

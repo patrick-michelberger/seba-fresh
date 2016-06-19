@@ -1,4 +1,3 @@
-<success-check ng-show="groupsCtrl.showSuccessMessage"></success-check>
 <form name="form" ng-submit="groupsCtrl.createGroup(form)" ng-hide="groupsCtrl.showSuccessMessage" novalidate>
   <!-- Group Name Input -->
   <md-input-container class="md-block" ng-class="{ 'has-success': form.name.$valid && groupsCtrl.submitted,
