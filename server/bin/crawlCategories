@@ -24,9 +24,9 @@ console.log("Crawling categories from Walmart API ...");
 // Food category id = 976759
 
 walmart.taxonomy().then(function (response) {
-  async.each(response.items, function (category, cb) {
+  async.each(response.categories, function (category, cb) {
 
-    // Parse product for SEBA product model
+    // Parse category for SEBA category model
     category = {
       id: category.id,
       name: category.name,
