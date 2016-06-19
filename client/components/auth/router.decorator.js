@@ -27,7 +27,6 @@
             if (has) {
               return;
             }
-
             event.preventDefault();
             return Auth.isLoggedIn(_.noop).then(is => {
               $state.go(is ? 'products' : 'login');
@@ -38,9 +37,8 @@
             if (is) {
               return;
             }
-
             event.preventDefault();
-            $state.go('products');
+            $state.go('login');
           });
         }
       });

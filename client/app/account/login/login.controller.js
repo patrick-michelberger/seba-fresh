@@ -18,9 +18,13 @@ class LoginController {
           email: this.user.email,
           password: this.user.password
         })
-        .then(() => {
+        .then((user) => {
           // Logged in, redirect to home
-          this.$state.go('products');
+          if (user.onboardingRequired) {
+            this.$state.go('onboarding');
+          } else {
+            this.$state.go('products');
+          }
         })
         .catch(err => {
           this.errors.other = err.message;
