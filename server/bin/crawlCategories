@@ -1,0 +1,51 @@
+#!/usr/bin/env node
+
+// CONFIGURATION
+var config = {
+  "walmart": {
+    "key": process.env.WALMART_API_KEY || 'mfx9k9yqyg263ng4x3x9bek2'
+  },
+  "mongoURI": process.env.MONGOHQ_URL || 'mongodb://localhost/sebafresh-dev'
+};
+
+// DEPENDENCIES
+var walmart = require('walmart')(config.walmart.key);
+var mongoose = require('mongoose');
+var async = require('async');
+Category = require('../api/category/category.model');
+
+// CONNECT TO SEBA DATABASE
+mongoose.connect(config.mongoURI);
+
+// RUNNING CODE
+console.log("Crawling categories from Walmart API ...");
+
+// Returns an array of items of the best-sellers on the specified category.
+// Food category id = 976759
+
+walmart.taxonomy().then(function (response) {
+  async.each(response.categories, function (category, cb) {
+
+    // Parse category for SEBA category model
+    category = {
+      id: category.id,
+      name: category.name,
+      categoryPath: category.categoryPath,
+      children: category.children
+    };
+
+    Category.create(category, function (err, savedCatergory) {
+      if (err) {
+        console.log("Error: saving category: ", err);
+      }
+      cb();
+    });
+  }, function (err) {
+    if (err) {
+      console.log("Error: ", err);
+    } else {
+      console.log("All categories saved!");
+      process.exit();
+    }
+  });
+});
