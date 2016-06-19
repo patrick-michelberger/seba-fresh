@@ -1,5 +1,5 @@
 <!-- Top navbar -->
-<md-toolbar ng-class="{'sf-transparent': navbar.transparent && !vm.isLoggedIn()}">
+<md-toolbar ng-class="{'sf-transparent': navbar.transparent}">
   <div class="md-toolbar-tools">
     <md-button hide-gt-xs ng-click="nav.toggleLeft()" class="md-icon-button" aria-label="Settings">
       <i class="material-icons">menu</i>
@@ -14,6 +14,7 @@
         <md-button ui-sref="login">Login</md-button>
       </div>
       <div ng-show="vm.isLoggedIn()">
+        <md-button class="sf-user-name" ui-sref="settings">Hello {{ vm.getCurrentUser().first_name }} {{vm.getCurrentUser().last_name }}</md-button>
         <md-button ui-sref="logout">Logout</md-button>
       </div>
     </div>

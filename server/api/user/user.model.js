@@ -39,7 +39,11 @@ var UserSchema = new Schema({
   country: String,
   phone: Number,
   password: String,
-  salt: String
+  salt: String,
+  onboardingRequired: {
+    default: true,
+    type: Boolean
+  }
 }, {
   collection: 'seba-users'
 });
