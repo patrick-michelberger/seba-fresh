@@ -94,10 +94,12 @@ angular.module('sebaFreshApp', [
       .primaryPalette('sebaPrimaryPalette')
       .accentPalette('sebaAccentPalette')
       .warnPalette('sebaWarnPalette');
-  }).run(['$rootScope', '$window',
-    function ($rootScope, $window) {
+  }).run(['$rootScope', '$window', 'Auth',
+    function ($rootScope, $window, Auth) {
 
+      // Global variables and methods
       $rootScope.user = {};
+      $rootScope.isLoggedIn = Auth.isLoggedIn;
 
       $window.fbAsyncInit = function () {
         // Executed when the SDK is loaded

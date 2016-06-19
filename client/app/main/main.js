@@ -5,6 +5,9 @@ angular.module('sebaFreshApp')
     $stateProvider
       .state('main', {
         url: '/',
-        template: '<main></main>'
+        template: '<main></main>',
+        data: {
+          transparentNavbar: true
+        }
       });
   });

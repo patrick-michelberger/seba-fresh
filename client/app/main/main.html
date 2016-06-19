@@ -1,41 +1,27 @@
 <!-- User is logged out -->
-<div ng-hide="vm.isLoggedIn()" flex layout="column" layout-fill id="sf-main">
-  <div flex layout="row" layout-padding layout-align="center center" class="sf-hero-unit">
-    <div class="sf-hero-headline" flex-gt-xs="50">
-      <h1>
+<div ng-hide="vm.isLoggedIn()">
+  <div class="background"></div>
+  <div flex layout="column" id="sf-main">
+    <div flex layout="row" layout-padding layout-align="left end" class="sf-hero-unit">
+      <div class="sf-hero-headline" flex-gt-xs="100">
+        <h1>
         <span class="sf-headline-1"><b>Buy Groceries</b> Online.</span><br/>
         <span class="sf-healine-2">Together <b>With Your Flatmates</b>.</span>
       </h1>
-      <div class="sf-actions">
-        <md-button class="md-raised md-warn" ui-sref="signup">Signup</md-button>
-        <md-button class="md-raised md-default" ui-sref="login">Login</md-button>
+        <div class="sf-actions">
+          <md-button class="md-raised md-warn" ui-sref="signup">Signup</md-button>
+          <md-button class="md-raised md-default" ui-sref="login">Login</md-button>
+        </div>
       </div>
     </div>
-    <div class="sf-hero-image-container" hide-xs flex="50">
-      <img src="assets/images/sf-front-page-illustration.png" width="100%" height="auto" />
+  </div>
+  <div layout="row" layout-padding>
+    <div class="sf-panel" flex="66" flex-offset="15">
+      <!-- TODO -->
     </div>
   </div>
 </div>
-
 <!-- User is logged in -->
-<div ng-show="vm.isLoggedIn()" flex layout="column" layout-fill id="sf-main">
+<div ng-if="vm.isLoggedIn()" flex layout="column" layout-fill id="sf-main">
   <onboarding layout-fill></onboarding>
-
-
-  <!--<div flex layout="row" layout-padding layout-align="center center" class="sf-hero-unit">
-    <div class="sf-hero-headline" flex-gt-xs="50">
-      <h1 ng-show="vm.isLoggedIn()">
-          <span class="sf-headline-1">Hello {{vm.getCurrentUser().first_name}}.</span><br/>
-          <span class="sf-healine-2">Thanks for joining SEBA fresh.</span>
-        </h1>
-
-      <div class="sf-actions">
-        <md-button class="md-raised md-default" ui-sref="products">Browse Assortment</md-button>
-      </div>
-    </div>
-    <div class="sf-hero-image-container" hide-xs flex="50">
-      <img ng-src="{{vm.getCurrentUser().picture}}" />
-    </div>
-  </div>
--->
 </div>

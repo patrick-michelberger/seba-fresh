@@ -1,8 +1,23 @@
-main {
-  margin: 0;
-  width: 100%;
-  min-height: 100%;
-  height: calc(100vh - 45px);
+main .background {
+    position: absolute;
+    background: url(/assets/images/seba-landing-page-1.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 600px;
+    width: 100%;
+    z-index: 0;
+}
+
+#sf-main .sf-hero-unit {
+  z-index: 0;
+  height: 600px;
+}
+
+.sf-panel {
+  background-color: #fff;
+  height: 350px;
 }
 
 #sf-main   {
