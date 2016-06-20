@@ -12,6 +12,12 @@
           controller: 'password'
         }
       },
+      changeFriendsInvited: {
+        method: 'PUT',
+        params: {
+          controller: 'friendsInvited'
+        }
+      },
       get: {
         method: 'GET',
         params: {

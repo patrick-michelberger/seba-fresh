@@ -113,6 +113,8 @@ angular.module('sebaFreshApp', [
 
           appId: '1197347246942091',
 
+          redirect_uri: location.protocol + '//' + location.hostname + ':' + location.port,
+
           /*
            Adding a Channel File improves the performance
            of the javascript SDK, by addressing issues

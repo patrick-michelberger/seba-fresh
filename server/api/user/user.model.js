@@ -40,6 +40,10 @@ var UserSchema = new Schema({
   phone: Number,
   password: String,
   salt: String,
+  friendsInvited: {
+    default: false,
+    type: Boolean
+  },
   onboardingRequired: {
     default: true,
     type: Boolean

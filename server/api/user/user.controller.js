@@ -82,6 +82,23 @@ export function destroy(req, res) {
 }
 
 /**
+ * Change a users friendsInvited attribute
+ */
+export function changeFriendsInvited(req, res, next) {
+  var userId = req.user._id;
+  var friendsInvited = req.body.friendsInvited;
+  return User.findById(userId).exec()
+    .then(user => {
+      user.friendsInvited = friendsInvited;
+      return user.save()
+        .then(() => {
+          res.status(204).end();
+        })
+        .catch(validationError(res));
+    });
+}
+
+/**
  * Change a users password
  */
 export function changePassword(req, res, next) {

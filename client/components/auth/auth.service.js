@@ -94,6 +94,25 @@
       },
 
       /**
+       * Change friendsInvited
+       *
+       * @param  {Boolean}   friendsInvited
+       * @param  {Function} callback    - optional, function(error, user)
+       * @return {Promise}
+       */
+      changeFriendsInvited(friendsInvited, callback) {
+        return User.changeFriendsInvited({
+          id: currentUser._id
+        }, {
+          friendsInvited: friendsInvited
+        }, function () {
+          return safeCb(callback)(null);
+        }, function (err) {
+          return safeCb(callback)(err);
+        }).$promise;
+      },
+
+      /**
        * Gets all available info on a user
        *   (synchronous|asynchronous)
        *

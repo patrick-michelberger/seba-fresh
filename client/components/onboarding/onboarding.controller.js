@@ -2,7 +2,7 @@
 
 class OnboardingController {
 
-  constructor($http, $timeout, socket, $scope, $rootScope) {
+  constructor($http, $timeout, socket, $scope, $rootScope, Auth) {
     var self = this;
     this.groups = [];
     this.socket = socket;
@@ -10,6 +10,8 @@ class OnboardingController {
     this.$timeout = $timeout;
     this.selectedIndex = 0;
     this.showSuccessMessage = false;
+    this.Auth = Auth;
+    this.getCurrentUser = Auth.getCurrentUser;
 
     $scope.$on('$destroy', function () {
       socket.unsyncUpdates('group');
@@ -21,6 +23,11 @@ class OnboardingController {
         self.showSuccessMessage = false;
         self._updateIndex();
       }, 1500);
+    });
+
+    $rootScope.$on('onboarding:invited', function () {
+      self.Auth.changeFriendsInvited(true);
+      self.selectedIndex = 2;
     });
   }
 
@@ -39,9 +46,12 @@ class OnboardingController {
   }
 
   _updateIndex() {
-    console.log("update index");
-    if (this.groups && this.groups[0]) {
+    if (this.groups && this.groups[0] && this.getCurrentUser().friendsInvited) {
+      this.selectedIndex = 2;
+    } else if (this.groups && this.groups[0]) {
       this.selectedIndex = 1;
+    } else {
+      this.selectedIndex = 0;
     }
   }
 

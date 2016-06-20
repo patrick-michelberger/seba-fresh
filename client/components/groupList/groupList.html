@@ -14,7 +14,10 @@
     </p>
   </md-card-content>
   <md-card-actions layout="row" layout-align="end center">
-    <md-button ng-hide="groupListCtrl.isMobile" class="md-raised md-warn" ng-click="cellCtrl.inviteFriends(group)">Invite Flatmate</md-button>
+    <!--<md-button ng-hide="groupListCtrl.isMobile" class="md-raised md-warn" ng-click="cellCtrl.inviteFriends(group)">Invite Flatmate</md-button>-->
+    <md-button ng-hide="groupListCtrl.isMobile" class="md-raised md-warn" ng-click="cellCtrl.showInviteDialog(group)">Invite Flatmate</md-button>
+
+    <!--<md-button ng-hide="groupListCtrl.isMobile" class="md-raised md-warn" ng-click="cellCtrl.share('facebook', group)">Invite Flatmate</md-button>-->
     <md-button ng-show="groupListCtrl.isMobile" class="md-raised" ng-click="cellCtrl.share('whatsapp', group)">
       Whatsapp </md-button>
     <md-button class="md-raised" ng-click="cellCtrl.deleteGroup(group)">Delete</md-button>
