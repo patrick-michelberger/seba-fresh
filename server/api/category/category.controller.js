@@ -61,6 +61,7 @@ function handleError(res, statusCode) {
 
 // Gets a list of Categorys
 export function index(req, res) {
+
   return Category.find().exec()
     .then(respondWithResult(res))
     .catch(handleError(res));

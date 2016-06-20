@@ -8,7 +8,8 @@ var CategorySchema = new mongoose.Schema({
   categoryPath: String,
   children: [{
     id: String,
-    name: String
+    name: String,
+    path: String
   }]
 }, {
   collection: 'seba-categories'
