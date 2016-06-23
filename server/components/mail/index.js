@@ -2,26 +2,23 @@
 
 var config = require('../../config/environment');
 var templates = require('../templates');
+var ses = require('nodemailer-ses-transport');
 
 // TODO: use amazon
 var nodemailer = require('nodemailer');
 //var sesTransport = require('nodemailer-ses-transport'); // needed for Amazon AWS
 
-var opts = {
-  service: config.mail.service,
-  auth: {
-    user: config.mail.username,
-    pass: config.mail.password
-  }
-};
-
-var transport = nodemailer.createTransport(opts);
+var transport = nodemailer.createTransport(ses({
+  accessKeyId: config.aws.accessKey,
+  secretAccessKey: config.aws.secretAccessKey,
+  region: config.aws.region
+}));
 
 var mailer = {};
 
 mailer.send = function (data, callback) {
   // From
-  var from = data.from || 'sebafresh.grocery@gmail.com';
+  var from = 'sebafresh.grocery@gmail.com';
 
   console.log("sending email...");
 
@@ -49,20 +46,21 @@ mailer.send = function (data, callback) {
   // HTML
   var html = template(data);
   if (!html) return callback(new Error('Send mail: Could not render ' + data.template));
-
-  transport.sendMail({
+  var payload = {
     from: from,
     to: to,
     subject: subject,
     html: html
-  }, function (err) {
-    if (err) {
-      console.log('Send mail:', err);
-      return callback(err);
-    }
-    console.log("email sentt");
-    callback();
-  });
+  };
+  transport.sendMail(payload,
+    function (err) {
+      if (err) {
+        console.log('Send mail:', err);
+        return callback(err);
+      }
+      console.log("email sent");
+      callback();
+    });
 };
 
 module.exports = mailer;

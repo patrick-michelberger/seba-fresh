@@ -12,5 +12,6 @@ module.exports = {
   // Control debug level for modules using visionmedia/debug
   DEBUG: '',
   MAIL_USERNAME: 'sebafresh.grocery@gmail.com',
-  MAIL_PASSWORD: 'matthes2016'
+  MAIL_PASSWORD: 'matthes2016',
+  MAIL_SERVICE: 'gmail'
 };

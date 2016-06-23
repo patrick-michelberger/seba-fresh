@@ -35,9 +35,27 @@ class GroupCellController {
     var self = this;
     var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs')) && this.customFullscreen;
 
-    function DialogController($scope, $state, $mdDialog, $window) {
+    function DialogController($scope, $state, $mdDialog, $window, $http, Auth) {
       $scope.group = self.group;
+      $scope.invitee = {};
       $scope.refreshMap = self.refreshMap;
+
+      $scope.sendEmail = function () {
+        console.log("send email...");
+        var email = $scope.invitee.email;
+        $http.post('/api/invitations', {
+          from: {
+            _id: Auth.getCurrentUser()._id
+          },
+          to: email,
+          group: {
+            _id: group._id
+          }
+        }).then(function () {
+          console.log("invitation send");
+        });
+      };
+
       $scope.decline = function () {
         $mdDialog.cancel();
       };
@@ -69,7 +87,7 @@ class GroupCellController {
       targetEvent: ev,
       clickOutsideToClose: true,
       fullscreen: useFullScreen,
-      controller: ['$scope', '$state', '$mdDialog', '$window', DialogController],
+      controller: ['$scope', '$state', '$mdDialog', '$window', '$http', 'Auth', DialogController],
       bindToController: true,
     }).then(function (answer) {
         self.$rootScope.$emit('onboarding:invited');
