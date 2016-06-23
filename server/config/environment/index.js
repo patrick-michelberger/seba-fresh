@@ -41,6 +41,11 @@ var all = {
     }
   },
 
+  mail: {
+    username: process.env.MAIL_USERNAME || 'username',
+    password: process.env.MAIL_PASSWORD || 'password'
+  },
+
   facebook: {
     clientID: process.env.FACEBOOK_ID || 'id',
     clientSecret: process.env.FACEBOOK_SECRET || 'secret',
