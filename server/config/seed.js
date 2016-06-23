@@ -10,6 +10,7 @@ import product from '../api/product/product.model';
 import payment from '../api/payment/payment.model';
 import order from '../api/order/order.model';
 import category from '../api/category/category.model';   // addition for category scraping
+import datafeed from '../api/datafeed/datafeed.model';  // addition for datafeed scraping
 
 Thing.find({}).remove()
   .then(() => {

@@ -22,7 +22,8 @@ console.log("Crawling products from Walmart API ...");
 
 // Returns an array of items of the best-sellers on the specified category.
 // Food category id = 976759
-walmart.feeds.bestSellers(976759).then(function (response) {
+walmart.feeds.bestSellers(4044).then(function (response) {
+  console.log("check")
   async.each(response.items, function (product, cb) {
 
     // Parse product for SEBA product model
@@ -40,6 +41,8 @@ walmart.feeds.bestSellers(976759).then(function (response) {
       stock: product.stock,
       addToCartUrl: product.addToCartUrl
     };
+
+    console.log(product.categoryPath)
 
     Product.create(product, function (err, savedProduct) {
       if (err) {

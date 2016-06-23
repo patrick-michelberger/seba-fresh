@@ -26,15 +26,48 @@ console.log("Crawling categories from Walmart API ...");
 walmart.taxonomy().then(function (response) {
   async.each(response.categories, function (category, cb) {
 
-    // Parse product for SEBA product model
-    category = {
-      id: category.id,
-      name: category.name,
-      categoryPath: category.categoryPath,
-      children: category.children
-    };
+    //
+    // // Parse product for SEBA product model
+    // category = {
+    //   id: category.id,
+    //   name: category.name,
+    //   categoryPath: category.categoryPath,
+    //   children: category.children
+    // };
 
-    console.log(category);
+    // Changes for addition of level2 and level3
+    if (category.id=='976759'){
+      console.log("Food Category Found");
+      category.children.forEach(function(value){
+
+          // value.children.forEach(function(array){
+          //   if (error) return console.error(error);
+          //   console.log(array.name);
+          //   count = count + 1;
+
+              // console.log(value.name)
+                // Parse product for SEBA product model
+                category = {
+                  id: value.id,
+                  name: value.name,
+                  categoryPath: value.categoryPath,
+                  children: value.children
+                };
+          // });
+      });
+    }
+    // console.log(category)
+
+// End of changes
+    // console.log(category);
+    // if (category.id == '976759'){
+    //   console.log("Food Category Found");
+    //   console.log(category.children)
+    // }
+    category.children.forEach(function(data){
+     console.log(data.categoryPath);
+
+    });
 
     Category.create(category, function (err, savedCatergory) {
       if (err) {
