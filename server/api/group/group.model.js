@@ -23,6 +23,10 @@ var GroupSchema = new mongoose.Schema({
   admin: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
+  },
+  cart: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Cart'
   }
 }, {
   collection: 'seba-groups'

@@ -11,6 +11,7 @@
 
 import _ from 'lodash';
 import Group from './group.model';
+import Cart from '../cart/cart.model';
 
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
@@ -103,7 +104,21 @@ export function show(req, res) {
 // Creates a new Group in the DB
 export function create(req, res) {
   return Group.create(req.body)
-    .then(respondWithResult(res, 201))
+    .then(function (savedGroup) {
+      var cart = {
+        group: savedGroup._id,
+        items: []
+      };
+      Cart.create(cart)
+        .then(function (createdCart) {
+          savedGroup.cart = createdCart._id;
+          savedGroup.save().then(updatedGroup => {
+              respondWithResult(res, 201)(updatedGroup);
+            })
+            .catch(handleError(res));
+        })
+        .catch(handleError(res));
+    })
     .catch(handleError(res));
 }
 

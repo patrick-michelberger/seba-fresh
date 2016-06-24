@@ -6,7 +6,6 @@ var Handlebars = require('handlebars');
 var gt = require('../gettext');
 
 Handlebars.registerHelper('translate', function (msgid) {
-  console.log('Handlebars:', this);
   return gt.dgettext(this.language, msgid);
 });
 
