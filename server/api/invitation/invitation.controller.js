@@ -83,13 +83,14 @@ export function create(req, res) {
   return Invitation.create(req.body)
     .then(function (createdInvitation) {
       var data = {
-        from: createdInvitation.from,
         to: createdInvitation.to,
-        group: createdInvitation.group,
-        url: config.domain + '/group/' + createdInvitation.group,
-        user: req.user,
         template: 'invite.hbs',
-        subject: 'SEBA fresh invitation'
+        subject: 'SEBA fresh invitation',
+        payload: {
+          user: req.use,
+          group: createdInvitation.group,
+          url: config.domain + '/group/' + createdInvitation.group
+        }
       };
       mail.send(data, function (err) {
         if (err) {

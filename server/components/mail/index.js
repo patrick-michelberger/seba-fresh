@@ -16,6 +16,15 @@ var transport = nodemailer.createTransport(ses({
 
 var mailer = {};
 
+
+/**
+ * Send email to a receipient
+ * {Object} data
+ * {String} data.to - receipient email e.g. pmichelberger@gmail.component
+ * {String} data.template - name of the email HTML template. Has to be .hbs file and placed in server/views/ e.g. invite.hbs
+ * {String} data.subject - subject of the email
+ * {Object} data.payload - data included in template file
+ */
 mailer.send = function (data, callback) {
   // From
   var from = 'sebafresh.grocery@gmail.com';
@@ -31,6 +40,9 @@ mailer.send = function (data, callback) {
   // Subject
   var subject = data.subject;
   if (!subject) return callback(new Error('Send mail: Need data.subject'));
+  if (data.payload) {
+    data.payload.subject = data.subject;
+  }
 
   // Language
   var language = 'en'; // default
@@ -44,7 +56,7 @@ mailer.send = function (data, callback) {
   var template = templates[data.template];
   if (!template) return callback(new Error('Send mail: Template ' + data.template + ' not found'));
   // HTML
-  var html = template(data);
+  var html = template(data.payload);
   if (!html) return callback(new Error('Send mail: Could not render ' + data.template));
   var payload = {
     from: from,
