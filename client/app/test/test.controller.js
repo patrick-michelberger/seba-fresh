@@ -18,10 +18,17 @@
 //   $scope.clearValue = function() {
 //   $scope.myModel = undefined;
 // };
-
+//
 // $scope.save = function() {
-//   alert('Form was valid!');
+//   alert('Clicked email!');
 // };
+
+
+
+    }
+
+    sendEmail(){
+      alert("Email is going to be sent");
     }
 
     $onInit() {
