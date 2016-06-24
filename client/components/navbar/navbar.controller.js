@@ -3,7 +3,11 @@
 class NavbarController {
   isCollapsed = true;
 
-  constructor(Auth, $timeout, $log, $mdSidenav) {
+  constructor(Auth, $timeout, $log, $mdSidenav, ShopService) {
+    var carts = ShopService.getCarts();
+
+    console.log("carts: ", carts);
+
     this.$timeout = $timeout;
     this.$log = $log;
     this.$mdSidenav = $mdSidenav;

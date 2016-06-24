@@ -2,6 +2,7 @@
 
 angular.module('sebaFreshApp', [
   'sebaFreshApp.auth',
+  'sebaFreshApp.shop',
   'sebaFreshApp.services',
   'sebaFreshApp.admin',
   'sebaFreshApp.assortment',
