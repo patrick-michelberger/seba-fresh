@@ -17,6 +17,7 @@ import mail from '../../components/mail';
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
   return function (entity) {
+    console.log("respond with result: ", entity);
     if (entity) {
       res.status(statusCode).json(entity);
     }
@@ -81,23 +82,20 @@ export function show(req, res) {
 export function create(req, res) {
   return Invitation.create(req.body)
     .then(function (createdInvitation) {
-      console.log("createdInvitation: ", createdInvitation);
       var data = {
         from: createdInvitation.from,
         to: createdInvitation.to,
         group: createdInvitation.group,
-        url: config.domain + '/#/join/' + createdInvitation.group,
+        url: config.domain + '/group/' + createdInvitation.group,
         user: req.user,
         template: 'invite.hbs',
         subject: 'SEBA fresh invitation'
       };
-      console.log("data to send: ", data);
       mail.send(data, function (err) {
-        console.log("send data");
         if (err) {
           console.log("Error: sending invitation mail: ", err);
         }
-        respondWithResult(res, 201);
+        respondWithResult(res, 201)(createdInvitation);
       });
     }).catch(handleError(res));
 }

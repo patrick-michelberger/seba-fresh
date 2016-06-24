@@ -2,9 +2,10 @@
 
 class GroupCellController {
 
-  constructor($rootScope, $scope, $window, FacebookService, $http, Auth, $mdDialog, $mdMedia) {
+  constructor($rootScope, $scope, $window, FacebookService, $http, Auth, $mdDialog, $mdMedia, $timeout, DialogService) {
     this.baseShareUrl = location.protocol + '//' + location.hostname + ':' + location.port;
     this.FacebookService = FacebookService;
+    this.DialogService = DialogService;
     this.$http = $http;
     this.Auth = Auth;
     this.$window = $window;
@@ -12,6 +13,7 @@ class GroupCellController {
     this.$mdMedia = $mdMedia;
     this.$scope = $scope;
     this.$rootScope = $rootScope;
+    this.$timeout = $timeout;
     this.getCurrentUser = Auth.getCurrentUser;
   }
 
@@ -19,17 +21,22 @@ class GroupCellController {
     this.$http.delete('/api/groups/' + group._id);
   }
 
+  // TODO Still used?
   inviteFriends(group) {
     var url = this.baseShareUrl + '/group/' + group._id + '/invite';
     this.FacebookService.sendMessage(url).catch(function (err) {
       console.log("FacebookService: err:", err);
     }).then(function () {
-      console.log("Faceboko dialog closed");
+      console.log("Facebook dialog closed");
     }).finally(function () {
       console.log("Finally, facebook dialog closed");
     });
   }
 
+  /**
+   * Show Flatmate invitation dialog
+   * @params group
+   */
   showInviteDialog(group) {
     var ev = this.$event;
     var self = this;
@@ -39,9 +46,10 @@ class GroupCellController {
       $scope.group = self.group;
       $scope.invitee = {};
       $scope.refreshMap = self.refreshMap;
+      $scope.isSending = false;
 
       $scope.sendEmail = function () {
-        console.log("send email...");
+        $scope.isSending = true;
         var email = $scope.invitee.email;
         $http.post('/api/invitations', {
           from: {
@@ -52,7 +60,15 @@ class GroupCellController {
             _id: group._id
           }
         }).then(function () {
-          console.log("invitation send");
+          self.$timeout(function () {
+            $scope.isSending = false;
+            var title = "We've sent an invitation link to " + email + "!";
+            var content = "As soon as, the email has been confirmed. Your flatmate is added to your shopping group.";
+            var popupLabel = "Next";
+            self.DialogService.showAlert(title, content, popupLabel);
+          }, 300);
+        }, function (err) {
+          console.log("error: ", err);
         });
       };
 
@@ -95,7 +111,6 @@ class GroupCellController {
       function () {
         console.log('You cancelled the dialog.');
       });
-
     self.$scope.$watch(function () {
       return self.$mdMedia('xs') || self.$mdMedia('sm');
     }, function (wantsFullScreen) {
