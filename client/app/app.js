@@ -18,7 +18,7 @@ angular.module('sebaFreshApp', [
   'ngMaterial',
   'ngMap'
 ])
-  .config(function ($urlRouterProvider, $locationProvider, $mdThemingProvider) {
+  .config(function ($urlRouterProvider, $locationProvider, $mdThemingProvider, $mdIconProvider) {
     $urlRouterProvider
       .otherwise('/');
 
@@ -95,6 +95,8 @@ angular.module('sebaFreshApp', [
       .primaryPalette('sebaPrimaryPalette')
       .accentPalette('sebaAccentPalette')
       .warnPalette('sebaWarnPalette');
+
+    $mdIconProvider.defaultIconSet('assets/mdi.svg')
   }).run(['$rootScope', '$window', 'Auth',
     function ($rootScope, $window, Auth) {
 

@@ -3,19 +3,17 @@
 class NavbarController {
   isCollapsed = true;
 
-  constructor(Auth, $timeout, $log, $mdSidenav, ShopService) {
-    var carts = ShopService.getCarts();
-
-    console.log("carts: ", carts);
-
+  constructor(Auth, $timeout, $log, $mdSidenav, DialogService) {
     this.$timeout = $timeout;
     this.$log = $log;
     this.$mdSidenav = $mdSidenav;
+    this.DialogService = DialogService;
 
     this.isLoggedIn = Auth.isLoggedIn;
     this.isAdmin = Auth.isAdmin;
     this.getCurrentUser = Auth.getCurrentUser;
     this.toggleLeft = this.buildDelayedToggler('left');
+    this.openCart = this.open;
   }
 
   /**
@@ -25,6 +23,17 @@ class NavbarController {
     var self = this;
     this.$mdSidenav('left').close()
       .then(function () {});
+  }
+
+  open() {
+    var self = this;
+    this.$mdSidenav('right').open()
+      .then(function () {});
+  }
+
+
+  openCart() {
+    this.DialogService.showAlert("hallo", "welt", "test");
   }
 
   /**

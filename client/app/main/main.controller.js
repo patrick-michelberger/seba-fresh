@@ -10,7 +10,6 @@
       this.isLoggedIn = Auth.isLoggedIn;
       this.getCurrentUser = Auth.getCurrentUser;
 
-
       // Check for user status
       var user = this.getCurrentUser();
       if (user.onboardingRequired) {

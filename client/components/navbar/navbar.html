@@ -8,14 +8,20 @@
       <a class="sf-brand" href="/">SEBA <span>fresh</span></a>
     </h2>
     <div class="sf-navigation-bar" hide-xs>
-      <div ng-hide="vm.isLoggedIn()">
+      <div ng-hide="nav.isLoggedIn()">
         <md-button class="sf-call-to-action" ui-sref="signup">Create Shopping Group</md-button>
         <md-button ui-sref="signup">Signup</md-button>
         <md-button ui-sref="login">Login</md-button>
+        <md-button ui-sref="login">
+          <md-icon md-svg-icon="cart"></md-icon>
+        </md-button>
       </div>
-      <div ng-show="vm.isLoggedIn()">
-        <md-button class="sf-user-name" ui-sref="settings">Hello {{ vm.getCurrentUser().first_name }} {{vm.getCurrentUser().last_name }}</md-button>
+      <div ng-show="nav.isLoggedIn()">
+        <md-button class="sf-user-name" ui-sref="settings">Hello {{ nav.getCurrentUser().first_name }} {{nav.getCurrentUser().last_name }}</md-button>
         <md-button ui-sref="logout">Logout</md-button>
+        <a class="md-button" ng-click="nav.openCart()">
+          <md-icon md-svg-icon="cart"></md-icon>
+        </a>
       </div>
     </div>
 </md-toolbar>

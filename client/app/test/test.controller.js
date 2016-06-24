@@ -13,19 +13,20 @@
       });
 
       this.query1 = {
-        "name" : this.defaultCategory
+        "name": this.defaultCategory
       };
-//   $scope.clearValue = function() {
-//   $scope.myModel = undefined;
-// };
 
-// $scope.save = function() {
-//   alert('Form was valid!');
-// };
+      //   $scope.clearValue = function() {
+      //   $scope.myModel = undefined;
+      // };
+
+      // $scope.save = function() {
+      //   alert('Form was valid!');
+      // };
     }
 
     $onInit() {
-      this.categories = this.CategoryService.query(this.query1, function(data){
+      this.categories = this.CategoryService.query(this.query1, function (data) {
         console.log(data);
       });
     }
