@@ -12,15 +12,34 @@
         <md-button class="sf-call-to-action" ui-sref="signup">Create Shopping Group</md-button>
         <md-button ui-sref="signup">Signup</md-button>
         <md-button ui-sref="login">Login</md-button>
-        <md-button ui-sref="login">
-          <md-icon md-svg-icon="cart"></md-icon>
-        </md-button>
+        <a class="sf-cart-toggle md-button" ui-sref="login">
+          <span class="sf-cart-total-amount">
+            <span class="sf-cart-currency-sign">
+              $
+            </span>
+          <span class="sf-cart-amount-dollars">
+            0
+            </span>
+          <span class="sf-cart-amount-cents">
+            00
+              </span>
+          </span>
+          <span class="sf-cart-total-icon">
+            <md-icon class="sf-md-cart-icon" md-svg-icon="cart"></md-icon>
+            <span class="sf-cart-badge">0</span>
+          </span>
+        </a>
       </div>
       <div ng-show="nav.isLoggedIn()">
         <md-button class="sf-user-name" ui-sref="settings">Hello {{ nav.getCurrentUser().first_name }} {{nav.getCurrentUser().last_name }}</md-button>
         <md-button ui-sref="logout">Logout</md-button>
-        <a class="md-button" ng-click="nav.openCart()">
-          <md-icon md-svg-icon="cart"></md-icon>
+        <a class="sf-cart-toggle md-button" ng-click="nav.openCart()">
+          <span class="sf-cart-total-amount">
+          </span>
+          <span class="sf-cart-total-icon">
+            <md-icon class="sf-md-cart-icon" md-svg-icon="cart"></md-icon>
+            <span class="sf-cart-badge">0</span>
+          </span>
         </a>
       </div>
     </div>
