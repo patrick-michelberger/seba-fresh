@@ -4,15 +4,20 @@ class OnboardingController {
 
   constructor($http, $timeout, socket, $scope, $rootScope, Auth) {
     var self = this;
-    this.groups = [];
+    // dependencies
     this.socket = socket;
     this.$http = $http;
     this.$timeout = $timeout;
+    this.Auth = Auth;
+
+    // properties
+    this.groups = [];
     this.selectedIndex = 0;
     this.showSuccessMessage = false;
-    this.Auth = Auth;
+
     this.getCurrentUser = Auth.getCurrentUser;
 
+    // event listeners
     $scope.$on('$destroy', function () {
       socket.unsyncUpdates('group');
     });
@@ -27,10 +32,15 @@ class OnboardingController {
 
     $rootScope.$on('onboarding:invited', function () {
       self.Auth.changeFriendsInvited(true);
-      self.selectedIndex = 2;
+      self.showSuccessMessage = true;
+      self.$timeout(function () {
+        self.showSuccessMessage = false;
+        self._updateIndex();
+      }, 1500);
     });
   }
 
+  // methods
   $onInit() {
     var self = this;
     this.$http.get('/api/groups').then(response => {
@@ -42,6 +52,12 @@ class OnboardingController {
 
   disableInviteFriends() {
     var result = !this.groups || !this.groups[0];
+    return result;
+  }
+
+  disableProducts() {
+    var result = !this.groups || !this.groups[0] ||  !this.Auth.getCurrentUser().friendsInvited;
+    console.log("disableProducts: ", result);
     return result;
   }
 

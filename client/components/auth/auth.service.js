@@ -106,6 +106,7 @@
         }, {
           friendsInvited: friendsInvited
         }, function () {
+          currentUser.friendsInvited = friendsInvited;
           return safeCb(callback)(null);
         }, function (err) {
           return safeCb(callback)(err);

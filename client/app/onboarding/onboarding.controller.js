@@ -1,16 +1,14 @@
 'use strict';
-(function(){
+(function () {
 
-class OnboardingComponent {
-  constructor() {
-    this.message = 'Hello';
+  class OnboardingComponent {
+    constructor() {}
   }
-}
 
-angular.module('sebaFreshApp')
-  .component('onboarding', {
-    templateUrl: 'app/onboarding/onboarding.html',
-    controller: OnboardingComponent
-  });
+  angular.module('sebaFreshApp')
+    .component('onboarding', {
+      templateUrl: 'app/onboarding/onboarding.html',
+      controller: OnboardingComponent
+    });
 
 })();
