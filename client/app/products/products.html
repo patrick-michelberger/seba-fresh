@@ -12,9 +12,10 @@
       </md-card-title>
       <md-card-actions layout="row " layout-align="end center ">
         <div class="sf-price md-title">{{product.price}} $</div>
-        <a ng-href="{{product.addToCartUrl}} " target="_ blank ">
+        <!--<a ng-href="{{product.addToCartUrl}} " target="_ blank ">
           <md-button class="md-raised md-warn ">Add to cart</md-button>
-        </a>
+        </a>-->
+        <md-button ng-click="vm.addToCart(product)" class="md-raised md-warn ">Add to cart</md-button>
       </md-card-actions>
     </md-card>
   </div>

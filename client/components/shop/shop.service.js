@@ -5,6 +5,7 @@
   function ShopService(Util, Auth, Cart) {
     var safeCb = Util.safeCb;
     var carts = [];
+    var currentCartIndex = 0;
 
     if (Auth.isLoggedIn()) {
       carts = Cart.query();
@@ -15,20 +16,18 @@
       /**
        * Add a product to a cart
        *
-       * @param  {Number} productId - product id
-       * @param  {String} cartId - card id
+       * @param  {Object} product - product
        * @param  {Function} callback - optional, function(error, user)
        * @return {Promise}
        */
-      addToCart(product, cartId, callback) {
-
+      addToCart(product, callback) {
+        var cartId = carts[currentCartIndex]._id;
         return Cart.add({
             id: cartId
           }, {
-            productId: productId,
-            userId: Auth.currentUser()._id
+            product: product,
+            userId: Auth.getCurrentUser()._id
           }, function (data) {
-            $cookies.put('token', data.token);
             // TODO update carts data structure
             return safeCb(callback)(null, carts[cartId]);
           },

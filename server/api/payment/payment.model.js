@@ -11,6 +11,15 @@ var PaymentSchema = new mongoose.Schema({
   amount_due: Number,
   amount_paid: Number,
   auto_payment: Boolean,
+  group: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Group'
+  },
+  cart: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Cart'
+  }
+
 }, {
   collection: 'seba-payments'
 });

@@ -82,8 +82,10 @@ export function create(req, res) {
   return Reminder.create(req.body)
     .then(function (createReminder){
       // loop through the members of group
-      Group.findById(groupId).populate('users').exec(function(err, group) {
+      Group.findById(createReminder.groupId).populate('users').exec(function(err, group) {
        console.log('group :', group);
+
+
        var data = {
        //  to: createReminder.to,
         to: 'mohamed.riswan.1n1ly@gmail.com',

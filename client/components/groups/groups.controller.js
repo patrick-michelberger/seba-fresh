@@ -2,7 +2,7 @@
 
 class GroupsController {
 
-  constructor($rootScope, $scope, $http, $q, $log, socket, Group, Auth, NgMap) {
+  constructor($rootScope, $scope, $http, $q, $log, socket, Group, Auth, NgMap, ShopService) {
     var self = this;
     this.errors = [];
     this.groups = [];
@@ -13,6 +13,7 @@ class GroupsController {
     this.getCurrentUser = Auth.getCurrentUser;
     this.$rootScope = $rootScope;
     self.Group = Group;
+    this.ShopService = ShopService;
     self.simulateQuery = true;
     self.isDisabled = false;
     self.$log = $log;
@@ -68,6 +69,8 @@ class GroupsController {
             form.$setUntouched();
             form.$setPristine();
             self.group = {};
+            var carts = self.ShopService.getCarts();
+            console.log("carts: ", carts);
             self.$rootScope.$emit('onboarding:next');
           },
           function (err) {
