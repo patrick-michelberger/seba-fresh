@@ -2,13 +2,17 @@
 
 (function () {
 
-  function ShopService(Util, Auth, Cart) {
+  function ShopService(Util, Auth, Cart, $q) {
     var safeCb = Util.safeCb;
     var carts = [];
-    var currentCartIndex = 0;
+    var currentCart = false;
 
     if (Auth.isLoggedIn()) {
-      carts = Cart.query();
+      Cart.query(function (carts) {
+        if (carts && carts[0]) {
+          currentCart = carts[0];
+        }
+      });
     }
 
     var Shop = {
@@ -21,7 +25,7 @@
        * @return {Promise}
        */
       addToCart(product, callback) {
-        var cartId = carts[currentCartIndex]._id;
+        var cartId = currentCart._id;
         return Cart.add({
             id: cartId
           }, {
@@ -59,6 +63,10 @@
             safeCb(callback)({});
             return {};
           });
+      },
+
+      getCurrentCart() {
+        return currentCart;
       }
     };
 
