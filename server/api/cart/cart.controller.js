@@ -112,7 +112,7 @@ function handleError(res, statusCode) {
 
 // Gets a list of Carts
 export function index(req, res) {
-  return Cart.find().exec()
+  return Cart.find().populate('items.product items.user').exec()
     .then(respondWithResult(res))
     .catch(handleError(res));
 }

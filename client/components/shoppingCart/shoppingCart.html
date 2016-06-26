@@ -1,0 +1,10 @@
+<md-content layout-padding layout-fill>
+  Items in Cart: {{shoppingCartCtrl.currentCart.items.length}}
+
+  <ul>
+    <li ng-repeat="item in shoppingCartCtrl.currentCart.items">
+      Name: {{item.product.name}}
+      <br/> Quantity: {{item.quantity}}
+    </li>
+  </ul>
+</md-content>
