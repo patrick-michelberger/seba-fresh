@@ -26,16 +26,20 @@
   <!-- endbuild -->
 </head>
 
-<body ng-app="sebaFreshApp" id="sf-popup-container" map-lazy-load="https://maps.google.com/maps/api/js" layout-fill ng-cloak>
-  <div id="fb-root"></div>
+<body ng-app="sebaFreshApp" id="sf-popup-container" map-lazy-load="https://maps.google.com/maps/api/js" layout="row" ng-cloak>
+  <div id=" fb-root "></div>
   <!--[if lt IE 7]>
-      <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+      <p class="browserupgrade ">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/ ">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
   <!-- Add your site or application content here -->
-  <navbar></navbar>
   <sidebar></sidebar>
-  <div id="sf-root" ng-class="{transparentNavbar: navbar.transparent}" ui-view="" layout-fill></div>
+
+  <div flex layout="column">
+    <navbar></navbar>
+    <md-content id="sf-root " ng-class="{transparentNavbar: navbar.transparent} " ui-view="" layout="row" flex></md-content>
+  </div>
+
 
   <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
   <script>
@@ -56,93 +60,93 @@
   </script>
 
   <!--[if lt IE 9]>
-    <script src="bower_components/es5-shim/es5-shim.js"></script>
-    <script src="bower_components/json3/lib/json3.min.js"></script>
+    <script src="bower_components/es5-shim/es5-shim.js "></script>
+    <script src="bower_components/json3/lib/json3.min.js "></script>
     <![endif]-->
   <!-- build:js({client,node_modules}) app/vendor.js -->
   <!-- bower:js -->
-  <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/angular-resource/angular-resource.js"></script>
-  <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-  <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-  <script src="bower_components/lodash/lodash.js"></script>
-  <script src="bower_components/angular-socket-io/socket.js"></script>
-  <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-  <script src="bower_components/angular-validation-match/dist/angular-validation-match.min.js"></script>
-  <script src="bower_components/angular-animate/angular-animate.js"></script>
-  <script src="bower_components/angular-aria/angular-aria.js"></script>
-  <script src="bower_components/angular-messages/angular-messages.js"></script>
-  <script src="bower_components/angular-material/angular-material.js"></script>
-  <script src="bower_components/ngmap/build/scripts/ng-map.js"></script>
+  <script src="bower_components/angular/angular.js "></script>
+  <script src="bower_components/angular-resource/angular-resource.js "></script>
+  <script src="bower_components/angular-cookies/angular-cookies.js "></script>
+  <script src="bower_components/angular-sanitize/angular-sanitize.js "></script>
+  <script src="bower_components/lodash/lodash.js "></script>
+  <script src="bower_components/angular-socket-io/socket.js "></script>
+  <script src="bower_components/angular-ui-router/release/angular-ui-router.js "></script>
+  <script src="bower_components/angular-validation-match/dist/angular-validation-match.min.js "></script>
+  <script src="bower_components/angular-animate/angular-animate.js "></script>
+  <script src="bower_components/angular-aria/angular-aria.js "></script>
+  <script src="bower_components/angular-messages/angular-messages.js "></script>
+  <script src="bower_components/angular-material/angular-material.js "></script>
+  <script src="bower_components/ngmap/build/scripts/ng-map.js "></script>
   <!-- endbower -->
-  <script src="socket.io-client/socket.io.js"></script>
+  <script src="socket.io-client/socket.io.js "></script>
   <!-- endbuild -->
   <!-- build:js(.tmp) app/app.js -->
-  <script src="app/app.js"></script>
+  <script src="app/app.js "></script>
   <!-- injector:js -->
-  <script src="app/admin/admin.module.js"></script>
-  <script src="components/assortment/assortment.module.js"></script>
-  <script src="components/auth/auth.module.js"></script>
-  <script src="components/oauth-buttons/oauth-buttons.module.js"></script>
-  <script src="components/services/services.module.js"></script>
-  <script src="components/shop/shop.module.js"></script>
-  <script src="components/util/util.module.js"></script>
-  <script src="app/account/account.js"></script>
-  <script src="app/account/login/login.controller.js"></script>
-  <script src="app/account/settings/settings.controller.js"></script>
-  <script src="app/account/signup/signup.controller.js"></script>
-  <script src="app/admin/admin.controller.js"></script>
-  <script src="app/admin/admin.router.js"></script>
-  <script src="app/app.constant.js"></script>
-  <script src="app/contact/contact.controller.js"></script>
-  <script src="app/contact/contact.js"></script>
-  <script src="app/join/join.controller.js"></script>
-  <script src="app/join/join.js"></script>
-  <script src="app/main/main.controller.js"></script>
-  <script src="app/main/main.js"></script>
-  <script src="app/onboarding/onboarding.controller.js"></script>
-  <script src="app/onboarding/onboarding.js"></script>
-  <script src="app/products/products.controller.js"></script>
-  <script src="app/products/products.js"></script>
-  <script src="app/test/test.controller.js"></script>
-  <script src="app/test/test.js"></script>
-  <script src="components/amount/amount.filter.js"></script>
-  <script src="components/assortment/product.service.js"></script>
-  <script src="components/auth/auth.service.js"></script>
-  <script src="components/auth/interceptor.service.js"></script>
-  <script src="components/auth/router.decorator.js"></script>
-  <script src="components/auth/user.service.js"></script>
-  <script src="components/categories/category.service.js"></script>
-  <script src="components/cents/cents.filter.js"></script>
-  <script src="components/dialog/dialog.service.js"></script>
-  <script src="components/floor/floor.filter.js"></script>
-  <script src="components/footer/footer.directive.js"></script>
-  <script src="components/groupList/group-list.controller.js"></script>
-  <script src="components/groupList/groupList.directive.js"></script>
-  <script src="components/groupList/groups-cell-controller.js"></script>
-  <script src="components/groups/groups.controller.js"></script>
-  <script src="components/groups/groups.directive.js"></script>
-  <script src="components/mongoose-error/mongoose-error.directive.js"></script>
-  <script src="components/navbar/navbar.controller.js"></script>
-  <script src="components/navbar/navbar.directive.js"></script>
-  <script src="components/oauth-buttons/oauth-buttons.controller.js"></script>
-  <script src="components/oauth-buttons/oauth-buttons.directive.js"></script>
-  <script src="components/onboarding/onboarding.controller.js"></script>
-  <script src="components/onboarding/onboarding.directive.js"></script>
-  <script src="components/services/facebook.service.js"></script>
-  <script src="components/services/group.service.js"></script>
-  <script src="components/shop/cart.service.js"></script>
-  <script src="components/shop/shop.service.js"></script>
-  <script src="components/shoppingCart/shoppingCart.controller.js"></script>
-  <script src="components/shoppingCart/shoppingCart.directive.js"></script>
-  <script src="components/sidebar/sidebar.controller.js"></script>
-  <script src="components/sidebar/sidebar.directive.js"></script>
-  <script src="components/socket/socket.service.js"></script>
-  <script src="components/success-check/success-check.directive.js"></script>
-  <script src="components/util/util.service.js"></script>
+  <script src="app/admin/admin.module.js "></script>
+  <script src="components/assortment/assortment.module.js "></script>
+  <script src="components/auth/auth.module.js "></script>
+  <script src="components/oauth-buttons/oauth-buttons.module.js "></script>
+  <script src="components/services/services.module.js "></script>
+  <script src="components/shop/shop.module.js "></script>
+  <script src="components/util/util.module.js "></script>
+  <script src="app/account/account.js "></script>
+  <script src="app/account/login/login.controller.js "></script>
+  <script src="app/account/settings/settings.controller.js "></script>
+  <script src="app/account/signup/signup.controller.js "></script>
+  <script src="app/admin/admin.controller.js "></script>
+  <script src="app/admin/admin.router.js "></script>
+  <script src="app/app.constant.js "></script>
+  <script src="app/contact/contact.controller.js "></script>
+  <script src="app/contact/contact.js "></script>
+  <script src="app/join/join.controller.js "></script>
+  <script src="app/join/join.js "></script>
+  <script src="app/main/main.controller.js "></script>
+  <script src="app/main/main.js "></script>
+  <script src="app/onboarding/onboarding.controller.js "></script>
+  <script src="app/onboarding/onboarding.js "></script>
+  <script src="app/products/products.controller.js "></script>
+  <script src="app/products/products.js "></script>
+  <script src="app/test/test.controller.js "></script>
+  <script src="app/test/test.js "></script>
+  <script src="components/amount/amount.filter.js "></script>
+  <script src="components/assortment/product.service.js "></script>
+  <script src="components/auth/auth.service.js "></script>
+  <script src="components/auth/interceptor.service.js "></script>
+  <script src="components/auth/router.decorator.js "></script>
+  <script src="components/auth/user.service.js "></script>
+  <script src="components/categories/category.service.js "></script>
+  <script src="components/cents/cents.filter.js "></script>
+  <script src="components/dialog/dialog.service.js "></script>
+  <script src="components/floor/floor.filter.js "></script>
+  <script src="components/footer/footer.directive.js "></script>
+  <script src="components/groupList/group-list.controller.js "></script>
+  <script src="components/groupList/groupList.directive.js "></script>
+  <script src="components/groupList/groups-cell-controller.js "></script>
+  <script src="components/groups/groups.controller.js "></script>
+  <script src="components/groups/groups.directive.js "></script>
+  <script src="components/mongoose-error/mongoose-error.directive.js "></script>
+  <script src="components/navbar/navbar.controller.js "></script>
+  <script src="components/navbar/navbar.directive.js "></script>
+  <script src="components/oauth-buttons/oauth-buttons.controller.js "></script>
+  <script src="components/oauth-buttons/oauth-buttons.directive.js "></script>
+  <script src="components/onboarding/onboarding.controller.js "></script>
+  <script src="components/onboarding/onboarding.directive.js "></script>
+  <script src="components/services/facebook.service.js "></script>
+  <script src="components/services/group.service.js "></script>
+  <script src="components/shop/cart.service.js "></script>
+  <script src="components/shop/shop.service.js "></script>
+  <script src="components/shoppingCart/shoppingCart.controller.js "></script>
+  <script src="components/shoppingCart/shoppingCart.directive.js "></script>
+  <script src="components/sidebar/sidebar.controller.js "></script>
+  <script src="components/sidebar/sidebar.directive.js "></script>
+  <script src="components/socket/socket.service.js "></script>
+  <script src="components/success-check/success-check.directive.js "></script>
+  <script src="components/util/util.service.js "></script>
   <!-- endinjector -->
   <!-- endbuild -->
-  <script src="https://use.typekit.net/hob1ptb.js"></script>
+  <script src="https://use.typekit.net/hob1ptb.js "></script>
   <script>
     try {
       Typekit.load({
