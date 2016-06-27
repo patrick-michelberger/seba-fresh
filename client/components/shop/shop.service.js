@@ -43,6 +43,32 @@
       },
 
       /**
+       * Remove a product from a cart
+       *
+       * @param  {Object} product - product
+       * @param  {Function} callback - optional, function(error, user)
+       * @return {Promise}
+       */
+      removeFromCart(product, callback) {
+        var cartId = currentCart._id;
+        return Cart.remove({
+            id: cartId
+          }, {
+            product: product,
+            userId: Auth.getCurrentUser()._id,
+            quantity: 1
+          }, function (data) {
+            console.log("remove from cart: ", data);
+            currentCart = data;
+            // TODO update carts data structure
+            return safeCb(callback)(null, carts[cartId]);
+          },
+          function (err) {
+            return safeCb(callback)(err);
+          }).$promise;
+      },
+
+      /**
        * Gets all user's current carts
        *   (synchronous|asynchronous)
        *

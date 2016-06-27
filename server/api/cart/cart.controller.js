@@ -79,6 +79,7 @@ function removeFromItems(items, productId, userId, quantity) {
       }
     }
   }
+  console.log("items to remove: ", items);
   return items;
 }
 
