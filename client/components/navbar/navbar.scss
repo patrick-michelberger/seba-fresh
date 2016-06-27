@@ -36,10 +36,12 @@ navbar .sf-navigation-bar {
   right: 0;
 }
 navbar .sf-navigation-bar .md-button {}
+navbar .sf-mini-cart {
+  padding: 0 !important;
+}
 navbar .sf-cart-toggle {
   height: 60px;
-  width: 130px;
-  margin-top: 10px;
+  width: 180px;
 }
 navbar .sf-cart-total-amount {
   position: absolute;
@@ -47,10 +49,9 @@ navbar .sf-cart-total-amount {
   border-radius: 10px;
   background-color: #0066a3;
   height: 38px;
-  width: 120px;
   margin-top: 13px;
-  right: 10px;
-  padding-left: 0;
+  right: 20px;
+  padding-left: 10px;
   padding-right: 40px;
 }
 navbar .sf-cart-currency-sign {

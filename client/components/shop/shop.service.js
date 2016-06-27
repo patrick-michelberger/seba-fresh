@@ -32,6 +32,8 @@
             product: product,
             userId: Auth.getCurrentUser()._id
           }, function (data) {
+            console.log("add to cart: ", data);
+            currentCart = data;
             // TODO update carts data structure
             return safeCb(callback)(null, carts[cartId]);
           },
