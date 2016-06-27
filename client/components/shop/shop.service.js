@@ -38,7 +38,6 @@
             return safeCb(callback)(null, carts[cartId]);
           },
           function (err) {
-            Auth.logout();
             return safeCb(callback)(err);
           }).$promise;
       },
@@ -69,13 +68,19 @@
 
       getCurrentCart() {
         return currentCart;
+      },
+
+      clear() {
+        currentCart = false;
+        carts = [];
       }
+
     };
 
     return Shop;
   }
 
-  angular.module('sebaFreshApp.shop')
+  angular.module('sebaFreshApp')
     .factory('ShopService', ShopService);
 
 })();

@@ -1,48 +1,40 @@
 @import url(https://fonts.googleapis.com/icon?family=Material+Icons);
-
 /**
  * App-wide Styles
  */
-
- html, body {
-   font-family: "canada-type-gibson";
-   background-color: #f5f5f5;
- }
-
-html, body {
-  height: 100%;
- width: 100%;
- margin: 0;
- padding: 0;
+body,
+html {
+  font-family: "canada-type-gibson";
+  background-color: #f5f5f5;
 }
-
- .md-button {
-   text-transform: inherit;
- }
-
+body,
+html {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.md-button {
+  text-transform: inherit;
+}
 .browserupgrade {
   margin: 0.2em 0;
   background: #ccc;
   color: #000;
   padding: 0.2em 0;
 }
-
 #sf-root {
-  padding-top: 60px;
+  margin-top: 60px;
 }
-
 #sf-root.transparentNavbar {
-  padding-top: 0px;
+  margin-top: 0;
 }
-
 /* SEBA fresh CI Colors */
 $sf-color-blue: #007DC6;
 $sf-color-green: #94BF54;
 $sf-color-red: #D94848;
 $sf-color-orange: #F47421;
-$sf-color-yellow: #FFC120;
-
-// Component styles are injected through grunt
+$sf-color-yellow: #FFC120; // Component styles are injected through grunt
 /* inject:scss */
 @import 'admin/admin';
 @import 'contact/contact';

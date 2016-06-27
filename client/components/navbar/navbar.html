@@ -1,5 +1,5 @@
 <!-- Top navbar -->
-<md-toolbar ng-class="{'sf-transparent': navbar.transparent}">
+<md-toolbar ng-class="{'sf-transparent': navbar.transparent}" ng-cloak>
   <div class="md-toolbar-tools">
     <md-button hide-gt-xs ng-click="nav.toggleLeft()" class="md-icon-button" aria-label="Settings">
       <i class="material-icons">menu</i>
@@ -8,28 +8,27 @@
       <a class="sf-brand" href="/">SEBA <span>fresh</span></a>
     </h2>
     <div class="sf-navigation-bar" hide-xs>
-      <div ng-hide="nav.isLoggedIn()">
-        <md-button class="sf-call-to-action" ui-sref="signup">Create Shopping Group</md-button>
+      <div ng-hide="nav.isLoggedIn()" layout="row" flex>
+        <!--<md-button class="sf-call-to-action" ui-sref="signup">Create Shopping Group</md-button>-->
         <md-button ui-sref="signup">Signup</md-button>
         <md-button ui-sref="login">Login</md-button>
-        <a class="sf-mini-cart md-button" ui-sref="login">
-          <div class="sf-cart-toggle">
-            <span class="sf-cart-total-amount">
+        <a class="sf-mini-cart md-button sf-cart-toggle" ui-sref="login">
+          <span class="sf-cart-total-amount">
             <span class="sf-cart-currency-sign">
               $
             </span>
-            <span class="sf-cart-amount-dollars">
+          <span class="sf-cart-amount-dollars">
               {{nav.currentCart.totalAmount | floor}}
               </span>
-            <span class="sf-cart-amount-cents">
+          <span class="sf-cart-amount-cents">
               {{nav.currentCart.totalAmount | cents}}
             </span>
-            </span>
-            <span class="sf-cart-total-icon">
+          </span>
+          <span class="sf-cart-total-icon">
             <md-icon class="sf-md-cart-icon" md-svg-icon="cart"></md-icon>
             <span class="sf-cart-badge">{{nav.currentCart.items.length | amount}}</span>
-            </span>
-          </div>
+          </span>
+        </a>
         </a>
       </div>
       <div ng-show="nav.isLoggedIn()">

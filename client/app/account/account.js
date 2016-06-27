@@ -13,11 +13,12 @@ angular.module('sebaFreshApp')
         url: '/logout?referrer',
         referrer: 'main',
         template: '',
-        controller: function ($state, Auth) {
+        controller: function ($state, Auth, ShopService) {
           var referrer = $state.params.referrer ||
             $state.current.referrer ||
             'main';
           Auth.logout();
+          ShopService.clear();
           $state.go(referrer);
         }
       })
