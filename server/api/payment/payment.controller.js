@@ -11,6 +11,12 @@
 
 import _ from 'lodash';
 import Payment from './payment.model';
+import mail from '../../components/mail';
+import Group from '../group/group.model';
+import config from '../../config/environment';
+import Cart from '../cart/cart.model';
+import User from '../user/user.model';
+
 
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
@@ -74,12 +80,69 @@ export function show(req, res) {
     .catch(handleError(res));
 }
 
-// Creates a new Payment in the DB
+
+// Creates a new Payment in the DB and sends the payment request to individual users of a group
 export function create(req, res) {
   return Payment.create(req.body)
-    .then(respondWithResult(res, 201))
-    .catch(handleError(res));
+    .then(function (createPayment){
+
+	var paidByUser = {};
+	var groupId = createPayment.groupId;
+	var cartId = createPayment.cartId;
+
+	User.findById(createPayment.paidBy).exec(function(err, user) {
+	paidByUser = user;
+	  });
+
+      // loop through the members of group
+      Group.findById(groupId).populate('users').exec(function(err, group) {
+
+	  var invidualPrice = 0.0;
+       console.log('group :', group);
+
+	  // Find the items in the cart added by the particular user
+	  Cart.findById(cartId).populate('items').exec(function(err, items) {
+       console.log('items :', items);
+
+	   // logic to read the items which the user has added and find the price
+
+	   });
+
+	   // https://www.paypal.com/cgi-bin/webscr?business=riswan_27%40pec.edu&cmd=_xclick&currency_code=EUR&amount=100&item_name=your+share+of+cart+2230
+	   // form paypal pay url
+
+	   var string1 = 'https://www.paypal.com/cgi-bin/webscr?business=';
+	   var string2 = paidByUser.email;
+	   var string3 = '&cmd=_xclick&currency_code=EUR&amount=';
+	   var string4 = invidualPrice.toString();
+	   var string5 = '&item_name=your+share+of+cart+';
+       var string6 = cartId.toString();
+
+       var url = string1.concat(string2,string3,string4,string5,string6);
+
+
+       var data = {
+       //  to: createPayment.to,
+        to: 'mohamed.riswan.1n1ly@gmail.com', // should have the user id
+         template: 'paymentEmail.hbs',
+         subject: 'SEBA fresh Payments',
+         payload: {
+		       paidbyUser: paidByUser,
+           user: req.user,
+           group: group,
+           url: url
+         }
+       };
+       mail.send(data, function (err) {
+         if (err) {
+           console.log("Error: sending payment mail: ", err);
+         }
+         respondWithResult(res, 201)(createPayment);
+       });
+      });
+  }).catch(handleError(res));
 }
+
 
 // Updates an existing Payment in the DB
 export function update(req, res) {

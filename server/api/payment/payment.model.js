@@ -18,7 +18,11 @@ var PaymentSchema = new mongoose.Schema({
   cart: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Cart'
-  }
+  },
+  paidBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
 
 }, {
   collection: 'seba-payments'
