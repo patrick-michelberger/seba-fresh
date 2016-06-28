@@ -606,7 +606,9 @@ gulp.task('copy:server', () => {
         'package.json',
         'bower.json',
         '.bowerrc',
-        'server/bin/**/*'
+        'server/bin/**/*',
+        'server/i18n/**/*',
+        'server/views/**/*'
     ], {
       cwdbase: true
     })
