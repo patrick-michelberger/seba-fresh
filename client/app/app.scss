@@ -14,6 +14,9 @@ html {
   margin: 0;
   padding: 0;
 }
+h1 {
+  font-weight: 400;
+}
 .md-button {
   text-transform: inherit;
 }
@@ -47,9 +50,11 @@ $sf-color-yellow: #FFC120; // Component styles are injected through grunt
 @import '../components/footer/footer';
 @import '../components/groupList/groupList';
 @import '../components/groups/groups';
+@import '../components/minimumOrderValueProgress/minimumOrderValueProgress';
 @import '../components/navbar/navbar';
 @import '../components/oauth-buttons/oauth-buttons';
 @import '../components/onboarding/onboarding';
+@import '../components/shoppingCart/shoppingCart';
 @import '../components/sidebar/sidebar';
 @import '../components/success-check/success-check';
 /* endinject */

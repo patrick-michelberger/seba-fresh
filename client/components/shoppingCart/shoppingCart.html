@@ -1,10 +1,27 @@
-<md-content layout-padding layout-fill>
-  Items in Cart: {{shoppingCartCtrl.currentCart.items.length}}
-
-  <ul>
-    <li ng-repeat="item in shoppingCartCtrl.currentCart.items">
-      Name: {{item.product.name}}
-      <br/> Quantity: {{item.quantity}}
-    </li>
-  </ul>
-</md-content>
+<md-toolbar>
+  <!--<h1 class="md-toolbar-tools sf-brand"><b>Your Cart: </b><span class="cart-items-count">{{shoppingCartCtrl.currentCart.items.length}}</span> items.</h1>-->
+  <minimum-order-value-progress></minimum-order-value-progress>
+</md-toolbar>
+<div class="cart-list">
+  <div class="cart-list-item" ng-repeat="item in shoppingCartCtrl.currentCart.items" layout="row">
+    <div class="product-image" layout="row" layout-align="start center">
+      <img ng-src="{{item.product.mediumImage}}" />
+    </div>
+    <div flex class="layout-column">
+      <div class="product-name">
+        {{item.product.name}}
+      </div>
+      <div flex class="product-sold-by">
+        <span>Sold by:</span> Walmart.com
+      </div>
+      <div flex layout="row" class="cart-item-actions">
+        <md-button flex ng-click="shoppingCartCtrl.removeFromCart(item.product, quantity)" class="md-raised" aria-label="remove rom cart" ng-disabled="!item.product.quantity||item.product.quantity<1">-</md-button>
+        <md-button flex class="product-quantity md-raised" ng-class="{'highlight': item.product.quantity>0}" aria-label="quantity" ng-disabled="true">{{item.product.quantity}}</md-button>
+        <md-button ng-hide="product.quantity>0" flex ng-click="shoppingCartCtrl.addToCart(item.product, quantity)" aria-label="add to cart" class="md-raised md-warn ">
+          <i class="sf-md-cart-icon material-icons">shopping_cart</i>
+        </md-button>
+        <md-button ng-show="item.product.quantity>0" flex ng-click="shoppingCartCtrl.addToCart(item.product, quantity)" aria-label="add to cart" class="md-raised">+</md-button>
+      </div>
+    </div>
+  </div>
+</div>

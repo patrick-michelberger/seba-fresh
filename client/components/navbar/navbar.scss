@@ -6,10 +6,13 @@ navbar md-toolbar.sf-transparent {
   background: transparent;
 }
 navbar .sf-brand {
-  font-weight: bold;
+  font-weight: 400;
 }
 navbar .sf-user-name {
   color: #fff!important;
+}
+navbar .sf-user-name .greeting {
+  color: $sf-color-yellow;
 }
 navbar .sf-brand span {
   color: $sf-color-yellow;

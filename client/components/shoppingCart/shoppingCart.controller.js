@@ -8,6 +8,7 @@ class ShoppingCartController {
       return ShopService.getCurrentCart();
     }, function (currentCart) {
       self.currentCart = currentCart;
+      console.log("currentCart: ", self.currentCart);
     });
   }
 }

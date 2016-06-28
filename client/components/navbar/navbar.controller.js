@@ -30,7 +30,6 @@ class NavbarController {
     this.$scope.$watch(function () {
       return self.ShopService.getCurrentCart();
     }, function (currentCart) {
-      console.log("currentCart: ", currentCart);
       self.currentCart = currentCart;
     });
 
@@ -38,7 +37,16 @@ class NavbarController {
   }
 
   /**
-   * Close sidebar
+   * Open right sidebar
+   */
+  open() {
+    var self = this;
+    this.$mdSidenav('right').open()
+      .then(function () {});
+  }
+
+  /**
+   * Close left sidebar
    */
   close() {
     var self = this;
