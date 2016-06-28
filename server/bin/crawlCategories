@@ -30,8 +30,8 @@ walmart.taxonomy().then(function (response) {
     category = {
       id: category.id,
       name: category.name,
-      categoryPath: category.categoryPath,
-      children: category.childrens
+      path: category.path,
+      children: category.children
     };
 
     Category.create(category, function (err, savedCatergory) {
