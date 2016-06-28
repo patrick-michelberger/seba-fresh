@@ -7,7 +7,7 @@
           <span class="md-title">{{product.name}}</span>
         </md-card-title-text>
         <md-card-title-media layout-padding>
-          <img ng-src="{{product.mediumImage}} " />
+          <img ui-sref="productsDetail({ productId: product._id })" ui-sref-opts="{reload: false, notify: false}" ng-src="{{product.mediumImage}}" />
         </md-card-title-media>
         <div class="sf-price md-title">{{product.price}} $</div>
       </md-card-title>
@@ -16,8 +16,11 @@
           <md-button class="md-raised md-warn ">Add to cart</md-button>
         </a>-->
         <md-button flex ng-click="vm.removeFromCart(product, quantity)" class="md-raised" ng-disabled="!product.quantity||product.quantity<1">-</md-button>
-        <md-button flex class="md-raised" ng-disabled="true">{{product.quantity}}</md-button>
-        <md-button flex ng-click="vm.addToCart(product, quantity)" class="md-raised">+</md-button>
+        <md-button flex class="product-quantity md-raised" ng-class="{'highlight': product.quantity>0}" ng-disabled="true">{{product.quantity}}</md-button>
+        <md-button ng-hide="product.quantity>0" flex ng-click="vm.addToCart(product, quantity)" class="md-raised md-warn">
+          <md-icon md-svg-icon="cart"></md-icon>
+        </md-button>
+        <md-button ng-show="product.quantity>0" flex ng-click="vm.addToCart(product, quantity)" class="md-raised">+</md-button>
       </md-card-actions>
     </md-card>
   </div>

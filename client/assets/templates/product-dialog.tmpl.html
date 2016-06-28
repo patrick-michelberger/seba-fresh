@@ -1,0 +1,44 @@
+<md-dialog id="productDialog" aria-label="Product Details" flex-xs="100" flex-sm="75" flex-gt-sm="60" ng-cloak>
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h3 class="product-name">{{product.name}}</h3>
+        <span flex></span>
+        <md-icon aria-label="Close dialog" ng-click="cancel()" class="close" md-svg-icon="close"></md-icon>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+      <div class="md-dialog-content" layout="row">
+        <div flex="50" layout="column" layout-align="center center">
+          <img ng-src="{{product.largeImage}}" />
+        </div>
+        <div class="product-details" layout="column" layout-align="center center" flex="50">
+          <md-content layout-padding>
+            <!--<h4 flex class="product-brand">{{product.brand}}</h4>-->
+            <p class="product-description" ng-bind-html="product.description "></p>
+            <span class="product-price-container">
+                <span class="product-price-currency-sign">
+                  $
+                </span>
+            <span class="product-price-dollars">
+                  {{product.price | floor}}
+                  </span>
+            <span class="product-price-cents">
+                  {{product.price | cents}}
+                </span>
+            </span>
+            <p>
+              <span>Stock: {{product.stock}}</span>
+            </p>
+          </md-content>
+        </div>
+      </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row ">
+      <a class="product-url" ng-href="{{product.productUrl}}" target="_blank"><img src="/assets/images/walmart-logo.png" /></a>
+      <md-button class="md-raised md-warn" ng-href="{{product.addToCartUrl}} ">
+        <md-icon md-svg-icon="cart"></md-icon>
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

@@ -2,7 +2,8 @@
 (function () {
 
   class ProductsComponent {
-    constructor($scope, socket, ProductService, ShopService) {
+    constructor($scope, $stateParams, socket, ProductService, ShopService, DialogService) {
+      var self = this;
       this.socket = socket;
       this.ProductService = ProductService;
       this.products = [];
@@ -12,6 +13,25 @@
       this.addToCart = this.addToCart;
       this.removeFromCart = this.removeFromCart;
       this.ShopService = ShopService;
+      this.DialogService = DialogService;
+
+      $scope.$on('$locationChangeSuccess', function (event) {
+        checkDetailView();
+      });
+
+      function checkDetailView() {
+        var productId = $stateParams.productId;
+        if (productId) {
+          self.ProductService.get({
+            id: productId
+          }, function (product) {
+            self.selectedProduct = product;
+            self.DialogService.showProductModal(product);
+          });
+        }
+      };
+
+      checkDetailView();
     }
 
     $onInit() {
