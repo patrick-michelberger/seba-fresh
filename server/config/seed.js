@@ -10,7 +10,7 @@ import product from '../api/product/product.model';
 import payment from '../api/payment/payment.model';
 import order from '../api/order/order.model';
 
-User.find({}).remove()
+/*User.find({}).remove()
   .then(() => {
     User.create({
         provider: 'local',
@@ -119,3 +119,4 @@ User.find({}).remove()
         console.log('finished populating users');
       })
   });
+*/

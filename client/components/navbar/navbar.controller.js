@@ -3,19 +3,38 @@
 class NavbarController {
   isCollapsed = true;
 
-  constructor(Auth, $timeout, $log, $mdSidenav, ShopService) {
-    var carts = ShopService.getCarts();
-
-    console.log("carts: ", carts);
-
+  constructor($scope, Auth, socket, $timeout, $log, $mdSidenav, DialogService, ShopService) {
+    this.$scope = $scope;
     this.$timeout = $timeout;
     this.$log = $log;
+    this.carts = [];
     this.$mdSidenav = $mdSidenav;
-
+    this.DialogService = DialogService;
+    this.ShopService = ShopService;
+    this.currentCart = {};
     this.isLoggedIn = Auth.isLoggedIn;
     this.isAdmin = Auth.isAdmin;
     this.getCurrentUser = Auth.getCurrentUser;
     this.toggleLeft = this.buildDelayedToggler('left');
+
+    this.openCart = this.open;
+    this.socket = socket;
+
+    $scope.$on('$destroy', function () {
+      socket.unsyncUpdates('cart');
+    });
+  }
+
+  $onInit() {
+    var self = this;
+    this.$scope.$watch(function () {
+      return self.ShopService.getCurrentCart();
+    }, function (currentCart) {
+      console.log("currentCart: ", currentCart);
+      self.currentCart = currentCart;
+    });
+
+    this.socket.syncUpdates('cart', this.carts);
   }
 
   /**

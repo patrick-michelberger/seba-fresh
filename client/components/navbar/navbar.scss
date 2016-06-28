@@ -2,60 +2,121 @@ navbar md-toolbar {
   position: fixed;
   background: sf-color-blue;
 }
-
 navbar md-toolbar.sf-transparent {
   background: transparent;
 }
-
 navbar .sf-brand {
   font-weight: bold;
 }
-
 navbar .sf-user-name {
   color: #fff!important;
 }
-
 navbar .sf-brand span {
   color: $sf-color-yellow;
 }
-
 navbar .md-toolbar-tools {
   height: 60px;
   max-height: 60px;
 }
-
 navbar .sf-navigation-bar .sf-call-to-action {
   border: 2px solid #fff;
   line-height: 30px!important;
   position: relative;
   top: -11px;
 }
-
 navbar .sf-navigation-bar .md-button {
   line-height: 60px;
   padding: 0 19px;
 }
-
 navbar .sf-navigation-bar .md-button:hover {
   background: none!important;
 }
-
 navbar .sf-navigation-bar {
   position: absolute;
   right: 0;
 }
-
-navbar .sf-navigation-bar .md-button {
+navbar .sf-navigation-bar .md-button {}
+navbar .sf-mini-cart {
+  padding: 0 !important;
+  margin-right: 20px;
 }
-
+navbar .sf-cart-toggle {
+  height: 60px;
+  width: 180px;
+}
+navbar .sf-cart-total-amount {
+  position: absolute;
+  display: block;
+  border-radius: 10px;
+  background-color: #0066a3;
+  height: 38px;
+  margin-top: 13px;
+  right: 20px;
+  padding-left: 10px;
+  padding-right: 40px;
+  min-width: 155px;
+  text-align: right;
+}
+navbar .sf-cart-currency-sign {
+  position: relative;
+  top: -22px;
+  font-weight: 600;
+  font-size: 16px;
+}
+navbar .sf-cart-amount-dollars {
+  font-size: 34px;
+  top: -10px;
+  position: relative;
+  font-weight: 600;
+  display: inline-block;
+}
+navbar .sf-cart-amount-cents {
+  position: relative;
+  top: -22px;
+  font-weight: 600;
+  font-size: 16px;
+}
+navbar .sf-cart-total-icon {
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  margin-top: -23px;
+  height: 48px;
+  width: 48px;
+  border-radius: 50%;
+  background-color: #79b9e7;
+  text-align: center;
+  transition: background-color 250ms cubic-bezier(.77,0,.175,1);
+}
+navbar .sf-md-cart-icon {
+  position: relative;
+  top: -5px;
+}
+navbar .sf-cart-badge {
+  background-color: #ffc120;
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+  border-radius: 0.75em;
+  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.2);
+  display: inline-block;
+  color: #444;
+  font-weight: 700;
+  height: 1.5em;
+  line-height: 1.5em;
+  min-width: 1.5em;
+  text-align: center;
+  margin-right: -.25em;
+  margin-top: -.25em;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
 @media only screen and (max-width: 959px) and (min-width: 0) and (orientation: portrait) {
   .md-toolbar-tools {
     height: 65px;
     max-height: 65px;
   }
 }
-
-@media only screen and (max-width: 959px) and (min-width: 0) and (orientation: landscape){
+@media only screen and (max-width: 959px) and (min-width: 0) and (orientation: landscape) {
   .md-toolbar-tools {
     height: 65px;
     max-height: 65px;

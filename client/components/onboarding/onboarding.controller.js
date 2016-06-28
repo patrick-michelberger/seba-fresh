@@ -57,7 +57,6 @@ class OnboardingController {
 
   disableProducts() {
     var result = !this.groups || !this.groups[0] ||  !this.Auth.getCurrentUser().friendsInvited;
-    console.log("disableProducts: ", result);
     return result;
   }
 

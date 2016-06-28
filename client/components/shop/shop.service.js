@@ -32,11 +32,38 @@
             product: product,
             userId: Auth.getCurrentUser()._id
           }, function (data) {
+            console.log("add to cart: ", data);
+            currentCart = data;
             // TODO update carts data structure
             return safeCb(callback)(null, carts[cartId]);
           },
           function (err) {
-            Auth.logout();
+            return safeCb(callback)(err);
+          }).$promise;
+      },
+
+      /**
+       * Remove a product from a cart
+       *
+       * @param  {Object} product - product
+       * @param  {Function} callback - optional, function(error, user)
+       * @return {Promise}
+       */
+      removeFromCart(product, callback) {
+        var cartId = currentCart._id;
+        return Cart.remove({
+            id: cartId
+          }, {
+            product: product,
+            userId: Auth.getCurrentUser()._id,
+            quantity: 1
+          }, function (data) {
+            console.log("remove from cart: ", data);
+            currentCart = data;
+            // TODO update carts data structure
+            return safeCb(callback)(null, carts[cartId]);
+          },
+          function (err) {
             return safeCb(callback)(err);
           }).$promise;
       },
@@ -67,13 +94,19 @@
 
       getCurrentCart() {
         return currentCart;
+      },
+
+      clear() {
+        currentCart = false;
+        carts = [];
       }
+
     };
 
     return Shop;
   }
 
-  angular.module('sebaFreshApp.shop')
+  angular.module('sebaFreshApp')
     .factory('ShopService', ShopService);
 
 })();

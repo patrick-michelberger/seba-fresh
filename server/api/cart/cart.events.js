@@ -4,7 +4,9 @@
 
 'use strict';
 
-import {EventEmitter} from 'events';
+import {
+  EventEmitter
+} from 'events';
 import Cart from './cart.model';
 var CartEvents = new EventEmitter();
 
@@ -24,7 +26,8 @@ for (var e in events) {
 }
 
 function emitEvent(event) {
-  return function(doc) {
+  return function (doc) {
+    console.log("socket event" + event + ':' + doc._id);
     CartEvents.emit(event + ':' + doc._id, doc);
     CartEvents.emit(event, doc);
   }

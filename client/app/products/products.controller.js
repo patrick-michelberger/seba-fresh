@@ -2,7 +2,8 @@
 (function () {
 
   class ProductsComponent {
-    constructor($scope, socket, ProductService, ShopService) {
+    constructor($scope, $stateParams, socket, ProductService, ShopService, DialogService) {
+      var self = this;
       this.socket = socket;
       this.ProductService = ProductService;
       this.products = [];
@@ -10,15 +11,46 @@
         socket.unsyncUpdates('product');
       });
       this.addToCart = this.addToCart;
+      this.removeFromCart = this.removeFromCart;
       this.ShopService = ShopService;
+      this.DialogService = DialogService;
+
+      $scope.$on('$locationChangeSuccess', function (event) {
+        checkDetailView();
+      });
+
+      function checkDetailView() {
+        var productId = $stateParams.productId;
+        if (productId) {
+          self.ProductService.get({
+            id: productId
+          }, function (product) {
+            self.selectedProduct = product;
+            self.DialogService.showProductModal(product);
+          });
+        }
+      };
+
+      checkDetailView();
     }
 
     $onInit() {
       this.products = this.ProductService.query();
+      this.currentCart = this.ShopService.getCurrentCart();
     }
 
     addToCart(product) {
       this.ShopService.addToCart(product, function () {});
+      var quantity = product.quantity || 0;
+      product.quantity = quantity + 1;
+    }
+
+    removeFromCart(product) {
+      this.ShopService.removeFromCart(product, function () {});
+      var quantity = product.quantity || 0;
+      if (quantity > 0) {
+        product.quantity = quantity - 1;
+      }
     }
   }
 

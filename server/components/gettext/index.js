@@ -26,5 +26,4 @@ var languages = readlanguagesSync('./server/i18n');
 // set default language
 gt.textdomain('en');
 
-console.log('gettext:', gt);
 module.exports = gt;

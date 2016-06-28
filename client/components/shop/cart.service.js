@@ -11,6 +11,12 @@
         params: {
           controller: 'add'
         }
+      },
+      remove: {
+        method: 'PUT',
+        params: {
+          controller: 'remove'
+        }
       }
     });
   }

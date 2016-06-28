@@ -20,13 +20,13 @@
             <h1>Invite Your Flatmates</h1>
           </div>
           <div flex-xs="100" flex="50">
-            <group-list groups="onboarding.groups"></group-list>
+            <group-list ng-if="!onboarding.disableInviteFriends()" groups="onboarding.groups"></group-list>
           </div>
         </md-content>
     </md-tab>
     <md-tab label="Buy Groceries" ng-disabled="onboarding.disableProducts()">
-      <md-content class="md-padding">
-        <products></products>
+      <md-content>
+        <products ng-if="!onboarding.disableProducts()"></products>
       </md-content>
     </md-tab>
   </md-tabs>
