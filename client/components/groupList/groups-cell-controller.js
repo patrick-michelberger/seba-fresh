@@ -28,6 +28,7 @@ class GroupCellController {
 
   isAdmin(group) {
     var userId = this.Auth.getCurrentUser()._id;
+    console.log("userId: ", userId);
     return userId === group.admin._id;
   }
 
@@ -116,7 +117,7 @@ class GroupCellController {
       controller: ['$scope', '$state', '$mdDialog', '$window', '$http', 'Auth', DialogController],
       bindToController: true,
     }).then(function (answer) {
-        self.$rootScope.$emit('onboarding:invited');
+        //self.$rootScope.$emit('onboarding:invited');
       },
       function () {
         console.log('You cancelled the dialog.');
