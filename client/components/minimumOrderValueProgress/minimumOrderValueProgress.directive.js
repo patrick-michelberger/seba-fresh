@@ -10,12 +10,9 @@ angular.module('sebaFreshApp')
         scope.$watch(function () {
           return ShopService.getCurrentCart();
         }, function (currentCart) {
-          console.log("currentCart: ", currentCart);
           if (currentCart) {
             scope.currentCart = currentCart;
             var percent = Math.round((currentCart.totalAmount / 50) * 100);
-            console.log("percent: ", percent);
-
             scope.freeShipping = currentCart.totalAmount && ((currentCart.totalAmount / 50) < 1) ? false : true;
           }
         });

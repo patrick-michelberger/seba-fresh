@@ -23,10 +23,7 @@ var CartSchema = new mongoose.Schema({
       default: 1
     }
   }],
-  "group": {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Group'
-  },
+  "group": {},
   "totalAmount": {
     type: Number,
     default: 0
@@ -41,7 +38,7 @@ var CartSchema = new mongoose.Schema({
 
 // middleware
 var autoPopulateLead = function (next) {
-  this.populate('items.product items.user');
+  this.populate('items.product items.user group.admin group.users');
   next();
 };
 

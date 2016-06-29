@@ -27,15 +27,11 @@ class NavbarController {
 
   $onInit() {
     var self = this;
-    console.log("set watcher")
     this.$scope.$watch(function () {
-      console.log("currentCart: ", self.ShopService.getCurrentCart());
       return self.ShopService.getCurrentCart();
     }, function (currentCart) {
-      console.log("Update current cart");
       self.currentCart = currentCart;
     });
-
     this.socket.syncUpdates('cart', this.carts);
   }
 

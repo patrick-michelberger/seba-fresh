@@ -33,11 +33,12 @@ function saveUpdates(updates) {
 
 function addItemToCart(data) {
   return function (cart) {
-    cart.items = addToItems(cart.items, data.product._id, data.userId);
+    cart.items = addToItems(cart.items, data.product, data.userId);
     cart.totalAmount += data.product.price;
     cart.totalQuantity += 1;
     return cart.save()
       .then(updated => {
+        console.log("updated cart: ", updated);
         return updated;
       });
   };
@@ -45,8 +46,11 @@ function addItemToCart(data) {
 
 function removeItemFromCart(data) {
   return function (cart) {
-    cart.items = removeFromItems(cart.items, data.product._id, data.userId, data.quantity);
-    cart.totalAmount -= data.product.price * data.quantity;
+    cart.items = removeFromItems(cart.items, data.product._id, data.userId, 1);
+    cart.totalAmount -= data.product.price;
+    if (cart.totalAmount < 0) {
+      cart.totalAmount = 0;
+    }
     cart.totalQuantity -= 1;
     return cart.save()
       .then(updated => {
@@ -55,16 +59,16 @@ function removeItemFromCart(data) {
   };
 }
 
-function addToItems(items, productId, userId) {
+function addToItems(items, product, userId) {
   for (var i = 0; i < items.length; i++) {
     var item = items[i];
-    if (item.product._id == productId && item.user == userId) {
+    if (item.product._id == product._id && item.user == userId) {
       item.quantity += 1;
       return items;
     }
   }
   items.push({
-    product: productId,
+    product: product,
     user: userId
   });
   return items;
@@ -74,7 +78,7 @@ function removeFromItems(items, productId, userId, quantity) {
   for (var i = 0; i < items.length; i++) {
     var item = items[i];
     if (item.product._id == productId && item.user == userId) {
-      if (item.quantity >= quantity) {
+      if (item.quantity <= quantity) {
         items.splice(i, 1);
       } else {
         item.quantity -= quantity;
@@ -114,7 +118,18 @@ function handleError(res, statusCode) {
 
 // Gets a list of Carts
 export function index(req, res) {
-  return Cart.find().populate('items.product items.user').exec()
+  var userId = req.user._id;
+  return Cart.find({
+      '$or': [{
+        'group.admin': userId
+      }, {
+        'group.users': {
+          '$in': [userId]
+        }
+      }]
+    })
+    .populate('items.product items.user group.admin group.users')
+    .exec()
     .then(respondWithResult(res))
     .catch(handleError(res));
 }

@@ -2,7 +2,7 @@
 
 (function () {
 
-  function ShopService(Util, Auth, Cart, $q) {
+  function ShopService($rootScope, Util, Auth, Cart, $q) {
     var safeCb = Util.safeCb;
     var carts = [];
     var currentCart = false;
@@ -32,10 +32,10 @@
             product: product,
             userId: Auth.getCurrentUser()._id
           }, function (data) {
-            console.log("add to cart: ", data);
             currentCart = data;
+            $rootScope.$emit("cart:add", product);
             // TODO update carts data structure
-            return safeCb(callback)(null, carts[cartId]);
+            return safeCb(callback)(null);
           },
           function (err) {
             return safeCb(callback)(err);
@@ -60,6 +60,7 @@
           }, function (data) {
             console.log("remove from cart: ", data);
             currentCart = data;
+            $rootScope.$emit("cart:remove", product);
             // TODO update carts data structure
             return safeCb(callback)(null, carts[cartId]);
           },

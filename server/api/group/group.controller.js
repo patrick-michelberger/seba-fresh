@@ -107,7 +107,7 @@ export function create(req, res) {
     .then(function (createdGroup) {
       Cart.create({
           items: [],
-          group: createdGroup._id,
+          group: createdGroup,
           totalAmount: 0
         }).then(function (createdCart) {
           res.status(201).json({

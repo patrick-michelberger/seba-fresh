@@ -12,9 +12,9 @@
         <div class="sf-price md-title">{{product.price}} $</div>
       </md-card-title>
       <md-card-actions layout="row " layout-align="end center ">
-        <md-button flex ng-click="vm.removeFromCart(product, quantity)" class="md-raised" aria-label="remove rom cart" ng-disabled="!product.quantity||product.quantity<1">-</md-button>
+        <md-button flex ng-click="vm.removeFromCart(product)" class="md-raised" aria-label="remove rom cart" ng-disabled="!product.quantity||product.quantity<1">-</md-button>
         <md-button flex class="product-quantity md-raised" ng-class="{'highlight': product.quantity>0}" aria-label="quantity" ng-disabled="true">{{product.quantity}}</md-button>
-        <md-button ng-hide="product.quantity>0" flex ng-click="vm.addToCart(product, quantity)" aria-label="add to cart" class="md-raised md-warn ">
+        <md-button ng-hide="product.quantity>0" flex ng-click="vm.addToCart(product)" aria-label="add to cart" class="md-raised md-warn ">
           <i class="sf-md-cart-icon material-icons">shopping_cart</i>
         </md-button>
         <md-button ng-show="product.quantity>0" flex ng-click="vm.addToCart(product, quantity)" aria-label="add to cart" class="md-raised">+</md-button>

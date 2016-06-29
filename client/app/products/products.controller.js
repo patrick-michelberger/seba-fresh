@@ -2,10 +2,10 @@
 (function () {
 
   class ProductsComponent {
-    constructor($scope, $stateParams, socket, ProductService, ShopService, DialogService) {
+    constructor($scope, $stateParams, socket, AssortmentService, ShopService, DialogService) {
       var self = this;
       this.socket = socket;
-      this.ProductService = ProductService;
+      this.AssortmentService = AssortmentService;
       this.products = [];
       $scope.$on('$destroy', function () {
         socket.unsyncUpdates('product');
@@ -22,9 +22,8 @@
       function checkDetailView() {
         var productId = $stateParams.productId;
         if (productId) {
-          self.ProductService.get({
-            id: productId
-          }, function (product) {
+          self.AssortmentService.fetch(productId, function (product) {
+            console.log("fetched product: ", product);
             self.selectedProduct = product;
             self.DialogService.showProductModal(product);
           });
@@ -35,7 +34,9 @@
     }
 
     $onInit() {
-      this.products = this.ProductService.query();
+      this.products = this.AssortmentService.fetchAll();
+
+      console.log("this.products: ", this.products);
       this.currentCart = this.ShopService.getCurrentCart();
     }
 
