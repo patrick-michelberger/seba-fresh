@@ -58,7 +58,6 @@
             userId: Auth.getCurrentUser()._id,
             quantity: 1
           }, function (data) {
-            console.log("remove from cart: ", data);
             currentCart = data;
             $rootScope.$emit("cart:remove", product);
             // TODO update carts data structure

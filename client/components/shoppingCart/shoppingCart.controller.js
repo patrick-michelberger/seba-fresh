@@ -35,6 +35,16 @@ class ShoppingCartController {
     });
     return value.toFixed(2);
   }
+
+  calculateOrderAmount(items) {
+    console.log("items: ", items);
+    var value = 0;
+    items.forEach(function (item) {
+      console.log("item.quantity: ", item.quantity);
+      value += item.quantity;
+    });
+    return value;
+  }
 }
 
 angular.module('sebaFreshApp')

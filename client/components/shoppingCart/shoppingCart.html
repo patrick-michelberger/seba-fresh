@@ -2,7 +2,7 @@
   <!--<h1 class="md-toolbar-tools sf-brand"><b>Total: </b><span class="cart-items-count">{{shoppingCartCtrl.currentCart.items.length}}</span> items.</h1>-->
   <!--<minimum-order-value-progress></minimum-order-value-progress>-->
   <div class="cart-order-info">
-    <span class="cart-total-quantity">{{shoppingCartCtrl.currentCart.items.length}} Items: </span>
+    <span class="cart-total-quantity">{{shoppingCartCtrl.currentCart.totalQuantity}} Items: </span>
     <span class="cart-total-amount">$ {{shoppingCartCtrl.currentCart.totalAmount | price}}</span></div>
   </div>
 </md-toolbar>
@@ -18,12 +18,12 @@
             {{items[0].user.first_name}} {{items[0].user.last_name}}
           </div>
           <div flex class="user-cart-quantity cart-cell-description">
-            {{items.length}} Items
+            {{shoppingCartCtrl.calculateOrderAmount(items) }} Items
           </div>
         </div>
       </div>
       <div flex class="user-cart-total-amount cart-cell-total-amount">
-        $ {{shoppingCartCtrl.calculateOrderValue(items)}}
+        $ {{shoppingCartCtrl.calculateOrderValue(items) | price}}
       </div>
     </div>
     <div class="cart-cell-container" ng-repeat="item in items" layout="column">
