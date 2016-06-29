@@ -30,6 +30,10 @@ var CartSchema = new mongoose.Schema({
   "totalAmount": {
     type: Number,
     default: 0
+  },
+  "totalQuantity": {
+    type: Number,
+    default: 0
   }
 },   {
   collection: 'seba-carts'

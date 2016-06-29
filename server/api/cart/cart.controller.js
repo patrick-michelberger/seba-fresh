@@ -35,6 +35,7 @@ function addItemToCart(data) {
   return function (cart) {
     cart.items = addToItems(cart.items, data.product._id, data.userId);
     cart.totalAmount += data.product.price;
+    cart.totalQuantity += 1;
     return cart.save()
       .then(updated => {
         return updated;
@@ -46,6 +47,7 @@ function removeItemFromCart(data) {
   return function (cart) {
     cart.items = removeFromItems(cart.items, data.product._id, data.userId, data.quantity);
     cart.totalAmount -= data.product.price * data.quantity;
+    cart.totalQuantity -= 1;
     return cart.save()
       .then(updated => {
         return updated;
@@ -56,7 +58,7 @@ function removeItemFromCart(data) {
 function addToItems(items, productId, userId) {
   for (var i = 0; i < items.length; i++) {
     var item = items[i];
-    if (item.product == productId && item.user == userId) {
+    if (item.product._id == productId && item.user == userId) {
       item.quantity += 1;
       return items;
     }
@@ -71,7 +73,7 @@ function addToItems(items, productId, userId) {
 function removeFromItems(items, productId, userId, quantity) {
   for (var i = 0; i < items.length; i++) {
     var item = items[i];
-    if (item.product == productId && item.user == userId) {
+    if (item.product._id == productId && item.user == userId) {
       if (item.quantity >= quantity) {
         items.splice(i, 1);
       } else {
@@ -79,7 +81,6 @@ function removeFromItems(items, productId, userId, quantity) {
       }
     }
   }
-  console.log("items to remove: ", items);
   return items;
 }
 
