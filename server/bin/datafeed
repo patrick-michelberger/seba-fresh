@@ -12,7 +12,7 @@ var count = 0;
 var walmart = require('walmart')(config.walmart.key);
 var mongoose = require('mongoose');
 var async = require('async');
-query_test = "3920_582377";
+// query_test = "3920_582377";
 
 Datafeed = require('../api/datafeed/datafeed.model');
 Category = require('../api/category/category.model');
@@ -86,92 +86,113 @@ walmart.taxonomy().then(function (response) {
 
 // Changes with search API
 
-// if (category.id=='976759'){
-//   console.log("Food Category Found");
-//   category.children.forEach(function(value){
-//
-//     // if(value==null){
-//       console.log(value.categoryPath)
-//
-//       // value.children.forEach(function(array){
-//       //   if (error) return console.error(error);
-//       //
-//       //   // console.log(array.name);
-//       //   count = count + 1;
-//
-// 
-//
-//
-//         // break;)
-//     // }
-//     // else {
-//     // value.children.forEach(function(array){
-//       // if(array!=null){
-//         // console.log(array.name);
-//
-//       //   walmart.search(array.name).then(function(response){
-//       // // console.log(Request)
-//       // async.each(response.items, function(datafeed, cb){
-//       //   // console.log("check")
-//       //
-//       //   // Parsing items for SEBA Product model
-//       //   datafeed = {
-//       //     id: datafeed.itemId,
-//       //     name: datafeed.name,
-//       //     price: datafeed.salePrice,
-//       //     brand: datafeed.brandName,
-//       //     stock: datafeed.stock,
-//       //
-//       //   };
-//       //
-//       //   console.log(datafeed);
-//       //
-//       //   Datafeed.create(datafeed, function (err, saveddatafeed) {
-//       //     if (err) {
-//       //       console.log("Error: saving Datafeed: ", err);
-//       //     }
-//       //     cb();
-//       //   });
-//       //   }, function (err) {
-//       //   if (err) {
-//       //     console.log("Error: ", err);
-//       //   } else {
-//       //     console.log("All datafeed saved!");
-//       //     process.exit();
-//       //   }
-//       //   });
-//       // });
-//
-//
-//
-//
-//
-//       // });
-// // }
-//   });
-//
+if (category.id=='976759'){
+  console.log("Food Category Found");
+
+// Changes for pagination
+
+// function pagination(categoryId)
+// {
+
+// calling pagination api
+// url = "http://api.walmartlabs.com/v1/paginated/items?format=json"+"&category="+category.id+"&apiKey="+config.walmart.key;
+// console.log(url)
+// $.getJSON(url, callbackFuncWithData);
+// function callbackFuncWithData(data)
+// {
+//   console.log("from callbackFuncWithData")
 // }
+// end of changes
+// }
+
+
+
+
+
+  category.children.forEach(function(value){
+
+    // if(value==null){
+      // console.log(value.categoryPath)
+
+      // value.children.forEach(function(array){
+      //   if (error) return console.error(error);
+      //
+        // console.log(array.name);
+      //   count = count + 1;
+
+
+
+
+        // break;)
+    // }
+    // else {
+    // value.children.forEach(function(array){
+      // if(array!=null){
+        // console.log(array.name);
+
+      //   walmart.search(array.name).then(function(response){
+      // // console.log(Request)
+      // async.each(response.items, function(datafeed, cb){
+      //   // console.log("check")
+      //
+      //   // Parsing items for SEBA Product model
+      //   datafeed = {
+      //     id: datafeed.itemId,
+      //     name: datafeed.name,
+      //     price: datafeed.salePrice,
+      //     brand: datafeed.brandName,
+      //     stock: datafeed.stock,
+      //
+      //   };
+      //
+      //   console.log(datafeed);
+      //
+      //   Datafeed.create(datafeed, function (err, saveddatafeed) {
+      //     if (err) {
+      //       console.log("Error: saving Datafeed: ", err);
+      //     }
+      //     cb();
+      //   });
+      //   }, function (err) {
+      //   if (err) {
+      //     console.log("Error: ", err);
+      //   } else {
+      //     console.log("All datafeed saved!");
+      //     process.exit();
+      //   }
+      //   });
+      // });
+
+
+
+
+
+      // });
+// }
+  });
+
+}
 
 
   // console.log("Crawling for the category",query_test); //category.id);
   // walmart.search(query = "?", categoryId = 976759, numItems = 100).then(function(response){
-    //   walmart.search("Macbook").then(function(response){
-    // // console.log(Request)
+      // walmart.search("Macbook").then(function(response){
+    // console.log(Request)
     // async.each(response.items, function(datafeed, cb){
-    //   // console.log("check")
-    //
-    //   // Parsing items for SEBA Product model
-    //   datafeed = {
-    //     id: datafeed.itemId,
-    //     name: datafeed.name,
-    //     price: datafeed.salePrice,
-    //     brand: datafeed.brandName,
-    //     stock: datafeed.stock,
-    //
-    //   };
-    //
-    //   // console.log(datafeed);
-    //
+      // console.log("check")
+
+      // Parsing items for SEBA Product model
+      // datafeed = {
+      //   id: datafeed.itemId,
+      //   name: datafeed.name,
+      //   price: datafeed.salePrice,
+      //   brand: datafeed.brandName,
+      //   stock: datafeed.stock,
+      //
+      // };
+
+      // console.log(datafeed);
+
     //   Datafeed.create(datafeed, function (err, saveddatafeed) {
     //     if (err) {
     //       console.log("Error: saving Datafeed: ", err);
@@ -204,5 +225,3 @@ walmart.taxonomy().then(function (response) {
     }
   });
 });
-
-console.log(count)
