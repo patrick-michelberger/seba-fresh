@@ -17,7 +17,30 @@ var CartSchema = new mongoose.Schema({
       default: 1
     }
   }],
-  "group": {},
+  "group": {
+    _id: mongoose.Schema.Types.ObjectId,
+    name: String,
+    address: {
+      street: String,
+      street_number: String,
+      additional_address: String,
+      postcode: String,
+      city: String,
+      geolocation: {
+        latitude: String,
+        longitude: String
+      }
+    },
+    users: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      default: []
+    }],
+    admin: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }
+  },
   "totalAmount": {
     type: Number,
     default: 0

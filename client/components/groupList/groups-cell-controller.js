@@ -28,7 +28,6 @@ class GroupCellController {
 
   isAdmin(group) {
     var userId = this.Auth.getCurrentUser()._id;
-    console.log("userId: ", userId);
     return userId === group.admin._id;
   }
 
