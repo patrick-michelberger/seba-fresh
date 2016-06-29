@@ -31,14 +31,15 @@ function saveUpdates(updates) {
   };
 }
 
-function addItemToCart(data) {
+function addItemToCart(req) {
+  var data = req.body;
+  var user = req.user;
   return function (cart) {
-    cart.items = addToItems(cart.items, data.product, data.userId);
+    cart.items = addToItems(cart.items, data.product, user);
     cart.totalAmount += data.product.price;
     cart.totalQuantity += 1;
     return cart.save()
       .then(updated => {
-        console.log("updated cart: ", updated);
         return updated;
       });
   };
@@ -59,17 +60,21 @@ function removeItemFromCart(data) {
   };
 }
 
-function addToItems(items, product, userId) {
+function addToItems(items, product, user) {
   for (var i = 0; i < items.length; i++) {
     var item = items[i];
-    if (item.product._id == product._id && item.user == userId) {
+    if (String(item.product._id) == product._id && item.user._id.equals(user._id)) {
       item.quantity += 1;
       return items;
     }
   }
   items.push({
     product: product,
-    user: userId
+    user: {
+      "first_name": user.first_name,
+      "last_name": user.last_name,
+      "_id": user._id
+    }
   });
   return items;
 }
@@ -77,7 +82,7 @@ function addToItems(items, product, userId) {
 function removeFromItems(items, productId, userId, quantity) {
   for (var i = 0; i < items.length; i++) {
     var item = items[i];
-    if (item.product._id == productId && item.user == userId) {
+    if (item.product._id == productId && item.user._id == userId) {
       if (item.quantity <= quantity) {
         items.splice(i, 1);
       } else {
@@ -153,7 +158,7 @@ export function create(req, res) {
 export function addItem(req, res) {
   return Cart.findById(req.params.id).exec()
     .then(handleEntityNotFound(res))
-    .then(addItemToCart(req.body))
+    .then(addItemToCart(req))
     .then(respondWithResult(res))
     .catch(handleError(res));
 }

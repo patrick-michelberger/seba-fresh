@@ -14,10 +14,7 @@ var CartSchema = new mongoose.Schema({
       autopopulate: true,
       default: []
     },
-    "user": {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User'
-    },
+    "user": {},
     "quantity": {
       type: Number,
       default: 1
