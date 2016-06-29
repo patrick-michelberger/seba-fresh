@@ -128,7 +128,7 @@ export function index(req, res) {
         }
       }]
     })
-    .populate('items.product items.user group.admin group.users')
+    .populate('items.product items.user')
     .exec()
     .then(respondWithResult(res))
     .catch(handleError(res));

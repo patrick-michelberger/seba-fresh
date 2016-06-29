@@ -146,9 +146,11 @@ export function destroy(req, res) {
   return Group.findById(req.params.id).exec()
     .then(handleEntityNotFound(res))
     .then(function (foundGroup) {
-      Cart.findOne({
-        "group": req.params.id
-      }).then(function (foundCart) {
+      var query = {
+        "group._id": foundGroup._id
+      };
+      console.log("query: ", query);
+      Cart.findOne(query).then(function (foundCart) {
         foundCart.remove()
           .then(() => {
             removeEntity(res)(foundGroup);

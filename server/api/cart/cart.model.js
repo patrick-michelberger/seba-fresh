@@ -38,7 +38,7 @@ var CartSchema = new mongoose.Schema({
 
 // middleware
 var autoPopulateLead = function (next) {
-  this.populate('items.product items.user group.admin group.users');
+  this.populate('items.product items.user');
   next();
 };
 
