@@ -19,6 +19,7 @@ class GroupCellController {
 
   deleteGroup(group) {
     this.$http.delete('/api/groups/' + group._id);
+    this.$rootScope.$emit("group:deleted", group._id);
   }
 
   // TODO Still used?

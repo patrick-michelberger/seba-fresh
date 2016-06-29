@@ -35,11 +35,18 @@ var CartSchema = new mongoose.Schema({
   collection: 'seba-carts'
 });
 
+// middleware
 var autoPopulateLead = function (next) {
   this.populate('items.product items.user');
   next();
 };
 
 CartSchema.plugin(autopopulate);
+
+CartSchema.pre('remove', function (next) {
+  this.model('Cart').remove({
+    group: this._id
+  }, next);
+});
 
 export default mongoose.model('Cart', CartSchema);

@@ -96,6 +96,10 @@
         return currentCart;
       },
 
+      setCurrentCart(cart) {
+        currentCart = cart;
+      },
+
       clear() {
         currentCart = false;
         carts = [];

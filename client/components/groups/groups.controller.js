@@ -64,13 +64,15 @@ class GroupsController {
         }
 
         self.Group.save(group,
-          function () {
+          function (data) {
+            var createdGroup = data.group;
+            var createdCart = data.cart;
+            self.ShopService.setCurrentCart(createdCart);
             self.isSending = false;
             form.$setUntouched();
             form.$setPristine();
             self.group = {};
             var carts = self.ShopService.getCarts();
-            console.log("carts: ", carts);
             self.$rootScope.$emit('onboarding:next');
           },
           function (err) {
