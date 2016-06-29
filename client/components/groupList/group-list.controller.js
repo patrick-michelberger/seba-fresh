@@ -15,9 +15,7 @@ class GroupListController {
   $onInit() {
     var self = this;
     this.$rootScope.$on('group:deleted', function () {
-      console.log("group deleted: ", self.$scope.groups.length);
       if (self.$scope.groups.length < 2) {
-        console.log("ShopService clear");
         self.ShopService.clear();
       }
     });

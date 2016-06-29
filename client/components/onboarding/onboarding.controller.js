@@ -22,12 +22,15 @@ class OnboardingController {
       socket.unsyncUpdates('group');
     });
 
-    $rootScope.$on('onboarding:next', function () {
-      self.showSuccessMessage = true;
-      self.$timeout(function () {
-        self.showSuccessMessage = false;
-        self._updateIndex();
-      }, 1500);
+    $rootScope.$on('onboarding:next', function (event, index) {
+      if (index) {
+        self._setIndex(index);
+      } else {
+        self.showSuccessMessage = true;
+        self.$timeout(function () {
+          self.showSuccessMessage = false;
+        }, 1500);
+      }
     });
 
     $rootScope.$on('onboarding:invited', function () {
@@ -58,6 +61,10 @@ class OnboardingController {
   disableProducts() {
     var result = !this.groups || !this.groups[0] ||  !this.Auth.getCurrentUser().friendsInvited;
     return result;
+  }
+
+  _setIndex(index) {
+    this.selectedIndex = index;
   }
 
   _updateIndex() {

@@ -22,6 +22,15 @@ class GroupCellController {
     this.$rootScope.$emit("group:deleted", group._id);
   }
 
+  buyGroceries() {
+    this.$rootScope.$emit('onboarding:next', 2);
+  }
+
+  isAdmin(group) {
+    var userId = this.Auth.getCurrentUser()._id;
+    return userId === group.admin._id;
+  }
+
   // TODO Still used?
   inviteFriends(group) {
     var url = this.baseShareUrl + '/group/' + group._id + '/invite';
