@@ -9,7 +9,8 @@ class ShoppingCartController {
       return ShopService.getCurrentCart();
     }, function (currentCart) {
       self.currentCart = currentCart;
-      console.log("currentCart: ", currentCart);
+      self.groupedItems = _.groupBy(self.currentCart.items, 'user._id');
+      console.log("groupedItems: ", self.groupedItems);
     });
   }
 
@@ -25,6 +26,14 @@ class ShoppingCartController {
     if (quantity > 0) {
       product.quantity = quantity - 1;
     }
+  }
+
+  calculateOrderValue(items) {
+    var value = 0;
+    items.forEach(function (item) {
+      value += item.product.price * item.quantity;
+    });
+    return value.toFixed(2);
   }
 }
 

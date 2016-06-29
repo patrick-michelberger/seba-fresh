@@ -1,15 +1,13 @@
-shopping-cart .product-image img {
-  width: 80px;
+/*shopping-cart .product-image img {
+  width: 60px;
 }
-shopping-cart .product-image {
-  width: 100px;
-}
+shopping-cart .product-image {}
 shopping-cart .cart-items-count {
   margin-left: 10px;
   margin-right: 5px;
 }
 shopping-cart .cart-list-item {
-  margin: 15px;
+  margin: 10px;
 }
 shopping-cart .product-name {
   font-size: 14px;
@@ -33,4 +31,107 @@ shopping-cart .cart-item-actions button:last-child {
 shopping-cart .sf-md-cart-icon {
   top: 5px;
   position: relative;
+}
+shopping-cart .user-picture {}
+shopping-cart .user-container {
+  margin: 10px;
+}
+shopping-cart .user-picture img {
+  border-radius: 50%;
+  width: 60px;
+}
+shopping-cart .user-cart-total-amount,
+shopping-cart .user-info {
+  padding-top: 25px;
+  padding-bottom: 15px;
+}
+shopping-cart .user-info {
+  padding-right: 0;
+  padding-left: 15px;
+  width: 120px;
+}
+shopping-cart .user-cart-total-amount {
+  padding-right: 15px;
+}
+shopping-cart .user-name {
+  font-size: 12px;
+}
+shopping-cart .user-cart-quantity {
+  font-size: 12px;
+  color: #888;
+}
+shopping-cart .user-cart-total-amount {
+  font-weight: bold;
+  font-size: 13px;
+  text-align: right;
+}
+*/
+/**
+ * Group Cart total
+ */
+shopping-cart .group-cart-total {
+  background-color: $sf-color-red;
+}
+shopping-cart .group-cart-total .cart-order-info {
+  position: absolute;
+  right: 25px;
+  top: 20px;
+}
+shopping-cart .cart-total-quantity {
+  margin-right: 10px;
+  font-size: 14px;
+}
+shopping-cart .cart-total-amount {
+  text-decoration: underline;
+  font-weight: bold;
+  margin-top: 5px;
+}
+/**
+ * General cart cell
+ */
+shopping-cart .cart-cell-container {
+  margin: 10px;
+}
+shopping-cart .cart-cell-picture img {
+  border-radius: 50%;
+  width: 60px;
+}
+shopping-cart .cart-cell-info {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+shopping-cart .cart-cell-info {
+  padding-right: 0;
+  padding-left: 15px;
+  width: 150px;
+}
+shopping-cart .cart-cell-title {
+  font-size: 12px;
+  max-height: 30px;
+  overflow: hidden;
+  line-height: 14px;
+}
+shopping-cart .cart-cell-description {
+  font-size: 12px;
+  color: #888;
+}
+shopping-cart .cart-cell-total-amount {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+shopping-cart .cart-cell-total-amount {
+  padding-right: 15px;
+}
+shopping-cart .cart-cell-total-amount {
+  font-weight: bold;
+  font-size: 13px;
+  text-align: right;
+}
+/**
+ * User Container
+ */
+shopping-cart .user-container {
+  background-color: #f4f5f7;
+  margin: 0;
+  padding: 10px;
 }

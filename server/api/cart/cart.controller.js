@@ -37,6 +37,8 @@ function addItemToCart(req) {
   return function (cart) {
     cart.items = addToItems(cart.items, data.product, user);
     cart.totalAmount += data.product.price;
+    cart.totalAmount = parseFloat(Math.round(cart.totalAmount * 100) / 100);
+    cart.totalAmount.toFixed(2);
     cart.totalQuantity += 1;
     return cart.save()
       .then(updated => {
@@ -49,6 +51,8 @@ function removeItemFromCart(data) {
   return function (cart) {
     cart.items = removeFromItems(cart.items, data.product._id, data.userId, 1);
     cart.totalAmount -= data.product.price;
+    cart.totalAmount = parseFloat(Math.round(cart.totalAmount * 100) / 100);
+    cart.totalAmount.toFixed(2);
     if (cart.totalAmount < 0) {
       cart.totalAmount = 0;
     }
@@ -71,9 +75,10 @@ function addToItems(items, product, user) {
   items.push({
     product: product,
     user: {
+      "_id": user._id,
       "first_name": user.first_name,
       "last_name": user.last_name,
-      "_id": user._id
+      "picture": user.picture
     }
   });
   return items;
