@@ -26,6 +26,14 @@ class ShoppingCartController {
         self._removeFromCurrentUserItems(product);
         self.currentCart = self.ShopService.getCurrentCart();
       });
+      self.$rootScope.$on('cart:create', function (event, cart) {
+        cart.then(function (currentCart) {
+          self.currentCart = currentCart;
+          var groupedItems = self.calculatedGroupedItems(currentCart.items);
+          self.flatmatesItems = groupedItems.flatmates;
+          self.currentUserItems = groupedItems.currentUser;
+        });
+      });
     });
   }
 

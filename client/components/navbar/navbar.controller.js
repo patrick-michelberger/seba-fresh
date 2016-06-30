@@ -3,8 +3,9 @@
 class NavbarController {
   isCollapsed = true;
 
-  constructor($scope, Auth, socket, $timeout, $log, $mdSidenav, DialogService, ShopService) {
+  constructor($rootScope, $scope, Auth, socket, $timeout, $log, $mdSidenav, DialogService, ShopService) {
     this.$scope = $scope;
+    this.$rootScope = $rootScope;
     this.$timeout = $timeout;
     this.$log = $log;
     this.carts = [];
@@ -27,13 +28,6 @@ class NavbarController {
 
   $onInit() {
     var self = this;
-    /* TODO Still necessary
-    this.$scope.$watch(function () {
-      return self.ShopService.getCurrentCart();
-    }, function (currentCart) {
-      self.currentCart = currentCart;
-    });
-    */
     this.socket.syncUpdates('cart', this.carts);
   }
 

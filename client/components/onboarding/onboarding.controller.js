@@ -64,6 +64,11 @@ class OnboardingController {
     return result;
   }
 
+  disableCreateGroup() {
+    var result = this.groups && this.groups[0];
+    return result;
+  }
+
   _setIndex(index) {
     this.selectedIndex = index;
   }

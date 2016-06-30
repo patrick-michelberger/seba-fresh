@@ -2,7 +2,7 @@
 (function () {
 
   class ProductsComponent {
-    constructor($scope, $stateParams, socket, AssortmentService, ShopService, DialogService) {
+    constructor($scope, $stateParams, socket, AssortmentService, ShopService, DialogService, Cart) {
       var self = this;
       this.socket = socket;
       this.AssortmentService = AssortmentService;
@@ -13,6 +13,7 @@
       this.addToCart = this.addToCart;
       this.removeFromCart = this.removeFromCart;
       this.ShopService = ShopService;
+      this.Cart = Cart;
       this.DialogService = DialogService;
       $scope.$on('$locationChangeSuccess', function (event) {
         checkDetailView();
@@ -32,9 +33,7 @@
 
     $onInit() {
       this.products = this.AssortmentService.fetchAll();
-
-      console.log("this.products: ", this.products);
-      this.currentCart = this.ShopService.getCurrentCart();
+      this.ShopService.setCurrentCart(this.Cart.get());
     }
 
     addToCart(product) {

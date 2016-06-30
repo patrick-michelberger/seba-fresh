@@ -112,10 +112,12 @@
 
       setCurrentCart(cart) {
         currentCart = cart;
+        $rootScope.$emit("cart:create", cart.$promise);
       },
 
       queryCart() {
-        this.setCurrentCart(Cart.query());
+        currentCart = Cart.get();
+        return currentCart;
       },
 
       clear() {

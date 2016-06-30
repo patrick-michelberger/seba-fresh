@@ -1,4 +1,4 @@
-<md-card ng-repeat="group in groups" ng-controller="GroupCellController as cellCtrl">
+<md-card ng-repeat="group in groups | limitTo:1" ng-controller="GroupCellController as cellCtrl">
   <img ng-src="{{imagePath}}" class="md-card-image">
   <md-card-title>
     <md-card-title-text>

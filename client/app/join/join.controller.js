@@ -26,7 +26,7 @@
       var self = this;
       var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs')) && this.customFullscreen;
 
-      function DialogController($scope, $state, $mdDialog) {
+      function DialogController($rootScope, $scope, $state, $mdDialog) {
         $scope.group = self.group;
         $scope.refreshMap = self.refreshMap;
         $scope.decline = function () {
@@ -47,7 +47,6 @@
             }, {
               id: self.getCurrentUser()._id
             }, function () {
-              self.ShopService.queryCart();
               $state.go('products');
             }, function (err) {
               // TODO Error Page
@@ -67,7 +66,7 @@
         targetEvent: ev,
         clickOutsideToClose: true,
         fullscreen: useFullScreen,
-        controller: ['$scope', '$state', '$mdDialog', DialogController],
+        controller: ['$rootScope', '$scope', '$state', '$mdDialog', DialogController],
         onShowing: function () {
           self.refreshMap = false;
           self.$timeout(function () {

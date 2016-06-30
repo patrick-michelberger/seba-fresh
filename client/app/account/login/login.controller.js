@@ -12,6 +12,7 @@ class LoginController {
   }
 
   login(form) {
+    var self = this;
     this.submitted = true;
 
     if (form.$valid) {
@@ -20,7 +21,7 @@ class LoginController {
           password: this.user.password
         })
         .then((user) => {
-          ShopService.queryCart();
+          self.ShopService.queryCart();
           // Logged in, redirect to home
           if (self.redirectUrl) {
             self.$location.path(self.$stateParams.redirectUrl);
