@@ -2,7 +2,7 @@
 
 (function () {
 
-  function AssortmentService($rootScope, Util, ProductService, ShopService) {
+  function AssortmentService($rootScope, Util, ProductService, ShopService, Auth) {
     var safeCb = Util.safeCb;
     var products = [];
 
@@ -66,7 +66,7 @@
       updateQuantity(item) {
         var quantity = item.quantity;
         for (var i = 0; i < products.length; i++) {
-          if (products[i]._id == item.product._id) {
+          if (products[i]._id == item.product._id && item.user._id === Auth.getCurrentUser()._id) {
             products[i].quantity = item.quantity;
           }
         }
@@ -76,7 +76,7 @@
         var currentCart = ShopService.getCurrentCart();
         var items = currentCart.items;
         for (var i = 0; i < items.length; i++) {
-          if (items[i].product._id == product._id) {
+          if (items[i].product._id == product._id && items[i].user._id === Auth.getCurrentUser()._id) {
             product.quantity = items[i].quantity;
             return product;
           }

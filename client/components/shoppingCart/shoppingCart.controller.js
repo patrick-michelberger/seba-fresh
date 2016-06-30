@@ -2,15 +2,17 @@
 
 class ShoppingCartController {
 
-  constructor($scope, ShopService) {
+  constructor($scope, ShopService, Auth) {
     var self = this;
     this.ShopService = ShopService;
+    this.Auth = Auth;
     $scope.$watch(function () {
       return ShopService.getCurrentCart();
     }, function (currentCart) {
       self.currentCart = currentCart;
-      self.groupedItems = _.groupBy(self.currentCart.items, 'user._id');
-      console.log("groupedItems: ", self.groupedItems);
+      var groupedItems = self.calculatedGroupedItems(currentCart.items);
+      self.flatmatesItems = groupedItems.flatmates;
+      self.currentUserItems = groupedItems.currentUser;
     });
   }
 
@@ -37,13 +39,29 @@ class ShoppingCartController {
   }
 
   calculateOrderAmount(items) {
-    console.log("items: ", items);
     var value = 0;
     items.forEach(function (item) {
-      console.log("item.quantity: ", item.quantity);
       value += item.quantity;
     });
     return value;
+  }
+
+  calculatedGroupedItems(items) {
+    var groupedItems = _.groupBy(items, 'user._id');
+    var currentUser = this.Auth.getCurrentUser();
+    var currentUserItems = [];
+    if (currentUser && currentUser._id && groupedItems[currentUser._id]) {
+      currentUserItems = groupedItems[currentUser._id];
+      delete groupedItems[currentUser._id]
+    }
+    return {
+      "currentUser": currentUserItems,
+      "flatmates": groupedItems
+    }
+  }
+
+  isCurrentUser(userId) {
+    return this.Auth.getCurrentUser()._id === userId;
   }
 }
 

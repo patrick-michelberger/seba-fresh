@@ -125,7 +125,22 @@ export function acceptInvitation(req, res) {
   return Group.findById(req.params.id).exec()
     .then(handleEntityNotFound(res))
     .then(saveInvitee(req.body))
-    .then(respondWithResult(res))
+    .then(function (updatedGroup) {
+      return Cart.update({
+        'group._id': updatedGroup._id
+      }, {
+        $addToSet: {
+          'group.users': req.body.id
+        }
+      }, {
+        multi: true
+      }, function (err, updated) {
+        if (err) {
+          console.log("Error: ", err);
+        }
+        respondWithResult(res)(updatedGroup);
+      })
+    })
     .catch(handleError(res));
 }
 
