@@ -7,7 +7,10 @@ angular.module('sebaFreshApp')
         url: '/login',
         templateUrl: 'app/account/login/login.html',
         controller: 'LoginController',
-        controllerAs: 'vm'
+        controllerAs: 'vm',
+        params: {
+          redirectUrl: null
+        }
       })
       .state('logout', {
         url: '/logout?referrer',
@@ -28,7 +31,7 @@ angular.module('sebaFreshApp')
         controller: 'SignupController',
         controllerAs: 'vm',
         params: {
-          redirectUrl: false
+          redirectUrl: null
         }
       })
       .state('settings', {

@@ -51,6 +51,7 @@
               console.log("error: ", err);
             }).$promise;
           } else {
+            console.log("redirect to signup...");
             $state.go('signup', {
               'redirectUrl': '/group/' + $scope.group._id + '/accept'
             });

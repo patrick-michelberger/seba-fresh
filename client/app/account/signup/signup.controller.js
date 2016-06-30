@@ -12,6 +12,7 @@ class SignupController {
     this.Auth = Auth;
     this.$state = $state;
     this.$location = $location;
+    this.redirectUrl = $stateParams.redirectUrl || false;
   }
 
   register(form) {
@@ -27,21 +28,19 @@ class SignupController {
         })
         .then(() => {
           // Account created, redirect to next page
-          if (self.$stateParams.redirectUrl) {
+          if (self.redirectUrl) {
             self.$location.path(self.$stateParams.redirectUrl);
           } else {
-            self.$state.go('products');
+            if (!user.friendsInvited) {
+              this.$state.go('onboarding');
+            } else {
+              this.$state.go('products');
+            }
           }
         })
         .catch(err => {
           err = err.data;
           self.errors = {};
-
-          // Update validity of form fields that match the mongoose errors
-          /*angular.forEach(err.errors, (error, field) => {
-            form[field].$setValidity('mongoose', false);
-            self.errors[field] = error.message;
-          });*/
         });
     }
   }

@@ -14,7 +14,6 @@
       this.removeFromCart = this.removeFromCart;
       this.ShopService = ShopService;
       this.DialogService = DialogService;
-
       $scope.$on('$locationChangeSuccess', function (event) {
         checkDetailView();
       });
@@ -23,13 +22,11 @@
         var productId = $stateParams.productId;
         if (productId) {
           self.AssortmentService.fetch(productId, function (product) {
-            console.log("fetched product: ", product);
             self.selectedProduct = product;
             self.DialogService.showProductModal(product);
           });
         }
       };
-
       checkDetailView();
     }
 

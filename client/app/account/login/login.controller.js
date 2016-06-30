@@ -1,13 +1,13 @@
 'use strict';
 
 class LoginController {
-  constructor(Auth, $state) {
+  constructor(Auth, $state, $stateParams) {
     this.user = {};
     this.errors = {};
     this.submitted = false;
-
     this.Auth = Auth;
     this.$state = $state;
+    this.redirectUrl = $stateParams.redirectUrl || false;
   }
 
   login(form) {
@@ -20,10 +20,14 @@ class LoginController {
         })
         .then((user) => {
           // Logged in, redirect to home
-          if (user.onboardingRequired) {
-            this.$state.go('onboarding');
+          if (self.redirectUrl) {
+            self.$location.path(self.$stateParams.redirectUrl);
           } else {
-            this.$state.go('products');
+            if (!user.friendsInvited) {
+              this.$state.go('onboarding');
+            } else {
+              this.$state.go('products');
+            }
           }
         })
         .catch(err => {
