@@ -7,6 +7,7 @@ import * as auth from '../../auth/auth.service';
 var router = express.Router();
 
 router.get('/', auth.isAuthenticated(), controller.index);
+router.get('/me', auth.isAuthenticated(), controller.me);
 router.get('/:id', auth.isAuthenticated(), controller.show);
 router.post('/', auth.isAuthenticated(), controller.create);
 router.put('/:id', auth.isAuthenticated(), controller.update);

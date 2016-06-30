@@ -6,6 +6,12 @@
     return $resource('/api/carts/:id/:controller', {
       id: '@_id'
     }, {
+      get: {
+        method: 'GET',
+        params: {
+          id: 'me'
+        }
+      },
       add: {
         method: 'PUT',
         params: {

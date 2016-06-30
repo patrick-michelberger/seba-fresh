@@ -1,11 +1,12 @@
 'use strict';
 
 class LoginController {
-  constructor(Auth, $state, $stateParams) {
+  constructor(Auth, $state, $stateParams, ShopService) {
     this.user = {};
     this.errors = {};
     this.submitted = false;
     this.Auth = Auth;
+    this.ShopService = ShopService;
     this.$state = $state;
     this.redirectUrl = $stateParams.redirectUrl || false;
   }
@@ -19,6 +20,7 @@ class LoginController {
           password: this.user.password
         })
         .then((user) => {
+          ShopService.queryCart();
           // Logged in, redirect to home
           if (self.redirectUrl) {
             self.$location.path(self.$stateParams.redirectUrl);

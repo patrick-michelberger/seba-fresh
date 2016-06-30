@@ -11,7 +11,7 @@ class NavbarController {
     this.$mdSidenav = $mdSidenav;
     this.DialogService = DialogService;
     this.ShopService = ShopService;
-    this.currentCart = {};
+    this.getCurrentCart = ShopService.getCurrentCart
     this.isLoggedIn = Auth.isLoggedIn;
     this.isAdmin = Auth.isAdmin;
     this.getCurrentUser = Auth.getCurrentUser;
@@ -27,11 +27,13 @@ class NavbarController {
 
   $onInit() {
     var self = this;
+    /* TODO Still necessary
     this.$scope.$watch(function () {
       return self.ShopService.getCurrentCart();
     }, function (currentCart) {
       self.currentCart = currentCart;
     });
+    */
     this.socket.syncUpdates('cart', this.carts);
   }
 

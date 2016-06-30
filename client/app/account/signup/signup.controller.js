@@ -7,11 +7,12 @@ class SignupController {
   submitted = false;
   //end-non-standard
 
-  constructor(Auth, $state, $stateParams, $location) {
+  constructor(Auth, $state, $stateParams, $location, ShopService) {
     this.$stateParams = $stateParams;
     this.Auth = Auth;
     this.$state = $state;
     this.$location = $location;
+    this.ShopService = ShopService;
     this.redirectUrl = $stateParams.redirectUrl || false;
   }
 
@@ -26,7 +27,8 @@ class SignupController {
           email: this.user.email,
           password: this.user.password
         })
-        .then(() => {
+        .then((user) => {
+          self.ShopService.queryCart();
           // Account created, redirect to next page
           if (self.redirectUrl) {
             self.$location.path(self.$stateParams.redirectUrl);

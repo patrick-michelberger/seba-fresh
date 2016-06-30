@@ -58,9 +58,10 @@
       },
 
       updateQuantities() {
-        var currentCart = ShopService.getCurrentCart();
-        var currentItems = currentCart.items;
-        currentItems.forEach(Assortment.updateQuantity);
+        ShopService.getCurrentCart(function (currentCart) {
+          var currentItems = currentCart.items ||  [];
+          currentItems.forEach(Assortment.updateQuantity);
+        });
       },
 
       updateQuantity(item) {

@@ -2,13 +2,14 @@
 (function () {
 
   class JoinComponent {
-    constructor($scope, $stateParams, $timeout, $state, Group, $mdDialog, $mdMedia, NgMap, Auth) {
+    constructor($scope, $stateParams, $timeout, $state, Group, $mdDialog, $mdMedia, NgMap, Auth, ShopService) {
       var self = this;
       var groupId = $stateParams.groupId;
       this.$mdDialog = $mdDialog;
       this.$mdMedia = $mdMedia;
       this.$scope = $scope;
       this.Group = Group;
+      this.ShopService = ShopService;
       this.isLoggedIn = Auth.isLoggedIn;
       this.getCurrentUser = Auth.getCurrentUser;
       this.$state = $state;
@@ -46,12 +47,13 @@
             }, {
               id: self.getCurrentUser()._id
             }, function () {
-              console.log("Success");
+              self.ShopService.queryCart();
+              $state.go('products');
             }, function (err) {
+              // TODO Error Page
               console.log("error: ", err);
             }).$promise;
           } else {
-            console.log("redirect to signup...");
             $state.go('signup', {
               'redirectUrl': '/group/' + $scope.group._id + '/accept'
             });

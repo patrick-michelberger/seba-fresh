@@ -60,6 +60,7 @@
        * @return {Promise}
        */
       createUser(user, callback) {
+        var self = this;
         return User.save(user,
           function (data) {
             $cookies.put('token', data.token);

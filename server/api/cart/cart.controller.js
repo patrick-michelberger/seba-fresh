@@ -144,6 +144,26 @@ export function index(req, res) {
     .catch(handleError(res));
 }
 
+/**
+ * Get user's current cart
+ */
+export function me(req, res, next) {
+  var userId = req.user._id;
+
+  return Cart.findOne({
+      '$or': [{
+        'group.admin': userId
+      }, {
+        'group.users': {
+          '$in': [userId]
+        }
+      }]
+    }).exec()
+    .then(handleEntityNotFound(res))
+    .then(respondWithResult(res))
+    .catch(handleError(res));
+}
+
 // Gets a single Cart from the DB
 export function show(req, res) {
   return Cart.findById(req.params.id).exec()

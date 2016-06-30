@@ -12,21 +12,21 @@
         <!--<md-button class="sf-call-to-action" ui-sref="signup">Create Shopping Group</md-button>-->
         <md-button ui-sref="signup">Signup</md-button>
         <md-button ui-sref="login">Login</md-button>
-        <a ng-if="nav.currentCart" class="sf-mini-cart md-button sf-cart-toggle" ui-sref="login">
+        <a ng-if="nav.getCurrentCart()" class="sf-mini-cart md-button sf-cart-toggle" ui-sref="login">
           <span class="sf-cart-total-amount">
             <span class="sf-cart-currency-sign">
               $
             </span>
           <span class="sf-cart-amount-dollars">
-              {{nav.currentCart.totalAmount | floor}}
+              {{nav.getCurrentCart().totalAmount | floor}}
               </span>
           <span class="sf-cart-amount-cents">
-              {{nav.currentCart.totalAmount | cents}}
+              {{nav.getCurrentCart().totalAmount | cents}}
             </span>
           </span>
           <span class="sf-cart-total-icon">
             <i class="sf-md-cart-icon material-icons">shopping_cart</i>
-            <span class="sf-cart-badge">{{nav.currentCart.totalQuantity | amount}}</span>
+            <span class="sf-cart-badge">{{nav.getCurrentCart().totalQuantity | amount}}</span>
           </span>
         </a>
         </a>
@@ -34,22 +34,22 @@
       <div ng-show="vm.isLoggedIn()">
         <md-button class="sf-user-name" ui-sref="settings"><span class="greeting">Hello</span> {{ vm.getCurrentUser().first_name }} {{vm.getCurrentUser().last_name }}</md-button>
         <md-button ui-sref="logout">Logout</md-button>
-        <a ng-if="nav.currentCart" class="sf-mini-cart md-button" ng-click="nav.openCart()">
+        <a ng-if="nav.getCurrentCart()" class="sf-mini-cart md-button" ng-click="nav.openCart()">
           <div class="sf-cart-toggle">
             <span class="sf-cart-total-amount">
             <span class="sf-cart-currency-sign">
               $
             </span>
             <span class="sf-cart-amount-dollars">
-            {{nav.currentCart.totalAmount | floor}}
+            {{nav.getCurrentCart().totalAmount | floor}}
             </span>
             <span class="sf-cart-amount-cents">
-            {{nav.currentCart.totalAmount | cents}}
+            {{nav.getCurrentCart().totalAmount | cents}}
               </span>
             </span>
             <span class="sf-cart-total-icon">
             <i class="sf-md-cart-icon material-icons">shopping_cart</i>
-            <span class="sf-cart-badge">{{nav.currentCart.totalQuantity | amount}}</span>
+            <span class="sf-cart-badge">{{nav.getCurrentCart().totalQuantity | amount}}</span>
             </span>
           </div>
         </a>

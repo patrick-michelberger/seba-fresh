@@ -67,6 +67,7 @@ class GroupsController {
           function (data) {
             var createdGroup = data.group;
             var createdCart = data.cart;
+            // TODO 
             self.ShopService.setCurrentCart(createdCart);
             self.isSending = false;
             form.$setUntouched();

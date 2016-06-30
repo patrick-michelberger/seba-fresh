@@ -8,15 +8,11 @@
     var currentCart = false;
 
     if (Auth.isLoggedIn()) {
-      Cart.query(function (carts) {
-        if (carts && carts[0]) {
-          currentCart = carts[0];
-        }
-      });
+      currentCart = Cart.get();
     }
 
     var Shop = {
-
+      currentCart: currentCart,
       /**
        * Add a product to a cart
        *
@@ -91,13 +87,35 @@
             return {};
           });
       },
-
-      getCurrentCart() {
-        return currentCart;
+      /**
+       * Gets user's current cart
+       *   (synchronous|asynchronous)
+       *
+       * @param  {Function|*} callback - optional, funciton(user)
+       * @return {Object|Promise}
+       */
+      getCurrentCart(callback) {
+        if (arguments.length === 0) {
+          return currentCart;
+        }
+        var value = (currentCart.hasOwnProperty('$promise')) ?
+          currentCart.$promise : currentCart;
+        return $q.when(value)
+          .then(cart => {
+            safeCb(callback)(cart);
+            return cart;
+          }, () => {
+            safeCb(callback)({});
+            return {};
+          });
       },
 
       setCurrentCart(cart) {
         currentCart = cart;
+      },
+
+      queryCart() {
+        this.setCurrentCart(Cart.query());
       },
 
       clear() {
