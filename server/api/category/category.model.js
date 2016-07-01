@@ -15,5 +15,4 @@ var CategorySchema = new mongoose.Schema({
   collection: 'seba-categories'
 });
 
-
 module.exports = mongoose.model('Category', CategorySchema);

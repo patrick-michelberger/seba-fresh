@@ -13,7 +13,7 @@
 
       // Check for user status
       var user = this.getCurrentUser();
-      if (user.onboardingRequired) {
+      if (Auth.isLoggedIn() && !user.friendsInvited) {
         $state.go('onboarding');
       }
     }

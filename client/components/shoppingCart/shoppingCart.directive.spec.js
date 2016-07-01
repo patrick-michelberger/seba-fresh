@@ -1,10 +1,10 @@
 'use strict';
 
-describe('Directive: groupList', function () {
+describe('Directive: shoppingCart', function () {
 
   // load the directive's module and view
   beforeEach(module('sebaFreshApp'));
-  beforeEach(module('components/groupList/groupList.html'));
+  beforeEach(module('components/shoppingCart/shoppingCart.html'));
 
   var element, scope;
 
@@ -13,9 +13,9 @@ describe('Directive: groupList', function () {
   }));
 
   it('should make hidden element visible', inject(function ($compile) {
-    element = angular.element('<group-list></group-list>');
+    element = angular.element('<shopping-cart></shopping-cart>');
     element = $compile(element)(scope);
     scope.$apply();
-    expect(element.text()).toBe('this is the groupList directive');
+    expect(element.text()).toBe('this is the shoppingCart directive');
   }));
 });

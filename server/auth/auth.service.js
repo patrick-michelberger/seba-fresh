@@ -80,7 +80,7 @@ export function setTokenCookie(req, res) {
   }
   var token = signToken(req.user._id, req.user.role);
   res.cookie('token', token);
-  if (req.user.onboardingRequired) {
+  if (!req.user.friendsInvited) {
     res.redirect('/onboarding');
   } else {
     res.redirect('/products');

@@ -31,10 +31,15 @@ function saveUpdates(updates) {
   };
 }
 
-function addItemToCart(data) {
+function addItemToCart(req) {
+  var data = req.body;
+  var user = req.user;
   return function (cart) {
-    cart.items = addToItems(cart.items, data.product._id, data.userId);
+    cart.items = addToItems(cart.items, data.product, user);
     cart.totalAmount += data.product.price;
+    cart.totalAmount = parseFloat(Math.round(cart.totalAmount * 100) / 100);
+    cart.totalAmount.toFixed(2);
+    cart.totalQuantity += 1;
     return cart.save()
       .then(updated => {
         return updated;
@@ -44,8 +49,14 @@ function addItemToCart(data) {
 
 function removeItemFromCart(data) {
   return function (cart) {
-    cart.items = removeFromItems(cart.items, data.product._id, data.userId, data.quantity);
-    cart.totalAmount -= data.product.price * data.quantity;
+    cart.items = removeFromItems(cart.items, data.product._id, data.userId, 1);
+    cart.totalAmount -= data.product.price;
+    cart.totalAmount = parseFloat(Math.round(cart.totalAmount * 100) / 100);
+    cart.totalAmount.toFixed(2);
+    if (cart.totalAmount < 0) {
+      cart.totalAmount = 0;
+    }
+    cart.totalQuantity -= 1;
     return cart.save()
       .then(updated => {
         return updated;
@@ -53,17 +64,22 @@ function removeItemFromCart(data) {
   };
 }
 
-function addToItems(items, productId, userId) {
+function addToItems(items, product, user) {
   for (var i = 0; i < items.length; i++) {
     var item = items[i];
-    if (item.product == productId && item.user == userId) {
+    if (String(item.product._id) == product._id && item.user._id.equals(user._id)) {
       item.quantity += 1;
       return items;
     }
   }
   items.push({
-    product: productId,
-    user: userId
+    product: product,
+    user: {
+      "_id": user._id,
+      "first_name": user.first_name,
+      "last_name": user.last_name,
+      "picture": user.picture
+    }
   });
   return items;
 }
@@ -71,8 +87,8 @@ function addToItems(items, productId, userId) {
 function removeFromItems(items, productId, userId, quantity) {
   for (var i = 0; i < items.length; i++) {
     var item = items[i];
-    if (item.product == productId && item.user == userId) {
-      if (item.quantity >= quantity) {
+    if (item.product._id == productId && item.user._id == userId) {
+      if (item.quantity <= quantity) {
         items.splice(i, 1);
       } else {
         item.quantity -= quantity;
@@ -112,7 +128,38 @@ function handleError(res, statusCode) {
 
 // Gets a list of Carts
 export function index(req, res) {
-  return Cart.find().populate('items.product items.user').exec()
+  var userId = req.user._id;
+  return Cart.find({
+      '$or': [{
+        'group.admin': userId
+      }, {
+        'group.users': {
+          '$in': [userId]
+        }
+      }]
+    })
+    .populate('items.product items.user')
+    .exec()
+    .then(respondWithResult(res))
+    .catch(handleError(res));
+}
+
+/**
+ * Get user's current cart
+ */
+export function me(req, res, next) {
+  var userId = req.user._id;
+
+  return Cart.findOne({
+      '$or': [{
+        'group.admin': userId
+      }, {
+        'group.users': {
+          '$in': [userId]
+        }
+      }]
+    }).exec()
+    .then(handleEntityNotFound(res))
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
@@ -136,7 +183,7 @@ export function create(req, res) {
 export function addItem(req, res) {
   return Cart.findById(req.params.id).exec()
     .then(handleEntityNotFound(res))
-    .then(addItemToCart(req.body))
+    .then(addItemToCart(req))
     .then(respondWithResult(res))
     .catch(handleError(res));
 }

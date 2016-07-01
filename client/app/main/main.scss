@@ -1,35 +1,39 @@
-main .background {
-    position: absolute;
-    background: url(/assets/images/seba-landing-page-1.jpg) no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    height: 600px;
-    width: 100%;
-    z-index: 0;
+main {
+  height: 100%;
 }
-
+main .background {
+  position: absolute;
+  background: url("/assets/images/seba-landing-page-1.jpg") no-repeat right center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+}
 #sf-main .sf-hero-unit {
   z-index: 0;
-  height: 600px;
+  height: 100%;
 }
-
 .sf-panel {
   background-color: #fff;
   height: 350px;
 }
-
-#sf-main   {
+#sf-main {
   background-color: $sf-color-blue;
   color: #fff;
+  height: 100%;
 }
-
+#sf-main .sf-hero-headline h1 {
+  font-weight: 100;
+  margin-bottom: 0;
+}
 #sf-main .sf-hero-headline .sf-headline-1 {
   font-size: 1.4em;
 }
-
 #sf-main .sf-hero-headline .sf-headline-1 b,
-#sf-main .sf-hero-headline .sf-headline-2 b  {
+#sf-main .sf-hero-headline .sf-headline-2 b {
   color: $sf-color-yellow;
+  font-weight: 100!important;
 }

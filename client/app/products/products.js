@@ -6,5 +6,9 @@ angular.module('sebaFreshApp')
       .state('products', {
         url: '/products',
         template: '<products></products>'
+      })
+      .state('productsDetail', {
+        url: '/products/:productId',
+        template: '<products></products>'
       });
   });

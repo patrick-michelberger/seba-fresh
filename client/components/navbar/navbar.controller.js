@@ -3,23 +3,45 @@
 class NavbarController {
   isCollapsed = true;
 
-  constructor(Auth, $timeout, $log, $mdSidenav, ShopService) {
-    var carts = ShopService.getCarts();
-
-    console.log("carts: ", carts);
-
+  constructor($rootScope, $scope, Auth, socket, $timeout, $log, $mdSidenav, DialogService, ShopService) {
+    this.$scope = $scope;
+    this.$rootScope = $rootScope;
     this.$timeout = $timeout;
     this.$log = $log;
+    this.carts = [];
     this.$mdSidenav = $mdSidenav;
-
+    this.DialogService = DialogService;
+    this.ShopService = ShopService;
+    this.getCurrentCart = ShopService.getCurrentCart
     this.isLoggedIn = Auth.isLoggedIn;
     this.isAdmin = Auth.isAdmin;
     this.getCurrentUser = Auth.getCurrentUser;
     this.toggleLeft = this.buildDelayedToggler('left');
+
+    this.openCart = this.open;
+    this.socket = socket;
+
+    $scope.$on('$destroy', function () {
+      socket.unsyncUpdates('cart');
+    });
+  }
+
+  $onInit() {
+    var self = this;
+    this.socket.syncUpdates('cart', this.carts);
   }
 
   /**
-   * Close sidebar
+   * Open right sidebar
+   */
+  open() {
+    var self = this;
+    this.$mdSidenav('right').open()
+      .then(function () {});
+  }
+
+  /**
+   * Close left sidebar
    */
   close() {
     var self = this;

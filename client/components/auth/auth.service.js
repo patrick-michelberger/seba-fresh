@@ -60,6 +60,7 @@
        * @return {Promise}
        */
       createUser(user, callback) {
+        var self = this;
         return User.save(user,
           function (data) {
             $cookies.put('token', data.token);
@@ -106,6 +107,7 @@
         }, {
           friendsInvited: friendsInvited
         }, function () {
+          currentUser.friendsInvited = friendsInvited;
           return safeCb(callback)(null);
         }, function (err) {
           return safeCb(callback)(err);

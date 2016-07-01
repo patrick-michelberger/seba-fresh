@@ -11,6 +11,7 @@
 
 import _ from 'lodash';
 import Group from './group.model';
+import Cart from '../cart/cart.model';
 
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
@@ -103,7 +104,19 @@ export function show(req, res) {
 // Creates a new Group in the DB
 export function create(req, res) {
   return Group.create(req.body)
-    .then(respondWithResult(res, 201))
+    .then(function (createdGroup) {
+      Cart.create({
+          items: [],
+          group: createdGroup,
+          totalAmount: 0
+        }).then(function (createdCart) {
+          res.status(201).json({
+            cart: createdCart,
+            group: createdGroup
+          });
+        })
+        .catch(handleError(res));
+    })
     .catch(handleError(res));
 }
 
@@ -112,7 +125,22 @@ export function acceptInvitation(req, res) {
   return Group.findById(req.params.id).exec()
     .then(handleEntityNotFound(res))
     .then(saveInvitee(req.body))
-    .then(respondWithResult(res))
+    .then(function (updatedGroup) {
+      return Cart.update({
+        'group._id': updatedGroup._id
+      }, {
+        $addToSet: {
+          'group.users': req.body.id
+        }
+      }, {
+        multi: true
+      }, function (err, updated) {
+        if (err) {
+          console.log("Error: ", err);
+        }
+        respondWithResult(res)(updatedGroup);
+      })
+    })
     .catch(handleError(res));
 }
 
@@ -132,6 +160,17 @@ export function update(req, res) {
 export function destroy(req, res) {
   return Group.findById(req.params.id).exec()
     .then(handleEntityNotFound(res))
-    .then(removeEntity(res))
+    .then(function (foundGroup) {
+      var query = {
+        "group._id": foundGroup._id
+      };
+      console.log("query: ", query);
+      Cart.findOne(query).then(function (foundCart) {
+        foundCart.remove()
+          .then(() => {
+            removeEntity(res)(foundGroup);
+          });
+      });
+    })
     .catch(handleError(res));
 }

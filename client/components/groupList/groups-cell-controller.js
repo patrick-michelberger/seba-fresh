@@ -19,6 +19,16 @@ class GroupCellController {
 
   deleteGroup(group) {
     this.$http.delete('/api/groups/' + group._id);
+    this.$rootScope.$emit("group:deleted", group._id);
+  }
+
+  buyGroceries() {
+    this.$rootScope.$emit('onboarding:next', 2);
+  }
+
+  isAdmin(group) {
+    var userId = this.Auth.getCurrentUser()._id;
+    return userId === group.admin._id;
   }
 
   // TODO Still used?
@@ -106,7 +116,7 @@ class GroupCellController {
       controller: ['$scope', '$state', '$mdDialog', '$window', '$http', 'Auth', DialogController],
       bindToController: true,
     }).then(function (answer) {
-        self.$rootScope.$emit('onboarding:invited');
+        //self.$rootScope.$emit('onboarding:invited');
       },
       function () {
         console.log('You cancelled the dialog.');

@@ -25,6 +25,5 @@ var readtemplatesSync = function (path) {
 };
 
 var templates = readtemplatesSync('./server/views');
-console.log('Templates:', Object.getOwnPropertyNames(templates));
 
 module.exports = templates;

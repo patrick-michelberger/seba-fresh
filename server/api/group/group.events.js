@@ -4,7 +4,9 @@
 
 'use strict';
 
-import {EventEmitter} from 'events';
+import {
+  EventEmitter
+} from 'events';
 import Group from './group.model';
 var GroupEvents = new EventEmitter();
 
@@ -24,9 +26,13 @@ for (var e in events) {
 }
 
 function emitEvent(event) {
-  return function(doc) {
-    GroupEvents.emit(event + ':' + doc._id, doc);
-    GroupEvents.emit(event, doc);
+  return function (doc) {
+    doc.populate('admin users', function (err) {
+      if (!err) {
+        GroupEvents.emit(event + ':' + doc._id, doc);
+        GroupEvents.emit(event, doc);
+      }
+    });
   }
 }
 

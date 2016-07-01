@@ -7,17 +7,21 @@ angular.module('sebaFreshApp')
         url: '/login',
         templateUrl: 'app/account/login/login.html',
         controller: 'LoginController',
-        controllerAs: 'vm'
+        controllerAs: 'vm',
+        params: {
+          redirectUrl: null
+        }
       })
       .state('logout', {
         url: '/logout?referrer',
         referrer: 'main',
         template: '',
-        controller: function ($state, Auth) {
+        controller: function ($state, Auth, ShopService) {
           var referrer = $state.params.referrer ||
             $state.current.referrer ||
             'main';
           Auth.logout();
+          ShopService.clear();
           $state.go(referrer);
         }
       })
@@ -27,7 +31,7 @@ angular.module('sebaFreshApp')
         controller: 'SignupController',
         controllerAs: 'vm',
         params: {
-          redirectUrl: false
+          redirectUrl: null
         }
       })
       .state('settings', {

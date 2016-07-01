@@ -2,13 +2,14 @@
 (function () {
 
   class JoinComponent {
-    constructor($scope, $stateParams, $timeout, $state, Group, $mdDialog, $mdMedia, NgMap, Auth) {
+    constructor($scope, $stateParams, $timeout, $state, Group, $mdDialog, $mdMedia, NgMap, Auth, ShopService) {
       var self = this;
       var groupId = $stateParams.groupId;
       this.$mdDialog = $mdDialog;
       this.$mdMedia = $mdMedia;
       this.$scope = $scope;
       this.Group = Group;
+      this.ShopService = ShopService;
       this.isLoggedIn = Auth.isLoggedIn;
       this.getCurrentUser = Auth.getCurrentUser;
       this.$state = $state;
@@ -25,7 +26,7 @@
       var self = this;
       var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs')) && this.customFullscreen;
 
-      function DialogController($scope, $state, $mdDialog) {
+      function DialogController($rootScope, $scope, $state, $mdDialog) {
         $scope.group = self.group;
         $scope.refreshMap = self.refreshMap;
         $scope.decline = function () {
@@ -46,8 +47,10 @@
             }, {
               id: self.getCurrentUser()._id
             }, function () {
-              console.log("Success");
+              self.ShopService.queryCart();
+              $state.go('products');
             }, function (err) {
+              // TODO Error Page
               console.log("error: ", err);
             }).$promise;
           } else {
@@ -64,7 +67,7 @@
         targetEvent: ev,
         clickOutsideToClose: true,
         fullscreen: useFullScreen,
-        controller: ['$scope', '$state', '$mdDialog', DialogController],
+        controller: ['$rootScope', '$scope', '$state', '$mdDialog', DialogController],
         onShowing: function () {
           self.refreshMap = false;
           self.$timeout(function () {
