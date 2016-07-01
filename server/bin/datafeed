@@ -1,0 +1,227 @@
+#!/usr/bin/env node
+
+// CONFIGURATION
+var config = {
+  "walmart": {
+    "key": process.env.WALMART_API_KEY || 'mfx9k9yqyg263ng4x3x9bek2'
+  },
+  "mongoURI": process.env.MONGOHQ_URL || 'mongodb://localhost/sebafresh-dev'
+};
+var count = 0;
+// DEPENDENCIES
+var walmart = require('walmart')(config.walmart.key);
+var mongoose = require('mongoose');
+var async = require('async');
+// query_test = "3920_582377";
+
+Datafeed = require('../api/datafeed/datafeed.model');
+Category = require('../api/category/category.model');
+// var Datafeed = require('DatafeedSchema');
+
+// import Datafeed from './datafeed.model';
+
+// CONNECT TO SEBA DATABASE
+mongoose.connect(config.mongoURI);
+
+// RUNNING CODE
+console.log("Crawling categories from Walmart API ...");
+
+// Returns an array of items of the best-sellers on the specified category.
+// Food category id = 976759
+
+walmart.taxonomy().then(function (response) {
+  async.each(response.categories, function (category, cb) {
+
+
+    // Parse product for SEBA product model
+    category = {
+      id: category.id,
+      name: category.name,
+      categoryPath: category.categoryPath,
+      children: category.children
+    };
+
+// Changes to get data feed
+    // console.log("Crawling for the category",'1085666');
+    // // console.log(category);
+    //
+    // walmart.feeds.items(category.id).then(function (response) {
+    //   async.each(response.datafeed, function (datafeed, cb) {
+    //
+    //     // Parse product for SEBA datafeed model
+    //     datafeed = {
+    //       itemId : datafeed.itemId,
+    //       parentItemId : datafeed.parentItemId,
+    //       name : datafeed.name,
+    //       msrp : datafeed.msrp,
+    //       salePrice : datafeed.salePrice,
+    //       categoryPath: datafeed.categoryPath,
+    //       shortDescription: datafeed.shortDescription,
+    //       longDescription: datafeed.longDescription,
+    //       brandName: datafeed.brandName,
+    //       modelNumber: datafeed.modelNumber,
+    //       stock: datafeed.stock
+    //               };
+    //
+    //       console.log(datafeed);
+    //
+    //               Datafeed.create(datafeed, function (err, saveddatafeed) {
+    //                 if (err) {
+    //                   console.log("Error: saving datafeed: ", err);
+    //                 }
+    //                 cb();
+    //               });
+    //             }, function (err) {
+    //               if (err) {
+    //                 console.log("Error: ", err);
+    //               } else {
+    //                 console.log("All datafeed saved!");
+    //                 process.exit();
+    //               }
+    //             });
+    //           });
+    //
+
+// End of changes
+
+// Changes with search API
+
+if (category.id=='976759'){
+  console.log("Food Category Found");
+
+// Changes for pagination
+
+// function pagination(categoryId)
+// {
+
+// calling pagination api
+// url = "http://api.walmartlabs.com/v1/paginated/items?format=json"+"&category="+category.id+"&apiKey="+config.walmart.key;
+// console.log(url)
+// $.getJSON(url, callbackFuncWithData);
+// function callbackFuncWithData(data)
+// {
+//   console.log("from callbackFuncWithData")
+// }
+// end of changes
+// }
+
+
+
+
+
+  category.children.forEach(function(value){
+
+    // if(value==null){
+      // console.log(value.categoryPath)
+
+      // value.children.forEach(function(array){
+      //   if (error) return console.error(error);
+      //
+        // console.log(array.name);
+      //   count = count + 1;
+
+
+
+
+        // break;)
+    // }
+    // else {
+    // value.children.forEach(function(array){
+      // if(array!=null){
+        // console.log(array.name);
+
+      //   walmart.search(array.name).then(function(response){
+      // // console.log(Request)
+      // async.each(response.items, function(datafeed, cb){
+      //   // console.log("check")
+      //
+      //   // Parsing items for SEBA Product model
+      //   datafeed = {
+      //     id: datafeed.itemId,
+      //     name: datafeed.name,
+      //     price: datafeed.salePrice,
+      //     brand: datafeed.brandName,
+      //     stock: datafeed.stock,
+      //
+      //   };
+      //
+      //   console.log(datafeed);
+      //
+      //   Datafeed.create(datafeed, function (err, saveddatafeed) {
+      //     if (err) {
+      //       console.log("Error: saving Datafeed: ", err);
+      //     }
+      //     cb();
+      //   });
+      //   }, function (err) {
+      //   if (err) {
+      //     console.log("Error: ", err);
+      //   } else {
+      //     console.log("All datafeed saved!");
+      //     process.exit();
+      //   }
+      //   });
+      // });
+
+
+
+
+
+      // });
+// }
+  });
+
+}
+
+
+  // console.log("Crawling for the category",query_test); //category.id);
+  // walmart.search(query = "?", categoryId = 976759, numItems = 100).then(function(response){
+      // walmart.search("Macbook").then(function(response){
+    // console.log(Request)
+    // async.each(response.items, function(datafeed, cb){
+      // console.log("check")
+
+      // Parsing items for SEBA Product model
+      // datafeed = {
+      //   id: datafeed.itemId,
+      //   name: datafeed.name,
+      //   price: datafeed.salePrice,
+      //   brand: datafeed.brandName,
+      //   stock: datafeed.stock,
+      //
+      // };
+
+      // console.log(datafeed);
+
+    //   Datafeed.create(datafeed, function (err, saveddatafeed) {
+    //     if (err) {
+    //       console.log("Error: saving Datafeed: ", err);
+    //     }
+    //     cb();
+    //   });
+    //   }, function (err) {
+    //   if (err) {
+    //     console.log("Error: ", err);
+    //   } else {
+    //     console.log("All datafeed saved!");
+    //     process.exit();
+    //   }
+    //   });
+    // });
+
+// End of changes
+    Category.create(category, function (err, savedCatergory) {
+      if (err) {
+        console.log("Error: saving category: ", err);
+      }
+      cb();
+    });
+  }, function (err) {
+    if (err) {
+      console.log("Error: ", err);
+    } else {
+      console.log("All categories saved!");
+      process.exit();
+    }
+  });
+});
