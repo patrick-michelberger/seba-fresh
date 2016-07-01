@@ -86,23 +86,35 @@ export function create(req, res) {
   return Payment.create(req.body)
     .then(function (createPayment){
 
-	var paidByUser = {};
-	var groupId = createPayment.groupId;
-	var cartId = createPayment.cartId;
+      // console.log(createPayment);
+      // console.log(req);
 
+
+	var paidByUser = {};
+	var groupId = createPayment.group;
+	var cartId = createPayment.cart;
+
+
+  console.log('groupId:'+groupId);
+  console.log('cartId:'+cartId);
+  console.log('paidby:'+createPayment.paidBy);
+
+ // The mail is send from this user to all
 	User.findById(createPayment.paidBy).exec(function(err, user) {
+    console.log('userObject:   '+user);
 	paidByUser = user;
 	  });
 
-      // loop through the members of group
+      // Find all the users in this group
       Group.findById(groupId).populate('users').exec(function(err, group) {
+        console.log('groupObject :', group.users);
+
 
 	  var invidualPrice = 0.0;
-       console.log('group :', group);
 
 	  // Find the items in the cart added by the particular user
 	  Cart.findById(cartId).populate('items').exec(function(err, items) {
-       console.log('items :', items);
+       console.log('items objects:', items);
 
 	   // logic to read the items which the user has added and find the price
 
@@ -139,6 +151,10 @@ export function create(req, res) {
          }
          respondWithResult(res, 201)(createPayment);
        });
+
+
+
+
       });
   }).catch(handleError(res));
 }
