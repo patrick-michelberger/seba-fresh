@@ -127,7 +127,7 @@ export function create(req, res) {
 	   var string2 = paidByUser.email;
 	   var string3 = '&cmd=_xclick&currency_code=EUR&amount=';
 	   var string4 = invidualPrice.toString();
-	   var string5 = '&item_name=your+share+of+cart+';
+	   var string5 = '&item_name=Your+share+of+Cart+';
        var string6 = cartId.toString();
 
        var url = string1.concat(string2,string3,string4,string5,string6);
@@ -142,7 +142,8 @@ export function create(req, res) {
 		       paidbyUser: paidByUser,
            user: req.user,
            group: group,
-           url: url
+           url: url,
+           cartId: cartId,
          }
        };
        mail.send(data, function (err) {

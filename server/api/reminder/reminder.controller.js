@@ -14,6 +14,8 @@ import Reminder from './reminder.model';
 import mail from '../../components/mail';
 import Group from '../group/group.model';
 import config from '../../config/environment';
+import User from '../user/user.model';
+
 
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
@@ -82,17 +84,26 @@ export function create(req, res) {
   return Reminder.create(req.body)
     .then(function (createReminder){
       // loop through the members of group
-      Group.findById(createReminder.groupId).populate('users').exec(function(err, group) {
+      console.log(createReminder);
+
+      Group.findById(createReminder.group).populate('users').exec(function(err, group) {
        console.log('group :', group);
+       var individualUser = {};
+       for(var i = 0; i<group.users.length; i++){
+
+         User.findById(group.users[i]._id).exec(function(err, user) {
+            console.log('userObject:   '+user);
+        	individualUser = user;
+        	  });
 
 
        var data = {
        //  to: createReminder.to,
-        to: 'mohamed.riswan.1n1ly@gmail.com',
+        to: individualUser.email,
          template: 'checkOutReminder.hbs',
          subject: 'SEBA fresh reminder',
          payload: {
-           user: req.user,
+           user: individualUser,
            group: group,
            url: config.domain
          }
@@ -103,6 +114,8 @@ export function create(req, res) {
          }
          respondWithResult(res, 201)(createReminder);
        });
+
+     }
       });
   }).catch(handleError(res));
 }
