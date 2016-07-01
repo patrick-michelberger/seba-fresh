@@ -1,23 +1,27 @@
 'use strict';
 
 angular.module('sebaFreshApp')
-  .config(function($stateProvider) {
+  .config(function ($stateProvider) {
     $stateProvider
       .state('login', {
         url: '/login',
         templateUrl: 'app/account/login/login.html',
         controller: 'LoginController',
-        controllerAs: 'vm'
+        controllerAs: 'vm',
+        params: {
+          redirectUrl: null
+        }
       })
       .state('logout', {
         url: '/logout?referrer',
         referrer: 'main',
         template: '',
-        controller: function($state, Auth) {
+        controller: function ($state, Auth, ShopService) {
           var referrer = $state.params.referrer ||
-                          $state.current.referrer ||
-                          'main';
+            $state.current.referrer ||
+            'main';
           Auth.logout();
+          ShopService.clear();
           $state.go(referrer);
         }
       })
@@ -25,7 +29,10 @@ angular.module('sebaFreshApp')
         url: '/signup',
         templateUrl: 'app/account/signup/signup.html',
         controller: 'SignupController',
-        controllerAs: 'vm'
+        controllerAs: 'vm',
+        params: {
+          redirectUrl: null
+        }
       })
       .state('settings', {
         url: '/settings',
@@ -35,8 +42,8 @@ angular.module('sebaFreshApp')
         authenticate: true
       });
   })
-  .run(function($rootScope) {
-    $rootScope.$on('$stateChangeStart', function(event, next, nextParams, current) {
+  .run(function ($rootScope) {
+    $rootScope.$on('$stateChangeStart', function (event, next, nextParams, current) {
       if (next.name === 'logout' && current && current.name && !current.authenticate) {
         next.referrer = current.name;
       }

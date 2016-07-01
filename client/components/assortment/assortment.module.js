@@ -1,3 +1,5 @@
 'use strict';
 
-angular.module('sebaFreshApp.assortment', []);
+angular.module('sebaFreshApp.assortment', [
+  'sebaFreshApp.util'
+]);

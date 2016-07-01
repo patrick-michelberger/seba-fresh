@@ -1,0 +1,77 @@
+md-dialog .close {
+  background-color: #79b9e7;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  padding: 4px;
+}
+/**
+ * Product Dialog
+ */
+#productDialog img {
+  width: 100%;
+  height: auto;
+}
+#productDialog md-toolbar {
+  background-color: #0066a3;
+  color: #fff;
+}
+#productDialog .product-name {
+  font-size: 21px;
+  font-weight: 400;
+}
+#productDialog .product-description {
+  color: #939394;
+  text-align: justify;
+  line-height: 21px;
+}
+#productDialog .md-dialog-content {
+  padding: 15px 15px 0 25px;
+}
+#productDialog .product-details {
+  padding: 0 0 0 40px;
+}
+#productDialog .product-brand,
+#productDialog .product-stock {
+  width: 100%;
+  font-size: 15px;
+  margin: 0;
+  top: 5px;
+  font-weight: 400;
+  text-align: right;
+}
+#productDialog .product-stock {
+  font-size: 14px;
+}
+#productDialog .product-price-container {
+  border-radius: 10px;
+  background-color: #0066a3;
+  color: #fff;
+  font-weight: bold;
+  font-size: 26px;
+  padding: 5px;
+  float: right;
+  margin-right: 5px;
+}
+#productDialog .product-price-cents {
+  position: relative;
+  top: -7px;
+  font-weight: 600;
+  font-size: 16px;
+  left: -2px;
+}
+#productDialog .product-url {
+  position: absolute;
+  left: 15px;
+  bottom: 5px;
+}
+#productDialog .product-url img {
+  width: 115px;
+}
+#productDialog .product-price-currency-sign {
+  position: relative;
+  top: -7px;
+  font-weight: 600;
+  font-size: 16px;
+  left: 0;
+}

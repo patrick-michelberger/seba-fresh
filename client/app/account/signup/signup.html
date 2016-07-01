@@ -1,81 +1,81 @@
-<md-content layout-padding layout="row">
+<md-content layout-padding layout="row" layout-fill>
   <div flex-xs="100" flex="33" flex-offset-gt-xs="33">
     <div layout="column" layout-align="center center">
       <h1>Sign up</h1>
     </div>
     <form name="form" ng-submit="vm.register(form)" novalidate>
 
-    <!-- First Name Input -->
-    <md-input-container class="md-block" ng-class="{ 'has-success': form.first_name.$valid && vm.submitted,
+      <!-- First Name Input -->
+      <md-input-container class="md-block" ng-class="{ 'has-success': form.first_name.$valid && vm.submitted,
                                         'has-error': form.first_name.$invalid && vm.submitted }">
-      <label for="input_first_name">First name</label>
-      <input ng-model="vm.user.first_name" type="text" class="md-input" id="input_first_name" required mongoose-error>
-      <div class="md-errors-spacer" ng-show="form.first_name.$error.required && vm.submitted">
-        A first name is required
-      </div>
-    </md-input-container>
+        <label for="input_first_name">First name</label>
+        <input ng-model="vm.user.first_name" type="text" class="md-input" id="input_first_name" required mongoose-error>
+        <div class="md-errors-spacer" ng-show="form.first_name.$error.required && vm.submitted">
+          A first name is required
+        </div>
+      </md-input-container>
 
-    <!-- Last Name Input -->
-    <md-input-container class="md-block" ng-class="{ 'has-success': form.last_name.$valid && vm.submitted,
+      <!-- Last Name Input -->
+      <md-input-container class="md-block" ng-class="{ 'has-success': form.last_name.$valid && vm.submitted,
                                         'has-error': form.last_name.$invalid && vm.submitted }">
-      <label for="input_last_name">Last Name</label>
-      <input ng-model="vm.user.last_name" type="text" class="md-input" id="input_last_name" required mongoose-error>
-      <div class="md-errors-spacer" ng-show="form.last_name.$error.required && vm.submitted">
-        A last name is required
-      </div>
-    </md-input-container>
+        <label for="input_last_name">Last Name</label>
+        <input ng-model="vm.user.last_name" type="text" class="md-input" id="input_last_name" required mongoose-error>
+        <div class="md-errors-spacer" ng-show="form.last_name.$error.required && vm.submitted">
+          A last name is required
+        </div>
+      </md-input-container>
 
-    <!-- Email Input -->
-    <md-input-container class="md-block" ng-class="{ 'has-success': form.email.$valid && vm.submitted,
+      <!-- Email Input -->
+      <md-input-container class="md-block" ng-class="{ 'has-success': form.email.$valid && vm.submitted,
                                         'has-error': form.email.$invalid && vm.submitted }">
-      <label for="input_email">Email</label>
-      <input ng-model="vm.user.email" type="email" class="md-input" id="input_email" required mongoose-error>
-      <div class="md-errors-spacer">
-        <p ng-show="form.email.$error.email && vm.submitted">
-          Doesn't look like a valid email.
-        </p>
-        <p ng-show="form.email.$error.required && vm.submitted">
-          What's your email address?
-        </p>
-        <p g-show="form.email.$error.mongoose">
-          {{ vm.errors.email }}
-        </p>
-      </div>
-    </md-input-container>
+        <label for="input_email">Email</label>
+        <input ng-model="vm.user.email" type="email" class="md-input" id="input_email" required mongoose-error>
+        <div class="md-errors-spacer">
+          <p ng-show="form.email.$error.email && vm.submitted">
+            Doesn't look like a valid email.
+          </p>
+          <p ng-show="form.email.$error.required && vm.submitted">
+            What's your email address?
+          </p>
+          <p g-show="form.email.$error.mongoose">
+            {{ vm.errors.email }}
+          </p>
+        </div>
+      </md-input-container>
 
-    <!--Password Input -->
-    <md-input-container class="md-block" ng-class="{ 'has-success': form.password.$valid && vm.submitted,
+      <!--Password Input -->
+      <md-input-container class="md-block" ng-class="{ 'has-success': form.password.$valid && vm.submitted,
                                         'has-error': form.password.$invalid && vm.submitted }">
-      <label for="input_password">Password</label>
-      <input ng-model="vm.user.password" type="password" class="md-input" id="input_password" ng-minlength="3" required mongoose-error>
-      <div class="md-errors-spacer">
-        <p class="help-block" ng-show="(form.password.$error.minlength || form.password.$error.required) && vm.submitted">
-          Password must be at least 3 characters.
-        </p>
-        <p class="help-block" ng-show="form.password.$error.mongoose">
-          {{ vm.errors.password }}
-        </p>
-      </div>
-    </md-input-container>
+        <label for="input_password">Password</label>
+        <input ng-model="vm.user.password" type="password" class="md-input" id="input_password" ng-minlength="3" required mongoose-error>
+        <div class="md-errors-spacer">
+          <p class="help-block" ng-show="(form.password.$error.minlength || form.password.$error.required) && vm.submitted">
+            Password must be at least 3 characters.
+          </p>
+          <p class="help-block" ng-show="form.password.$error.mongoose">
+            {{ vm.errors.password }}
+          </p>
+        </div>
+      </md-input-container>
 
-    <!-- Confirm Password Input -->
-    <md-input-container class="md-block" ng-class="{ 'has-success': form.confirmPassword.$valid && vm.submitted,
+      <!-- Confirm Password Input -->
+      <md-input-container class="md-block" ng-class="{ 'has-success': form.confirmPassword.$valid && vm.submitted,
                                         'has-error': form.confirmPassword.$invalid && vm.submitted }">
-      <label for="input_confirm_password">Confirm Password</label>
-      <input ng-model="vm.user.confirmPassword" name="confirm_password" type="password" class="md-input" id="input_confirm_password" ng-minlength="3" required mongoose-error>
-      <div class="md-errors-spacer">
-        <p ng-show="form.confirmPassword.$error.match && vm.submitted">
-          Passwords must match.
-        </p>
+        <label for="input_confirm_password">Confirm Password</label>
+        <input ng-model="vm.user.confirmPassword" name="confirm_password" type="password" class="md-input" id="input_confirm_password" ng-minlength="3" required mongoose-error>
+        <div class="md-errors-spacer">
+          <p ng-show="form.confirmPassword.$error.match && vm.submitted">
+            Passwords must match.
+          </p>
 
-      </div>
-    </md-input-container>
+        </div>
+      </md-input-container>
 
-    <!-- Action buttons -->
-    <section layout-xs="column" layout="row">
-      <md-button class="md-raised md-block" flex type="submit">Sign up</md-button>
-      <md-button class="md-raised md-block" flex ui-sref="login">Login</md-button>
-    </section>
+      <!-- Action buttons -->
+      <section layout-xs="column" layout="row">
+        <md-button class="md-raised md-block" flex type="submit">Sign up</md-button>
+        <md-button class="md-raised md-block" flex ui-sref="login">Login</md-button>
+      </section>
 
     </form>
 

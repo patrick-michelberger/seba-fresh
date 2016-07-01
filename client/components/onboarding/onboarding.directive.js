@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sebaFreshApp')
-  .directive('onboarding', function () {
+  .directive('onboardingContainer', function () {
     return {
       templateUrl: 'components/onboarding/onboarding.html',
       restrict: 'EA',

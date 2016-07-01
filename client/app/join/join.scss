@@ -1,0 +1,19 @@
+join .background {
+  position: absolute;
+  background: url("/assets/images/seba-market-two-hands.jpeg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+}
+join h1 {
+  text-align: center;
+  color: #fff;
+}
+join .sf-btn-join {
+  width: 200px;
+  margin: 0 auto 0 -100px;
+  left: 50%;
+}

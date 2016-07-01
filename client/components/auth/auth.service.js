@@ -60,6 +60,7 @@
        * @return {Promise}
        */
       createUser(user, callback) {
+        var self = this;
         return User.save(user,
           function (data) {
             $cookies.put('token', data.token);
@@ -87,6 +88,26 @@
           oldPassword: oldPassword,
           newPassword: newPassword
         }, function () {
+          return safeCb(callback)(null);
+        }, function (err) {
+          return safeCb(callback)(err);
+        }).$promise;
+      },
+
+      /**
+       * Change friendsInvited
+       *
+       * @param  {Boolean}   friendsInvited
+       * @param  {Function} callback    - optional, function(error, user)
+       * @return {Promise}
+       */
+      changeFriendsInvited(friendsInvited, callback) {
+        return User.changeFriendsInvited({
+          id: currentUser._id
+        }, {
+          friendsInvited: friendsInvited
+        }, function () {
+          currentUser.friendsInvited = friendsInvited;
           return safeCb(callback)(null);
         }, function (err) {
           return safeCb(callback)(err);

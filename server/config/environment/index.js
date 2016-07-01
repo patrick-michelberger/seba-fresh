@@ -15,6 +15,8 @@ function requiredProcessEnv(name) {
 var all = {
   env: process.env.NODE_ENV,
 
+  domain: process.env.DOMAIN,
+
   // Root path of server
   root: path.normalize(__dirname + '/../../..'),
 
@@ -41,6 +43,12 @@ var all = {
     }
   },
 
+  mail: {
+    username: process.env.MAIL_USERNAME || 'username',
+    password: process.env.MAIL_PASSWORD || 'password',
+    service: process.env.MAIL_SERVICE || 'service'
+  },
+
   facebook: {
     clientID: process.env.FACEBOOK_ID || 'id',
     clientSecret: process.env.FACEBOOK_SECRET || 'secret',
@@ -55,6 +63,12 @@ var all = {
 
   walmart: {
     key: process.env.WALMART_API_KEY || 'id'
+  },
+
+  aws: {
+    accessKey: process.env.AWS_ACCESS_KEY ||  'key',
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY ||  'secret',
+    region: process.env.AWS_REGION ||  'region'
   }
 };
 

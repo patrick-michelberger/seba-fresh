@@ -1,18 +1,41 @@
 #sf-products-container {
-  background-color: $sf-color-blue;
+  background-color: #f4f5f7;
 }
-
 .sf-product {
   min-height: 450px;
 }
-
 .sf-product md-card {
   position: relative;
   height: 100%;
 }
-
 .sf-product .sf-price {
-  position: absolute;
-  left: 15px;
-  bottom: 20px;
+  text-align: right!important;
+  font-weight: bold;
+  font-size: 16px!important;
+  height: 25px!important;
+  margin-top: 15px;
+}
+.sf-product md-card {
+  box-shadow: none!important;
+}
+.sf-product .sf-md-cart-icon {
+  top: 7px;
+  position: relative;
+}
+.sf-product .md-title {
+  font-size: 16px;
+  text-align: left;
+  height: 18px;
+  overflow: hidden;
+}
+.sf-product .product-quantity.highlight {
+  background-color: #ffc120;
+  color: #fff;
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+  border-radius: 0.75em;
+  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.2);
+}
+.sf-product .product-quantity.highlight span {
+  color: #444;
+  font-weight: 700;
 }

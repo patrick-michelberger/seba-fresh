@@ -20,9 +20,9 @@ var CategorySchema = new mongoose.Schema({
   name: String,
   path: String,
   children: [ children ]
+
 }, {
   collection: 'seba-categories'
 });
-
 
 module.exports = mongoose.model('Category', CategorySchema);

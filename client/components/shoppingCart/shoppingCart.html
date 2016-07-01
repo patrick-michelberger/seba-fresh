@@ -1,0 +1,100 @@
+<md-toolbar class="group-cart-total">
+  <!--<h1 class="md-toolbar-tools sf-brand"><b>Total: </b><span class="cart-items-count">{{shoppingCartCtrl.currentCart.items.length}}</span> items.</h1>-->
+  <!--<minimum-order-value-progress></minimum-order-value-progress>-->
+  <div class="cart-order-info">
+    <span class="cart-total-quantity">{{shoppingCartCtrl.currentCart.totalQuantity}} Items: </span>
+    <span class="cart-total-amount">$ {{shoppingCartCtrl.currentCart.totalAmount | price}}</span></div>
+  </div>
+</md-toolbar>
+<div class="cart-list">
+  <!-- CURRENT USER -->
+  <div class="single-cart cart-cell">
+    <div class="user-container cart-cell-container" layout="row">
+      <div class="user-picture cart-cell-picture" layout="row" layout-align="start center">
+        <img ng-src="{{shoppingCartCtrl.Auth.getCurrentUser().picture}}" />
+      </div>
+      <div class="user-info cart-cell-info">
+        <div layout="column">
+          <div flex class="user-name cart-cell-title">
+            {{shoppingCartCtrl.Auth.getCurrentUser().first_name}} {{shoppingCartCtrl.Auth.getCurrentUser().last_name}}
+          </div>
+          <div flex class="user-cart-quantity cart-cell-description">
+            {{shoppingCartCtrl.calculateOrderAmount(shoppingCartCtrl.currentUserItems) }} Items
+          </div>
+        </div>
+      </div>
+      <div flex class="user-cart-total-amount cart-cell-total-amount">
+        $ {{shoppingCartCtrl.calculateOrderValue(shoppingCartCtrl.currentUserItems) | price}}
+      </div>
+    </div>
+    <div class="cart-cell-container" ng-repeat="item in shoppingCartCtrl.currentUserItems" layout="column">
+      <div layout="row">
+        <div class="cart-cell-picture" layout="row" layout-align="start center">
+          <img ng-src="{{item.product.mediumImage}}" />
+        </div>
+        <div class="cart-cell-info">
+          <div layout="column">
+            <div flex class="cart-cell-title">
+              {{item.product.name}}
+            </div>
+            <div flex class="cart-cell-description">
+              <span>Sold by:</span> Walmart.com
+            </div>
+          </div>
+        </div>
+        <div flex class="cart-cell-total-amount">
+          $ {{item.product.price}}
+        </div>
+      </div>
+      <div flex layout="row" class="cart-item-actions">
+        <md-button flex ng-click="shoppingCartCtrl.removeFromCart(item.product, quantity)" class="md-raised" aria-label="remove rom cart" ng-disabled="!item.quantity||item.quantity<1">-</md-button>
+        <md-button flex class="product-quantity md-raised" ng-class="{'highlight': item.quantity>0}" aria-label="quantity" ng-disabled="true">{{item.quantity}}</md-button>
+        <md-button ng-hide="item.quantity>0" flex ng-click="shoppingCartCtrl.addToCart(item.product)" aria-label="add to cart" class="md-raised md-warn ">
+          <i class="sf-md-cart-icon material-icons">shopping_cart</i>
+        </md-button>
+        <md-button ng-show="item.quantity>0" flex ng-click="shoppingCartCtrl.addToCart(item.product)" aria-label="add to cart" class="md-raised">+</md-button>
+      </div>
+    </div>
+  </div>
+  <!-- FLATMATES -->
+  <div class="single-cart cart-cell" ng-repeat="(key, items) in shoppingCartCtrl.flatmatesItems">
+    <div class="user-container cart-cell-container" layout="row">
+      <div class="user-picture cart-cell-picture" layout="row" layout-align="start center">
+        <img ng-src="{{items[0].user.picture}}" />
+      </div>
+      <div class="user-info cart-cell-info">
+        <div layout="column">
+          <div flex class="user-name cart-cell-title">
+            {{items[0].user.first_name}} {{items[0].user.last_name}}
+          </div>
+          <div flex class="user-cart-quantity cart-cell-description">
+            {{shoppingCartCtrl.calculateOrderAmount(items) }} Items
+          </div>
+        </div>
+      </div>
+      <div flex class="user-cart-total-amount cart-cell-total-amount">
+        $ {{shoppingCartCtrl.calculateOrderValue(items) | price}}
+      </div>
+    </div>
+    <div class="cart-cell-container" ng-repeat="item in items" layout="column">
+      <div layout="row">
+        <div class="cart-cell-picture" layout="row" layout-align="start center">
+          <img ng-src="{{item.product.mediumImage}}" />
+        </div>
+        <div class="cart-cell-info">
+          <div layout="column">
+            <div flex class="cart-cell-title">
+              {{item.product.name}}
+            </div>
+            <div flex class="cart-cell-description">
+              <span>Sold by:</span> Walmart.com
+            </div>
+          </div>
+        </div>
+        <div flex class="cart-cell-total-amount">
+          $ {{item.product.price}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

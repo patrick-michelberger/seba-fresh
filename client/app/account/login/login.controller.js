@@ -1,16 +1,18 @@
 'use strict';
 
 class LoginController {
-  constructor(Auth, $state) {
+  constructor(Auth, $state, $stateParams, ShopService) {
     this.user = {};
     this.errors = {};
     this.submitted = false;
-
     this.Auth = Auth;
+    this.ShopService = ShopService;
     this.$state = $state;
+    this.redirectUrl = $stateParams.redirectUrl || false;
   }
 
   login(form) {
+    var self = this;
     this.submitted = true;
 
     if (form.$valid) {
@@ -18,9 +20,18 @@ class LoginController {
           email: this.user.email,
           password: this.user.password
         })
-        .then(() => {
+        .then((user) => {
+          self.ShopService.queryCart();
           // Logged in, redirect to home
-          this.$state.go('products');
+          if (self.redirectUrl) {
+            self.$location.path(self.$stateParams.redirectUrl);
+          } else {
+            if (!user.friendsInvited) {
+              this.$state.go('onboarding');
+            } else {
+              this.$state.go('products');
+            }
+          }
         })
         .catch(err => {
           this.errors.other = err.message;

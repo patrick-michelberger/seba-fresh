@@ -1,0 +1,38 @@
+<md-dialog aria-label="Shopping Cart Invitation" flex-xs="100" flex-sm="75" flex-gt-sm="60" ng-cloak>
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Shopping Cart Invitation</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+      <div class="md-dialog-content" layout="row">
+        <md-card ng-if="group.admin.picture" flex="25">
+          <img ng-src="{{group.admin.picture}}" class="md-card-image">
+        </md-card>
+        <div flex="75" layout-padding layout="column">
+          <h3>{{group.admin.first_name}} {{group.admin.last_name}} invited you to {{group.name}}.</h3>
+        </div>
+      </div>
+      <div flex>
+        <!--
+        <ng-map zoom="15" center="{{group.address.geolocation.latitude}},{{group.address.geolocation.longitude}}" zoom="3">
+          <marker position="[{{group.address.geolocation.latitude}},{{group.address.geolocation.longitude}}]"></marker>
+        </ng-map>-->
+      </div>
+      <span flex></span>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button class="md-raised md-warn" ng-click="accept()">
+        Accept
+      </md-button>
+      <md-button class="md-raised" ng-click="decline()">
+        Decline
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

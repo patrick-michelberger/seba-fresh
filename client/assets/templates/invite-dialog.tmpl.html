@@ -1,0 +1,34 @@
+<md-dialog aria-label="Invite Your Flatmates" flex-xs="100" flex-sm="75" flex-gt-sm="60" ng-cloak>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2>Invite Your Flatmates</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="cancel()">
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+    <div class="md-dialog-content" layout="row">
+      <form name="inviteForm" ng-submit="sendEmail()" novalidate>
+        <md-input-container>
+          <label>Email</label>
+          <input ng-model="invitee.email" type="email" required>
+          <md-button type="submit" ng-hide="isSending" class="md-raised md-warn" ng-disabled="inviteForm.$invalid">Send Invitation</md-button>
+          <md-button ng-show="isSending" ng-disabled="true">is sending ...</md-button>
+        </md-input-container>
+      </form>
+    </div>
+  </md-dialog-content>
+  <md-dialog-actions layout="row">
+    <span flex></span>
+    <md-button class="md-raised md-warn" ng-click="share('facebook', group)">
+      Share with Facebook
+    </md-button>
+    <md-button class="md-raised md-primary" ng-click="next()">
+      Next
+    </md-button>
+    <md-button class="md-raised" ng-click="decline()">
+      Decline
+    </md-button>
+  </md-dialog-actions>
+</md-dialog>
