@@ -179,7 +179,7 @@ export function destroy(req, res) {
     .then(handleEntityNotFound(res))
     .then(function (foundGroup) {
       var query = {
-        "group._id": foundGroup._id
+        "group": foundGroup._id
       };
       Cart.findOne(query).then(function (foundCart) {
         foundCart.remove()

@@ -16,22 +16,15 @@ class ShoppingCartController {
   $onInit() {
     var self = this;
 
-    // Event listeners
-    self.$rootScope.$on('cart:add', function (event, product) {
-      self._addToCurrentUserItems(product);
-    });
-    self.$rootScope.$on('cart:remove', function (event, product) {
-      self._removeFromCurrentUserItems(product);
-    });
-
-    // new cart available?
     this.$scope.$watch(function () {
       return self.ShopService.getCurrentCart();
     }, function (currentCart) {
-      console.log("new shopping cart: ShoppingCartController: ", currentCart);
-      var groupedItems = self.calculatedGroupedItems(currentCart.items);
-      self.flatmatesItems = groupedItems.flatmates;
-      self.currentUserItems = groupedItems.currentUser;
+      currentCart.$promise.then(function () {
+        // TODO More efficient method?
+        var groupedItems = self.calculatedGroupedItems(currentCart.users);
+        self.flatmates = groupedItems.flatmates;
+        self.currentUserItems = groupedItems.currentUser;
+      });
     });
   }
 
@@ -50,77 +43,46 @@ class ShoppingCartController {
   }
 
   calculateOrderValue(items) {
-    items = items ||  [];
-    var value = 0;
-    items.forEach(function (item) {
-      value += item.product.price * item.quantity;
-    });
-    return value.toFixed(2);
+    if (items) {
+      items = items ||  [];
+      var value = 0;
+      items.forEach(function (item) {
+        value += item.product.price * item.quantity;
+      });
+      return value.toFixed(2);
+    }
   }
 
   calculateOrderAmount(items) {
-    items = items ||  [];
-    var value = 0;
-    items.forEach(function (item) {
-      value += item.quantity;
-    });
-    return value;
+    if (items) {
+      items = items ||  [];
+      var value = 0;
+      items.forEach(function (item) {
+        value += item.quantity;
+      });
+      return value;
+    }
   }
 
-  calculatedGroupedItems(items) {
-    var groupedItems = _.groupBy(items, 'user._id');
-    var currentUser = this.Auth.getCurrentUser();
+  calculatedGroupedItems(users) {
     var currentUserItems = [];
-    if (currentUser && currentUser._id && groupedItems[currentUser._id]) {
-      currentUserItems = groupedItems[currentUser._id];
-      delete groupedItems[currentUser._id]
+    var flatmates = {};
+    var currentUser = this.Auth.getCurrentUser();
+    var currentUserIndex = _.findIndex(users, {
+      "_id": currentUser._id
+    });
+    if (currentUserIndex > -1) {
+      currentUserItems = users[currentUserIndex].items;
+      users.splice(currentUserIndex, 1);
     }
     return {
       "currentUser": currentUserItems,
-      "flatmates": groupedItems
-    }
+      "flatmates": users
+    };
   }
 
   isCurrentUser(userId) {
     return this.Auth.getCurrentUser()._id === userId;
-  }
-
-  _addToCurrentUserItems(product) {
-    var user = this.Auth.getCurrentUser();
-    var items = this.currentUserItems;
-    for (var i = 0; i < items.length; i++) {
-      var item = items[i];
-      if (item.product._id == product._id && item.user._id == user._id) {
-        item.quantity += 1;
-        return
-      }
-    }
-    var newItem = {
-      product: product,
-      quantity: 1,
-      user: {
-        "_id": user._id,
-        "first_name": user.first_name,
-        "last_name": user.last_name,
-        "picture": user.picture
-      }
-    };
-    items.push(newItem);
-  }
-
-  _removeFromCurrentUserItems(product) {
-    var user = this.Auth.getCurrentUser();
-    var items = this.currentUserItems;
-    for (var i = 0; i < items.length; i++) {
-      var item = items[i];
-      if (item.product._id == product._id && item.user._id == user._id) {
-        if (item.quantity <= 1) {
-          items.splice(i, 1);
-        } else {
-          item.quantity -= 1;
-        }
-      }
-    }
   }
 }
 

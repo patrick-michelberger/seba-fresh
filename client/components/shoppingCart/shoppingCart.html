@@ -58,26 +58,26 @@
     </div>
   </div>
   <!-- FLATMATES -->
-  <div class="single-cart cart-cell" ng-repeat="(key, items) in shoppingCartCtrl.flatmatesItems">
+  <div class="single-cart cart-cell" ng-repeat="flatmate in shoppingCartCtrl.flatmates">
     <div class="user-container cart-cell-container" layout="row">
       <div class="user-picture cart-cell-picture" layout="row" layout-align="start center">
-        <img ng-src="{{items[0].user.picture}}" />
+        <img ng-src="{{flatmate.picture}}" />
       </div>
       <div class="user-info cart-cell-info">
         <div layout="column">
           <div flex class="user-name cart-cell-title">
-            {{items[0].user.first_name}} {{items[0].user.last_name}}
+            {{flatmate.first_name}} {{flatmate.last_name}}
           </div>
           <div flex class="user-cart-quantity cart-cell-description">
-            {{shoppingCartCtrl.calculateOrderAmount(items) }} Items
+            {{shoppingCartCtrl.calculateOrderAmount(flatmate.items) }} Items
           </div>
         </div>
       </div>
       <div flex class="user-cart-total-amount cart-cell-total-amount">
-        $ {{shoppingCartCtrl.calculateOrderValue(items) | price}}
+        $ {{shoppingCartCtrl.calculateOrderValue(flatmate.items) | price}}
       </div>
     </div>
-    <div class="cart-cell-container" ng-repeat="item in items" layout="column">
+    <div class="cart-cell-container" ng-repeat="item in flatmate.items" layout="column">
       <div layout="row">
         <div class="cart-cell-picture" layout="row" layout-align="start center">
           <img ng-src="{{item.product.mediumImage}}" />

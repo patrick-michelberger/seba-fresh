@@ -33,13 +33,12 @@ function saveUpdates(updates) {
 
 function addItemToCart(req) {
   var data = req.body;
-  var user = req.user;
+  var userId = req.user._id;
   return function (cart) {
-    cart.items = addToItems(cart.items, data.product, user);
-    cart.totalAmount += data.product.price;
-    cart.totalAmount = parseFloat(Math.round(cart.totalAmount * 100) / 100);
-    cart.totalAmount.toFixed(2);
-    cart.totalQuantity += 1;
+    var user = _.find(cart.users, {
+      "_id": userId
+    });
+    user.items = addToItems(user.items, data.product);
     return cart.save()
       .then(updated => {
         return updated;
@@ -47,16 +46,14 @@ function addItemToCart(req) {
   };
 }
 
-function removeItemFromCart(data) {
+function removeItemFromCart(req) {
+  var data = req.body;
+  var userId = req.user._id;
   return function (cart) {
-    cart.items = removeFromItems(cart.items, data.product._id, data.userId, 1);
-    cart.totalAmount -= data.product.price;
-    cart.totalAmount = parseFloat(Math.round(cart.totalAmount * 100) / 100);
-    cart.totalAmount.toFixed(2);
-    if (cart.totalAmount < 0) {
-      cart.totalAmount = 0;
-    }
-    cart.totalQuantity -= 1;
+    var user = _.find(cart.users, {
+      "_id": userId
+    });
+    user.items = removeFromItems(user.items, data.product);
     return cart.save()
       .then(updated => {
         return updated;
@@ -64,34 +61,29 @@ function removeItemFromCart(data) {
   };
 }
 
-function addToItems(items, product, user) {
+function addToItems(items, product) {
   for (var i = 0; i < items.length; i++) {
     var item = items[i];
-    if (String(item.product._id) == product._id && item.user._id.equals(user._id)) {
+    if (String(item.product._id) == product._id) {
       item.quantity += 1;
       return items;
     }
   }
   items.push({
     product: product,
-    user: {
-      "_id": user._id,
-      "first_name": user.first_name,
-      "last_name": user.last_name,
-      "picture": user.picture
-    }
+    quantity: 1
   });
   return items;
 }
 
-function removeFromItems(items, productId, userId, quantity) {
+function removeFromItems(items, product) {
   for (var i = 0; i < items.length; i++) {
     var item = items[i];
-    if (item.product._id == productId && item.user._id == userId) {
-      if (item.quantity <= quantity) {
+    if (item.product._id == product._id) {
+      if (item.quantity <= 1) {
         items.splice(i, 1);
       } else {
-        item.quantity -= quantity;
+        item.quantity -= 1;
       }
     }
   }
@@ -180,7 +172,7 @@ export function addItem(req, res) {
 export function removeItem(req, res) {
   return Cart.findById(req.params.id).exec()
     .then(handleEntityNotFound(res))
-    .then(removeItemFromCart(req.body))
+    .then(removeItemFromCart(req))
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
