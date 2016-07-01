@@ -130,13 +130,7 @@ function handleError(res, statusCode) {
 export function index(req, res) {
   var userId = req.user._id;
   return Cart.find({
-      '$or': [{
-        'group.admin': userId
-      }, {
-        'group.users': {
-          '$in': [userId]
-        }
-      }]
+      'users._id': userId
     })
     .populate('items.product items.user')
     .exec()
@@ -151,13 +145,7 @@ export function me(req, res, next) {
   var userId = req.user._id;
 
   return Cart.findOne({
-      '$or': [{
-        'group.admin': userId
-      }, {
-        'group.users': {
-          '$in': [userId]
-        }
-      }]
+      'users._id': userId
     }).exec()
     .then(handleEntityNotFound(res))
     .then(respondWithResult(res))

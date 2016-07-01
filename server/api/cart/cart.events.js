@@ -30,13 +30,13 @@ for (var e in events) {
 function emitEvent(event) {
   return function (doc) {
     Cart.findById(doc._id)
-      .populate('group.users', excludedFields)
-      .populate('group.admin', excludedFields)
       .populate('items.product ')
       .populate('items.user ', excludedFields)
       .exec().then(function (doc) {
-        CartEvents.emit(event + ':' + doc._id, doc);
-        CartEvents.emit(event, doc);
+        if (doc) {
+          CartEvents.emit(event + ':' + doc._id, doc);
+          CartEvents.emit(event, doc);
+        }
       });
   }
 }

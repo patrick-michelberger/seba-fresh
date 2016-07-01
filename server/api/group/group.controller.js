@@ -35,10 +35,7 @@ function saveUpdates(updates) {
 function saveInvitee(invitee) {
   var userId = invitee.id;
   return function (entity) {
-    console.log("save entity: ", entity);
-    console.log("userId: ", userId);
     entity.users.push(userId);
-    console.log("new entity: ", entity);
     return entity.save()
       .then(updated => {
         return updated;
@@ -103,13 +100,20 @@ export function show(req, res) {
 
 // Creates a new Group in the DB
 export function create(req, res) {
+  var user = req.user;
   return Group.create(req.body)
     .then(function (createdGroup) {
-      Cart.create({
-          items: [],
-          group: createdGroup,
-          totalAmount: 0
-        }).then(function (createdCart) {
+      var cart = {
+        items: [],
+        group: createdGroup._id,
+        users: [{
+          "_id": user._id,
+          "first_name": user.first_name,
+          "last_name": user.last_name
+          }],
+        totalAmount: 0
+      };
+      Cart.create(cart).then(function (createdCart) {
           res.status(201).json({
             cart: createdCart,
             group: createdGroup
@@ -122,24 +126,37 @@ export function create(req, res) {
 
 // Adds a user to a group
 export function acceptInvitation(req, res) {
+  var user = req.user;
   return Group.findById(req.params.id).exec()
     .then(handleEntityNotFound(res))
     .then(saveInvitee(req.body))
     .then(function (updatedGroup) {
-      return Cart.update({
-        'group._id': updatedGroup._id
-      }, {
-        $addToSet: {
-          'group.users': req.body.id
+      return Cart.findOne({
+        'group': updatedGroup._id
+      }).exec().then(function (foundCart) {
+        var userExists = false;
+        for (var i = 0; i < foundCart.users.length; i++) {
+          if (foundCart.users[i]._id.equals(req.user._id)) {
+            userExists = true;
+            break;
+          }
         }
-      }, {
-        multi: true
-      }, function (err, updated) {
-        if (err) {
-          console.log("Error: ", err);
+        if (userExists) {
+          respondWithResult(res)(updatedGroup);
+        } else {
+          foundCart.users.push({
+            "_id": req.user._id,
+            "first_name": req.user.first_name,
+            "last_name": req.user.last_name
+          });
+          foundCart.save().then(function (err) {
+            if (err) {
+              console.log("Error: ", err);
+            }
+            respondWithResult(res)(updatedGroup);
+          });
         }
-        respondWithResult(res)(updatedGroup);
-      })
+      });
     })
     .catch(handleError(res));
 }
@@ -164,7 +181,6 @@ export function destroy(req, res) {
       var query = {
         "group._id": foundGroup._id
       };
-      console.log("query: ", query);
       Cart.findOne(query).then(function (foundCart) {
         foundCart.remove()
           .then(() => {
