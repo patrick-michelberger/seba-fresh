@@ -1,12 +1,11 @@
 <md-toolbar class="group-cart-total">
-  <!--<h1 class="md-toolbar-tools sf-brand"><b>Total: </b><span class="cart-items-count">{{shoppingCartCtrl.currentCart.items.length}}</span> items.</h1>-->
-  <!--<minimum-order-value-progress></minimum-order-value-progress>-->
   <span class="description">Total (Flat): </span>
   <div class="cart-order-info">
     <span class="cart-total-quantity">{{shoppingCartCtrl.getCurrentCart().totalQuantity}} Items </span>
     <span class="cart-total-amount">$ {{shoppingCartCtrl.getCurrentCart().totalAmount | price}}</span></div>
   </div>
 </md-toolbar>
+<minimum-order-value-progress></minimum-order-value-progress>
 <div class="cart-list">
   <!-- CURRENT USER -->
   <div class="single-cart cart-cell">

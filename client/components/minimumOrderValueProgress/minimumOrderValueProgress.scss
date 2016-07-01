@@ -1,8 +1,11 @@
 /* POS upsell progress */
+minimum-order-value-progress .pos-upsell {
+  margin-top: 5px;
+}
 minimum-order-value-progress .pos-upsell-from,
 minimum-order-value-progress .pos-upsell-to {
   width: 10%;
-  color: #fff;
+  color: #000;
   font-size: 14px;
 }
 minimum-order-value-progress .pos-upsell-from,
