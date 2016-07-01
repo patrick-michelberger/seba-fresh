@@ -106,19 +106,27 @@ export function create(req, res) {
 	  });
 
       // Find all the users in this group
-      Group.findById(groupId).populate('users').exec(function(err, group) {
-        console.log('groupObject :', group.users);
+      // Group.findById(groupId).populate('users').exec(function(err, group) {
+      //   console.log('groupObject :', group.users);
 
 
 	  var invidualPrice = 0.0;
-
+    var usersInCart = {};
+    var individualUser = {};
 	  // Find the items in the cart added by the particular user
-	  Cart.findById(cartId).populate('items').exec(function(err, items) {
-       console.log('items objects:', items);
-
+	  Cart.findById(cartId).populate('users').exec(function(err, cart) {
+       console.log('Users in the cart:', cart);
+       usersInCart = cart.users;
 	   // logic to read the items which the user has added and find the price
+	  // });
 
-	   });
+     // Send payment mail to all users in the cart
+     for(var i=0;i<usersInCart.length;i++){
+
+       User.findById(usersInCart[i]._id).exec(function(err, user) {
+          console.log('individualUser:   '+user);
+      	individualUser = user;
+      	  });
 
 	   // https://www.paypal.com/cgi-bin/webscr?business=riswan_27%40pec.edu&cmd=_xclick&currency_code=EUR&amount=100&item_name=your+share+of+cart+2230
 	   // form paypal pay url
@@ -126,7 +134,7 @@ export function create(req, res) {
 	   var string1 = 'https://www.paypal.com/cgi-bin/webscr?business=';
 	   var string2 = paidByUser.email;
 	   var string3 = '&cmd=_xclick&currency_code=EUR&amount=';
-	   var string4 = invidualPrice.toString();
+	   var string4 = usersInCart[i].totalAmount.toString();
 	   var string5 = '&item_name=Your+share+of+Cart+';
        var string6 = cartId.toString();
 
@@ -135,7 +143,7 @@ export function create(req, res) {
 
        var data = {
        //  to: createPayment.to,
-        to: 'mohamed.riswan.1n1ly@gmail.com', // should have the user id
+        to: individualUser.email,                     //'mohamed.riswan.1n1ly@gmail.com', // should have the user id
          template: 'paymentEmail.hbs',
          subject: 'SEBA fresh Payments',
          payload: {
@@ -154,9 +162,12 @@ export function create(req, res) {
        });
 
 
-
+     }
 
       });
+
+
+
   }).catch(handleError(res));
 }
 
