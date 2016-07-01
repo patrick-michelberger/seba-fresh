@@ -4,8 +4,10 @@ class ShoppingCartController {
 
   constructor($rootScope, $scope, ShopService, Auth) {
     var self = this;
+    this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.ShopService = ShopService;
+    this.getCurrentCart = ShopService.getCurrentCart;
     this.Auth = Auth;
     this.currentUserItems = [];
     this.flatmatesItems = [];
@@ -13,27 +15,23 @@ class ShoppingCartController {
 
   $onInit() {
     var self = this;
-    this.ShopService.getCurrentCart(function (currentCart) {
-      self.currentCart = currentCart;
+
+    // Event listeners
+    self.$rootScope.$on('cart:add', function (event, product) {
+      self._addToCurrentUserItems(product);
+    });
+    self.$rootScope.$on('cart:remove', function (event, product) {
+      self._removeFromCurrentUserItems(product);
+    });
+
+    // new cart available?
+    this.$scope.$watch(function () {
+      return self.ShopService.getCurrentCart();
+    }, function (currentCart) {
+      console.log("new shopping cart: ShoppingCartController: ", currentCart);
       var groupedItems = self.calculatedGroupedItems(currentCart.items);
       self.flatmatesItems = groupedItems.flatmates;
       self.currentUserItems = groupedItems.currentUser;
-      self.$rootScope.$on('cart:add', function (event, product) {
-        self._addToCurrentUserItems(product);
-        self.currentCart = self.ShopService.getCurrentCart();
-      });
-      self.$rootScope.$on('cart:remove', function (event, product) {
-        self._removeFromCurrentUserItems(product);
-        self.currentCart = self.ShopService.getCurrentCart();
-      });
-      self.$rootScope.$on('cart:create', function (event, cart) {
-        cart.then(function (currentCart) {
-          self.currentCart = currentCart;
-          var groupedItems = self.calculatedGroupedItems(currentCart.items);
-          self.flatmatesItems = groupedItems.flatmates;
-          self.currentUserItems = groupedItems.currentUser;
-        });
-      });
     });
   }
 

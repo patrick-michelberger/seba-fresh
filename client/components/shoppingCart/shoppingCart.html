@@ -2,8 +2,8 @@
   <!--<h1 class="md-toolbar-tools sf-brand"><b>Total: </b><span class="cart-items-count">{{shoppingCartCtrl.currentCart.items.length}}</span> items.</h1>-->
   <!--<minimum-order-value-progress></minimum-order-value-progress>-->
   <div class="cart-order-info">
-    <span class="cart-total-quantity">{{shoppingCartCtrl.currentCart.totalQuantity}} Items: </span>
-    <span class="cart-total-amount">$ {{shoppingCartCtrl.currentCart.totalAmount | price}}</span></div>
+    <span class="cart-total-quantity">{{shoppingCartCtrl.totalQuantity}} Items: </span>
+    <span class="cart-total-amount">$ {{shoppingCartCtrl.getCurrentCart().totalAmount | price}}</span></div>
   </div>
 </md-toolbar>
 <div class="cart-list">

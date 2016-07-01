@@ -4,17 +4,19 @@
   class ProductsComponent {
     constructor($scope, $stateParams, socket, AssortmentService, ShopService, DialogService, Cart) {
       var self = this;
+      this.products = [];
       this.socket = socket;
       this.AssortmentService = AssortmentService;
-      this.products = [];
+      this.DialogService = DialogService;
+      this.ShopService = ShopService;
+      this.Cart = Cart;
+
+      this.removeFromCart = this.removeFromCart;
+      this.addToCart = this.addToCart;
+
       $scope.$on('$destroy', function () {
         socket.unsyncUpdates('product');
       });
-      this.addToCart = this.addToCart;
-      this.removeFromCart = this.removeFromCart;
-      this.ShopService = ShopService;
-      this.Cart = Cart;
-      this.DialogService = DialogService;
       $scope.$on('$locationChangeSuccess', function (event) {
         checkDetailView();
       });
@@ -33,7 +35,6 @@
 
     $onInit() {
       this.products = this.AssortmentService.fetchAll();
-      this.ShopService.setCurrentCart(this.Cart.get());
     }
 
     addToCart(product) {

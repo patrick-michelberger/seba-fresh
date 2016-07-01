@@ -112,7 +112,6 @@
 
       setCurrentCart(cart) {
         currentCart = cart;
-        $rootScope.$emit("cart:create", cart.$promise);
       },
 
       queryCart() {

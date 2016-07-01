@@ -47,6 +47,7 @@
             }, {
               id: self.getCurrentUser()._id
             }, function () {
+              self.ShopService.queryCart();
               $state.go('products');
             }, function (err) {
               // TODO Error Page
