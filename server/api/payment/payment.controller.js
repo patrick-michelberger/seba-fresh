@@ -94,6 +94,11 @@ export function create(req, res) {
 	var paidByUser = {};
 	var groupId = createPayment.group;
 	var cartId = createPayment.cart;
+  var returnUrl = config.domain + '/carts/'+createPayment.cart+'/pay';
+  var failUrl = config.domain + '/carts/'+createPayment.cart+'/cancel';
+
+
+
 
 
   console.log('groupId:'+groupId);
@@ -137,11 +142,9 @@ export function create(req, res) {
       	  });
 
 
-
 // Get the api key from paypal, form the url and then send it to the individualUser
 
-
-	  //checking paypal post request
+//checking paypal post request
 	  var postData = {
   "actionType":"PAY",                               // Payment action type
   "currencyCode":"EUR",                             // Payment currency code
@@ -151,8 +154,8 @@ export function create(req, res) {
       "email": paidByUser.email    // Payment Receiver's email address
     }]
   },
-  "returnUrl":"http://Payment-Success-URL", // Where to redirect the Sender following a successful payment approval
-  "cancelUrl":"http://Payment-Cancel-URL",  // Where to redirect the Sender following a canceled payment
+  "returnUrl":returnUrl, // Where to redirect the Sender following a successful payment approval
+  "cancelUrl":failUrl,  // Where to redirect the Sender following a canceled payment
   "requestEnvelope":{
   "errorLanguage":"en_US",                          // Language used to display errors
   "detailLevel":"ReturnAll"                         // Error detail level
@@ -193,7 +196,7 @@ request(options, function (err, res, body) {
   console.log('headers: ', headers)
   console.log('status code: ', statusCode)
   console.log('body : ',  body)
-  if(body != undefined){
+  if(body !== undefined){
   console.log('paykey:', body.payKey)
 
   var paymentURL = 'https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&paykey='+body.payKey;
@@ -203,7 +206,7 @@ request(options, function (err, res, body) {
 
 });
 
-if(paymentURL == ''){
+if(paymentURL === ''){
 
      // no api key generated, create a paymentURL manually for the user
 	   // https://www.paypal.com/cgi-bin/webscr?business=riswan_27%40pec.edu&cmd=_xclick&currency_code=EUR&amount=100&item_name=your+share+of+cart+2230
@@ -219,8 +222,6 @@ if(paymentURL == ''){
     paymentURL = string1.concat(string2,string3,string4,string5,string6);
 
 }
-
-
 
 
 // Form the mail data
