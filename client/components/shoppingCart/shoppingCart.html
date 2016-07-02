@@ -7,7 +7,8 @@
 </md-toolbar>
 <!-- Payment -->
 <div ng-show="shoppingCartCtrl.freeShipping" class="payment-container">
-  <md-button ng-click="shoppingCartCtrl.pay()" class="btn-pay-now md-raised md-warn">Pay Now</md-button>
+  <!--<md-button ng-click="shoppingCartCtrl.pay()" class="btn-pay-now md-raised md-warn">Pay Now</md-button>-->
+  <md-button ng-click="shoppingCartCtrl.checkout()" class="btn-pay-now md-raised md-warn">Checkout</md-button>
 </div>
 <minimum-order-value-progress></minimum-order-value-progress>
 <div class="cart-list">

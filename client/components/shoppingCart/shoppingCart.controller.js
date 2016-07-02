@@ -2,13 +2,14 @@
 
 class ShoppingCartController {
 
-  constructor($rootScope, $scope, ShopService, Auth, DialogService) {
+  constructor($rootScope, $scope, $http, ShopService, Auth, DialogService) {
     var self = this;
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.ShopService = ShopService;
     this.getCurrentCart = ShopService.getCurrentCart;
     this.Auth = Auth;
+    this.$http = $http;
     this.DialogService = DialogService;
     this.currentUserItems = [];
     this.flatmatesItems = [];
@@ -36,6 +37,19 @@ class ShoppingCartController {
 
   pay() {
     this.DialogService.showPayModal(this.currentCart);
+  }
+
+  checkout() {
+    var self = this;
+    this.currentCart.users.forEach(function (user) {
+      user.items.forEach(function (item) {
+        console.log("item: ", item);
+        var url = item.product.addToCartUrl;
+        self.$http.post(url).then(function (res) {
+          console.log("res: ", res);
+        });
+      });
+    });
   }
 
   addToCart(product) {

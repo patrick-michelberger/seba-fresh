@@ -19,9 +19,121 @@ import User from '../user/user.model';
 import request from 'request';
 
 
+function calculateOrderAmount(items) {
+  var value = 0;
+  if (items) {
+    items = items ||  [];
+    items.forEach(function (item) {
+      value += item.quantity;
+    });
+  }
+  return value;
+}
+
+function sendPaymentRequest(sender, receiver, amount, cart, callback) {
+  var paypalAPIkey = '';
+  var paymentURL = '';
+  var returnUrl = config.domain + '/carts/' + cart._id + '/pay';
+  var failUrl = config.domain + '/carts/' + cart._id + '/cancel';
+
+  sender.email = "patrick.michelberger@tum.de";
+
+  // Get the api key from paypal, form the url and then send it to the individualUsers
+  //checking paypal post request
+  var postData = {
+    "actionType": "PAY", // Payment action type
+    "currencyCode": "EUR", // Payment currency code
+    "receiverList": {
+      "receiver": [{
+        "amount": amount, // Payment amount
+        "email": sender.email // Payment ReceiTODOver's email address
+      }]
+    },
+    "returnUrl": returnUrl, // Where to redirect the Sender following a successful payment approval
+    "cancelUrl": failUrl, // Where to redirect the Sender following a canceled payment
+    "requestEnvelope": {
+      "errorLanguage": "en_US", // Language used to display errors
+      "detailLevel": "ReturnAll" // Error detail level
+    }
+  };
+
+  var reqHeaders = {
+    'X-PAYPAL-SECURITY-USERID': 'caller_1312486258_biz_api1.gmail.com',
+    'X-PAYPAL-SECURITY-PASSWORD': '1312486294',
+    'X-PAYPAL-SECURITY-SIGNATURE': 'AbtI7HV1xB428VygBUcIhARzxch4AL65.T18CTeylixNNxDZUu0iO87e',
+
+    // Global Sandbox Application ID
+    // TODO Change to real app id
+    'X-PAYPAL-APPLICATION-ID': 'APP-80W284485P519543T',
+
+    // Input and output formats
+    'X-PAYPAL-REQUEST-DATA-FORMAT': 'JSON',
+    'X-PAYPAL-RESPONSE-DATA-FORMAT': 'JSON',
+  };
+
+  // TODO Change to real url
+  var url = 'https://svcs.sandbox.paypal.com/AdaptivePayments/Pay';
+  var options = {
+    method: 'post',
+    headers: reqHeaders,
+    body: postData,
+    json: true,
+    url: url
+  };
+  request(options, function (err, res, body) {
+    if (err) {
+      console.log('error in response: ' + err)
+      return
+    }
+    var headers = res.headers;
+    var statusCode = res.statusCode;
+
+    if (body !== undefined) {
+      var paymentURL = 'https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&paykey=' + body.payKey;
+      if (paymentURL === '') {
+
+        // no api key generated, create a paymentURL manually for the user
+        // https://www.paypal.com/cgi-bin/webscr?business=riswan_27%40pec.edu&cmd=_xclick&currency_code=EUR&amount=100&item_name=your+share+of+cart+2230
+        // form paypal pay url
+
+        var string1 = 'https://www.paypal.com/cgi-bin/webscr?business=';
+        var string2 = sender.email;
+        var string3 = '&cmd=_xclick&currency_code=EUR&amount=';
+        var string4 = usersInCart[i].totalAmount.toString();
+        var string5 = '&item_name=Your+share+of+Cart+';
+        var string6 = cartId.toString();
+
+        paymentURL = string1.concat(string2, string3, string4, string5, string6);
+
+      }
+
+      // Form the mail data
+      var data = {
+        //  to: createPayment.to,
+        to: 'mohamed.riswan.1n1ly@gmail.com', // should have the user id
+        template: 'paymentEmail.hbs',
+        subject: 'SEBA fresh Payments',
+        payload: {
+          paidbyUser: sender,
+          user: receiver,
+          url: paymentURL
+        }
+      };
+      mail.send(data, function (err) {
+        if (err) {
+          console.log("Error: sending payment mail: ", err);
+        }
+        callback();
+      });
+
+    }
+
+  });
+}
+
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
-  return function(entity) {
+  return function (entity) {
     if (entity) {
       res.status(statusCode).json(entity);
     }
@@ -29,7 +141,7 @@ function respondWithResult(res, statusCode) {
 }
 
 function saveUpdates(updates) {
-  return function(entity) {
+  return function (entity) {
     var updated = _.merge(entity, updates);
     return updated.save()
       .then(updated => {
@@ -39,7 +151,7 @@ function saveUpdates(updates) {
 }
 
 function removeEntity(res) {
-  return function(entity) {
+  return function (entity) {
     if (entity) {
       return entity.remove()
         .then(() => {
@@ -50,7 +162,7 @@ function removeEntity(res) {
 }
 
 function handleEntityNotFound(res) {
-  return function(entity) {
+  return function (entity) {
     if (!entity) {
       res.status(404).end();
       return null;
@@ -61,7 +173,7 @@ function handleEntityNotFound(res) {
 
 function handleError(res, statusCode) {
   statusCode = statusCode || 500;
-  return function(err) {
+  return function (err) {
     res.status(statusCode).send(err);
   };
 }
@@ -82,177 +194,38 @@ export function show(req, res) {
 }
 
 
+export function sendRequest(req, res) {
+  var payerId = req.body.payer;
+  var cartId = req.body.cart;
+  return Cart.findById(cartId)
+    .populate('group')
+    .populate('users')
+    .exec()
+    .then(handleEntityNotFound(res))
+    .then(function (foundCart) {
+      var user = {};
+      for (var i = 0; i < foundCart.users.length; i++) {
+        if (String(foundCart.users[i]._id) === payerId) {
+          user = foundCart.users[i];
+        }
+      }
+      var amount = calculateOrderAmount(user.items);
+      User.findById(payerId).exec(function (err, payer) {
+        var admin = foundCart.group.admin;
+        sendPaymentRequest(payer, admin, amount, foundCart, function () {
+          respondWithResult(res)({
+            "paymentRequestSent": true
+          });
+        });
+      });
+    });
+}
+
 // Creates a new Payment in the DB and sends the payment request to individual users of a group
 export function create(req, res) {
   return Payment.create(req.body)
-    .then(function (createPayment){
-
-      // console.log(createPayment);
-      // console.log(req);
-
-
-	var paidByUser = {};
-	var groupId = createPayment.group;
-	var cartId = createPayment.cart;
-  var returnUrl = config.domain + '/carts/'+createPayment.cart+'/pay';
-  var failUrl = config.domain + '/carts/'+createPayment.cart+'/cancel';
-
-
-
-
-
-  console.log('groupId:'+groupId);
-  console.log('cartId:'+cartId);
-  console.log('paidby:'+createPayment.paidBy);
-
- // The mail is send from this user to all
-	User.findById(createPayment.paidBy).exec(function(err, user) {
-    console.log('userObject:   '+user);
-	paidByUser = user;
-	  });
-
-      // Find all the users in this group
-      // Group.findById(groupId).populate('users').exec(function(err, group) {
-      //   console.log('groupObject :', group.users);
-
-
-	  var invidualPrice = 0.0;
-    var usersInCart = {};
-    var individualUser = {};
-	  // Find the items in the cart added by the particular user
-	  Cart.findById(cartId).populate('users').exec(function(err, cart) {
-       console.log('Users in the cart:', cart);
-       usersInCart = cart.users;
-	   // logic to read the items which the user has added and find the price
-	  // });
-
-
-
-
-
-     // Send payment mail to all users in the cart
-     for(var i=0;i<usersInCart.length;i++){
-
-	var paypalAPIkey = '';
-	var paymentURL = '';
-
-       User.findById(usersInCart[i]._id).exec(function(err, user) {
-          console.log('individualUser:   '+user);
-      	individualUser = user;
-      	  });
-
-
-// Get the api key from paypal, form the url and then send it to the individualUser
-
-//checking paypal post request
-	  var postData = {
-  "actionType":"PAY",                               // Payment action type
-  "currencyCode":"EUR",                             // Payment currency code
-  "receiverList":{
-    "receiver":[{
-      "amount":usersInCart[i].totalAmount.toString(),                              // Payment amount
-      "email": paidByUser.email    // Payment Receiver's email address
-    }]
-  },
-  "returnUrl":returnUrl, // Where to redirect the Sender following a successful payment approval
-  "cancelUrl":failUrl,  // Where to redirect the Sender following a canceled payment
-  "requestEnvelope":{
-  "errorLanguage":"en_US",                          // Language used to display errors
-  "detailLevel":"ReturnAll"                         // Error detail level
-  }
-};
-
-var reqHeaders = {
-
-'X-PAYPAL-SECURITY-USERID' : 'caller_1312486258_biz_api1.gmail.com',
-'X-PAYPAL-SECURITY-PASSWORD' : '1312486294',
-'X-PAYPAL-SECURITY-SIGNATURE' : 'AbtI7HV1xB428VygBUcIhARzxch4AL65.T18CTeylixNNxDZUu0iO87e',
-
-// Global Sandbox Application ID
-'X-PAYPAL-APPLICATION-ID' : 'APP-80W284485P519543T',
-
-// Input and output formats
-'X-PAYPAL-REQUEST-DATA-FORMAT' : 'JSON',
-'X-PAYPAL-RESPONSE-DATA-FORMAT' : 'JSON',
-};
-
-
-
-var url = 'https://svcs.sandbox.paypal.com/AdaptivePayments/Pay';
-var options = {
-  method: 'post',
-  headers: reqHeaders,
-  body: postData,
-  json: true,
-  url: url
-};
-request(options, function (err, res, body) {
-  if (err) {
-    console.log('error in response: '+err)
-    return
-  }
-  var headers = res.headers
-  var statusCode = res.statusCode
-  console.log('headers: ', headers)
-  console.log('status code: ', statusCode)
-  console.log('body : ',  body)
-  if(body !== undefined){
-  console.log('paykey:', body.payKey)
-
-  var paymentURL = 'https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&paykey='+body.payKey;
-
-  console.log('paymentURL:', paymentURL )
-  }
-
-});
-
-if(paymentURL === ''){
-
-     // no api key generated, create a paymentURL manually for the user
-	   // https://www.paypal.com/cgi-bin/webscr?business=riswan_27%40pec.edu&cmd=_xclick&currency_code=EUR&amount=100&item_name=your+share+of+cart+2230
-	   // form paypal pay url
-
-	   var string1 = 'https://www.paypal.com/cgi-bin/webscr?business=';
-	   var string2 = paidByUser.email;
-	   var string3 = '&cmd=_xclick&currency_code=EUR&amount=';
-	   var string4 = usersInCart[i].totalAmount.toString();
-	   var string5 = '&item_name=Your+share+of+Cart+';
-     var string6 = cartId.toString();
-
-    paymentURL = string1.concat(string2,string3,string4,string5,string6);
-
-}
-
-
-// Form the mail data
-       var data = {
-       //  to: createPayment.to,
-        to: individualUser.email,                     //'mohamed.riswan.1n1ly@gmail.com', // should have the user id
-         template: 'paymentEmail.hbs',
-         subject: 'SEBA fresh Payments',
-         payload: {
-		       paidbyUser: paidByUser,
-           user: individualUser,
-           group: group,
-           url: paymentURL,
-           cartId: cartId,
-         }
-       };
-       mail.send(data, function (err) {
-         if (err) {
-           console.log("Error: sending payment mail: ", err);
-         }
-         respondWithResult(res, 201)(createPayment);
-       });
-
-
-     }
-
-      });
-
-
-
-  }).catch(handleError(res));
+    .then(respondWithResult(res))
+    .catch(handleError(res));
 }
 
 

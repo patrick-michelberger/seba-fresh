@@ -27,8 +27,6 @@
      "first_name": String,
      "last_name": String,
      "picture": String,
-     "totalAmount": Number,
-     "totalQuantity": Number,
      "paymentType": String
   }]
  }, {
@@ -71,7 +69,7 @@
 
  // middleware
  var autoPopulateLead = function (next) {
-   this.populate('items.product items.user');
+   this.populate('users.items');
    next();
  };
 
