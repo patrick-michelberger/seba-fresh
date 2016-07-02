@@ -11,6 +11,7 @@
     });
 
     $rootScope.$on('cart:remove', function (event, product) {
+      console.log("cart remove");
       var cart = ShopService.getCurrentCart();
       for (var i = 0; i < products.length; i++) {
         if (products[i].quantity && products[i].quantity > 0 && products[i]._id === product._id) {
@@ -59,15 +60,19 @@
 
       updateQuantities() {
         ShopService.getCurrentCart(function (currentCart) {
-          var currentItems = currentCart.items ||  [];
-          currentItems.forEach(Assortment.updateQuantity);
+          var user = _.find(currentCart.users, {
+            "_id": Auth.getCurrentUser()._id
+          });
+          if (user) {
+            user.items.forEach(Assortment.updateQuantity);
+          }
         });
       },
 
       updateQuantity(item) {
         var quantity = item.quantity;
         for (var i = 0; i < products.length; i++) {
-          if (products[i]._id == item.product._id && item.user._id === Auth.getCurrentUser()._id) {
+          if (products[i]._id == item.product._id) {
             products[i].quantity = item.quantity;
           }
         }
@@ -75,10 +80,12 @@
 
       checkQuantity(product) {
         var currentCart = ShopService.getCurrentCart();
-        var items = currentCart.items;
-        for (var i = 0; i < items.length; i++) {
-          if (items[i].product._id == product._id && items[i].user._id === Auth.getCurrentUser()._id) {
-            product.quantity = items[i].quantity;
+        var user = _.find(currentCart.users, {
+          "_id": Auth.getCurrentUser()._id
+        });
+        for (var i = 0; i < user.items.length; i++) {
+          if (user.items[i].product._id == product._id) {
+            product.quantity = user.items[i].quantity;
             return product;
           }
         }
