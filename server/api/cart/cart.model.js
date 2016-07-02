@@ -26,6 +26,7 @@
      "items": [item],
      "first_name": String,
      "last_name": String,
+     "picture": String,
      "totalAmount": Number,
      "totalQuantity": Number,
      "paymentType": String
