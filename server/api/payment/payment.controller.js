@@ -16,6 +16,7 @@ import Group from '../group/group.model';
 import config from '../../config/environment';
 import Cart from '../cart/cart.model';
 import User from '../user/user.model';
+import request from 'request';
 
 
 function respondWithResult(res, statusCode) {
@@ -93,6 +94,11 @@ export function create(req, res) {
 	var paidByUser = {};
 	var groupId = createPayment.group;
 	var cartId = createPayment.cart;
+  var returnUrl = config.domain + '/carts/'+createPayment.cart+'/pay';
+  var failUrl = config.domain + '/carts/'+createPayment.cart+'/cancel';
+
+
+
 
 
   console.log('groupId:'+groupId);
@@ -106,43 +112,129 @@ export function create(req, res) {
 	  });
 
       // Find all the users in this group
-      Group.findById(groupId).populate('users').exec(function(err, group) {
-        console.log('groupObject :', group.users);
+      // Group.findById(groupId).populate('users').exec(function(err, group) {
+      //   console.log('groupObject :', group.users);
 
 
 	  var invidualPrice = 0.0;
-
+    var usersInCart = {};
+    var individualUser = {};
 	  // Find the items in the cart added by the particular user
-	  Cart.findById(cartId).populate('items').exec(function(err, items) {
-       console.log('items objects:', items);
-
+	  Cart.findById(cartId).populate('users').exec(function(err, cart) {
+       console.log('Users in the cart:', cart);
+       usersInCart = cart.users;
 	   // logic to read the items which the user has added and find the price
+	  // });
 
-	   });
 
+
+
+
+     // Send payment mail to all users in the cart
+     for(var i=0;i<usersInCart.length;i++){
+
+	var paypalAPIkey = '';
+	var paymentURL = '';
+
+       User.findById(usersInCart[i]._id).exec(function(err, user) {
+          console.log('individualUser:   '+user);
+      	individualUser = user;
+      	  });
+
+
+// Get the api key from paypal, form the url and then send it to the individualUser
+
+//checking paypal post request
+	  var postData = {
+  "actionType":"PAY",                               // Payment action type
+  "currencyCode":"EUR",                             // Payment currency code
+  "receiverList":{
+    "receiver":[{
+      "amount":usersInCart[i].totalAmount.toString(),                              // Payment amount
+      "email": paidByUser.email    // Payment Receiver's email address
+    }]
+  },
+  "returnUrl":returnUrl, // Where to redirect the Sender following a successful payment approval
+  "cancelUrl":failUrl,  // Where to redirect the Sender following a canceled payment
+  "requestEnvelope":{
+  "errorLanguage":"en_US",                          // Language used to display errors
+  "detailLevel":"ReturnAll"                         // Error detail level
+  }
+};
+
+var reqHeaders = {
+
+'X-PAYPAL-SECURITY-USERID' : 'caller_1312486258_biz_api1.gmail.com',
+'X-PAYPAL-SECURITY-PASSWORD' : '1312486294',
+'X-PAYPAL-SECURITY-SIGNATURE' : 'AbtI7HV1xB428VygBUcIhARzxch4AL65.T18CTeylixNNxDZUu0iO87e',
+
+// Global Sandbox Application ID
+'X-PAYPAL-APPLICATION-ID' : 'APP-80W284485P519543T',
+
+// Input and output formats
+'X-PAYPAL-REQUEST-DATA-FORMAT' : 'JSON',
+'X-PAYPAL-RESPONSE-DATA-FORMAT' : 'JSON',
+};
+
+
+
+var url = 'https://svcs.sandbox.paypal.com/AdaptivePayments/Pay';
+var options = {
+  method: 'post',
+  headers: reqHeaders,
+  body: postData,
+  json: true,
+  url: url
+};
+request(options, function (err, res, body) {
+  if (err) {
+    console.log('error in response: '+err)
+    return
+  }
+  var headers = res.headers
+  var statusCode = res.statusCode
+  console.log('headers: ', headers)
+  console.log('status code: ', statusCode)
+  console.log('body : ',  body)
+  if(body !== undefined){
+  console.log('paykey:', body.payKey)
+
+  var paymentURL = 'https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&paykey='+body.payKey;
+
+  console.log('paymentURL:', paymentURL )
+  }
+
+});
+
+if(paymentURL === ''){
+
+     // no api key generated, create a paymentURL manually for the user
 	   // https://www.paypal.com/cgi-bin/webscr?business=riswan_27%40pec.edu&cmd=_xclick&currency_code=EUR&amount=100&item_name=your+share+of+cart+2230
 	   // form paypal pay url
 
 	   var string1 = 'https://www.paypal.com/cgi-bin/webscr?business=';
 	   var string2 = paidByUser.email;
 	   var string3 = '&cmd=_xclick&currency_code=EUR&amount=';
-	   var string4 = invidualPrice.toString();
+	   var string4 = usersInCart[i].totalAmount.toString();
 	   var string5 = '&item_name=Your+share+of+Cart+';
-       var string6 = cartId.toString();
+     var string6 = cartId.toString();
 
-       var url = string1.concat(string2,string3,string4,string5,string6);
+    paymentURL = string1.concat(string2,string3,string4,string5,string6);
+
+}
 
 
+// Form the mail data
        var data = {
        //  to: createPayment.to,
-        to: 'mohamed.riswan.1n1ly@gmail.com', // should have the user id
+        to: individualUser.email,                     //'mohamed.riswan.1n1ly@gmail.com', // should have the user id
          template: 'paymentEmail.hbs',
          subject: 'SEBA fresh Payments',
          payload: {
 		       paidbyUser: paidByUser,
-           user: req.user,
+           user: individualUser,
            group: group,
-           url: url,
+           url: paymentURL,
            cartId: cartId,
          }
        };
@@ -154,9 +246,12 @@ export function create(req, res) {
        });
 
 
-
+     }
 
       });
+
+
+
   }).catch(handleError(res));
 }
 
