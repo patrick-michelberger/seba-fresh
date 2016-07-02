@@ -2,15 +2,17 @@
 
 class ShoppingCartController {
 
-  constructor($rootScope, $scope, ShopService, Auth) {
+  constructor($rootScope, $scope, ShopService, Auth, DialogService) {
     var self = this;
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.ShopService = ShopService;
     this.getCurrentCart = ShopService.getCurrentCart;
     this.Auth = Auth;
+    this.DialogService = DialogService;
     this.currentUserItems = [];
     this.flatmatesItems = [];
+    this.freeShipping = false;
   }
 
   $onInit() {
@@ -20,14 +22,20 @@ class ShoppingCartController {
       return self.ShopService.getCurrentCart();
     }, function (currentCart) {
       if (currentCart) {
+        self.currentCart = currentCart;
         currentCart.$promise.then(function () {
           // TODO More efficient method?
           var groupedItems = self.calculatedGroupedItems(currentCart.users);
           self.flatmates = groupedItems.flatmates;
           self.currentUserItems = groupedItems.currentUser;
+          self.freeShipping = currentCart.totalAmount && currentCart.totalAmount > 0 && ((currentCart.totalAmount / 50) >= 1) ? true : false;
         });
       }
     });
+  }
+
+  pay() {
+    this.DialogService.showPayModal(this.currentCart);
   }
 
   addToCart(product) {

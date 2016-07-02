@@ -40,6 +40,7 @@ $sf-color-orange: #F47421;
 $sf-color-yellow: #FFC120; // Component styles are injected through grunt
 /* inject:scss */
 @import 'admin/admin';
+@import 'carts/carts';
 @import 'contact/contact';
 @import 'dialogs';
 @import 'join/join';

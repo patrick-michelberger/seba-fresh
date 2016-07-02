@@ -20,6 +20,35 @@
           .ok(actionLabel)
         );
       },
+      showPayModal(cart, useFullScreen) {
+        // controller
+        function PayDialogController($scope, $state, $mdDialog, $http) {
+          $scope.cart = cart;
+          $scope.cancel = function () {
+            $mdDialog.cancel();
+          };
+          $scope.usePaypal = function () {
+            console.log("use paypal");
+          };
+        }
+
+        // open dialog
+        $mdDialog.show({
+            controller: ['$scope', '$state', '$mdDialog', '$http', PayDialogController],
+            templateUrl: 'assets/templates/pay-dialog.tmpl.html',
+            parent: angular.element(document.body),
+            //targetEvent: $event,
+            clickOutsideToClose: true,
+            fullscreen: useFullScreen
+          })
+          .then(function (answer) {}, function () {});
+
+        $rootScope.$watch(function () {
+          return $mdMedia('xs') || $mdMedia('sm');
+        }, function (wantsFullScreen) {
+          $rootScope.customFullscreen = (wantsFullScreen === true);
+        });
+      },
       showProductModal(product, useFullScreen) {
         // controller
         function ProductDialogController($scope, $state, $mdDialog) {

@@ -5,11 +5,15 @@
     <span class="cart-total-amount">$ {{shoppingCartCtrl.getCurrentCart().totalAmount | price}}</span></div>
   </div>
 </md-toolbar>
+<!-- Payment -->
+<div ng-show="shoppingCartCtrl.freeShipping" class="payment-container">
+  <md-button ng-click="shoppingCartCtrl.pay()" class="btn-pay-now md-raised md-warn">Pay Now</md-button>
+</div>
 <minimum-order-value-progress></minimum-order-value-progress>
 <div class="cart-list">
   <!-- CURRENT USER -->
   <div class="single-cart cart-cell">
-    <div class="your-share-hint">Your share:</div>
+    <!--<div class="your-share-hint">Your share:</div>-->
     <div class="user-container cart-cell-container" layout="row">
       <div class="user-picture cart-cell-picture" layout="row" layout-align="start center">
         <img ng-src="{{shoppingCartCtrl.Auth.getCurrentUser().picture}}" />
@@ -28,6 +32,7 @@
         $ {{shoppingCartCtrl.calculateOrderValue(shoppingCartCtrl.currentUserItems) | price}}
       </div>
     </div>
+    <!-- ITEMS -->
     <div class="cart-cell-container" ng-repeat="item in shoppingCartCtrl.currentUserItems" layout="column">
       <div layout="row">
         <div class="cart-cell-picture" layout="row" layout-align="start center">
@@ -77,7 +82,8 @@
         $ {{shoppingCartCtrl.calculateOrderValue(flatmate.items) | price}}
       </div>
     </div>
-    <div class="cart-cell-container" ng-repeat="item in flatmate.items" layout="column">
+    <!-- ITEMS -->
+    <div ng-hide="shoppingCartCtrl.freeShipping" class="cart-cell-container" ng-repeat="item in flatmate.items" layout="column">
       <div layout="row">
         <div class="cart-cell-picture" layout="row" layout-align="start center">
           <img ng-src="{{item.product.mediumImage}}" />

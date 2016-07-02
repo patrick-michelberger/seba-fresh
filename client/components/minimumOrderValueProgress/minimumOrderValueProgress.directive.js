@@ -19,7 +19,7 @@ angular.module('sebaFreshApp')
             scope.progressStyle = {
               'width': percent + '%'
             };
-            scope.freeShipping = currentCart.totalAmount && ((currentCart.totalAmount / 50) < 1) ? false : true;
+            scope.freeShipping = currentCart.totalAmount && currentCart.totalAmount > 0 && ((currentCart.totalAmount / 50) >= 1) ? true : false;
           }
         });
       }

@@ -1,0 +1,20 @@
+<md-dialog id="payDialog" aria-label="Pay Your Share" flex-xs="100" flex-sm="75" flex-gt-sm="60" ng-cloak>
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h3 class="product-name">Pay your Share</h3>
+        <span flex></span>
+        <md-icon aria-label="Close dialog" ng-click="cancel()" class="close" md-svg-icon="close"></md-icon>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+      <div class="md-dialog-content" layout="row">
+      </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+      <md-button class="md-raised md-primary" ng-click="usePaypal()">
+        Pay via Paypal
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>
