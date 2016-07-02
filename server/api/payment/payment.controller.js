@@ -16,6 +16,7 @@ import Group from '../group/group.model';
 import config from '../../config/environment';
 import Cart from '../cart/cart.model';
 import User from '../user/user.model';
+import request from 'request';
 
 
 function respondWithResult(res, statusCode) {
@@ -120,14 +121,91 @@ export function create(req, res) {
 	   // logic to read the items which the user has added and find the price
 	  // });
 
+
+
+
+
      // Send payment mail to all users in the cart
      for(var i=0;i<usersInCart.length;i++){
+
+	var paypalAPIkey = '';
+	var paymentURL = '';
 
        User.findById(usersInCart[i]._id).exec(function(err, user) {
           console.log('individualUser:   '+user);
       	individualUser = user;
       	  });
 
+
+
+// Get the api key from paypal, form the url and then send it to the individualUser
+
+
+	  //checking paypal post request
+	  var postData = {
+  "actionType":"PAY",                               // Payment action type
+  "currencyCode":"EUR",                             // Payment currency code
+  "receiverList":{
+    "receiver":[{
+      "amount":usersInCart[i].totalAmount.toString(),                              // Payment amount
+      "email": paidByUser.email    // Payment Receiver's email address
+    }]
+  },
+  "returnUrl":"http://Payment-Success-URL", // Where to redirect the Sender following a successful payment approval
+  "cancelUrl":"http://Payment-Cancel-URL",  // Where to redirect the Sender following a canceled payment
+  "requestEnvelope":{
+  "errorLanguage":"en_US",                          // Language used to display errors
+  "detailLevel":"ReturnAll"                         // Error detail level
+  }
+};
+
+var reqHeaders = {
+
+'X-PAYPAL-SECURITY-USERID' : 'caller_1312486258_biz_api1.gmail.com',
+'X-PAYPAL-SECURITY-PASSWORD' : '1312486294',
+'X-PAYPAL-SECURITY-SIGNATURE' : 'AbtI7HV1xB428VygBUcIhARzxch4AL65.T18CTeylixNNxDZUu0iO87e',
+
+// Global Sandbox Application ID
+'X-PAYPAL-APPLICATION-ID' : 'APP-80W284485P519543T',
+
+// Input and output formats
+'X-PAYPAL-REQUEST-DATA-FORMAT' : 'JSON',
+'X-PAYPAL-RESPONSE-DATA-FORMAT' : 'JSON',
+};
+
+
+
+var url = 'https://svcs.sandbox.paypal.com/AdaptivePayments/Pay';
+var options = {
+  method: 'post',
+  headers: reqHeaders,
+  body: postData,
+  json: true,
+  url: url
+};
+request(options, function (err, res, body) {
+  if (err) {
+    console.log('error in response: '+err)
+    return
+  }
+  var headers = res.headers
+  var statusCode = res.statusCode
+  console.log('headers: ', headers)
+  console.log('status code: ', statusCode)
+  console.log('body : ',  body)
+  if(body != undefined){
+  console.log('paykey:', body.payKey)
+
+  var paymentURL = 'https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&paykey='+body.payKey;
+
+  console.log('paymentURL:', paymentURL )
+  }
+
+});
+
+if(paymentURL == ''){
+
+     // no api key generated, create a paymentURL manually for the user
 	   // https://www.paypal.com/cgi-bin/webscr?business=riswan_27%40pec.edu&cmd=_xclick&currency_code=EUR&amount=100&item_name=your+share+of+cart+2230
 	   // form paypal pay url
 
@@ -136,11 +214,16 @@ export function create(req, res) {
 	   var string3 = '&cmd=_xclick&currency_code=EUR&amount=';
 	   var string4 = usersInCart[i].totalAmount.toString();
 	   var string5 = '&item_name=Your+share+of+Cart+';
-       var string6 = cartId.toString();
+     var string6 = cartId.toString();
 
-       var url = string1.concat(string2,string3,string4,string5,string6);
+    paymentURL = string1.concat(string2,string3,string4,string5,string6);
+
+}
 
 
+
+
+// Form the mail data
        var data = {
        //  to: createPayment.to,
         to: individualUser.email,                     //'mohamed.riswan.1n1ly@gmail.com', // should have the user id
@@ -148,9 +231,9 @@ export function create(req, res) {
          subject: 'SEBA fresh Payments',
          payload: {
 		       paidbyUser: paidByUser,
-           user: req.user,
+           user: individualUser,
            group: group,
-           url: url,
+           url: paymentURL,
            cartId: cartId,
          }
        };
