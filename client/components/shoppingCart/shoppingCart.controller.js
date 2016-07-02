@@ -19,12 +19,14 @@ class ShoppingCartController {
     this.$scope.$watch(function () {
       return self.ShopService.getCurrentCart();
     }, function (currentCart) {
-      currentCart.$promise.then(function () {
-        // TODO More efficient method?
-        var groupedItems = self.calculatedGroupedItems(currentCart.users);
-        self.flatmates = groupedItems.flatmates;
-        self.currentUserItems = groupedItems.currentUser;
-      });
+      if (currentCart) {
+        currentCart.$promise.then(function () {
+          // TODO More efficient method?
+          var groupedItems = self.calculatedGroupedItems(currentCart.users);
+          self.flatmates = groupedItems.flatmates;
+          self.currentUserItems = groupedItems.currentUser;
+        });
+      }
     });
   }
 
@@ -73,6 +75,8 @@ class ShoppingCartController {
     });
     if (currentUserIndex > -1) {
       currentUserItems = users[currentUserIndex].items;
+      // make copy
+      users = users.slice();
       users.splice(currentUserIndex, 1);
     }
     return {

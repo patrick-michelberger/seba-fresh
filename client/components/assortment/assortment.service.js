@@ -34,8 +34,9 @@
         return ProductService.get({
           id: productId
         }, function (product) {
-          product = Assortment.checkQuantity(product);
-          return safeCb(callback)(product);
+          Assortment.checkQuantity(product, function (product) {
+            return safeCb(callback)(product);
+          });
         }, function () {
           return safeCb(callback)(null);
         });
@@ -78,18 +79,20 @@
         }
       },
 
-      checkQuantity(product) {
-        var currentCart = ShopService.getCurrentCart();
-        var user = _.find(currentCart.users, {
-          "_id": Auth.getCurrentUser()._id
-        });
-        for (var i = 0; i < user.items.length; i++) {
-          if (user.items[i].product._id == product._id) {
-            product.quantity = user.items[i].quantity;
-            return product;
+      checkQuantity(product, callback) {
+        ShopService.getCurrentCart(function (currentCart) {
+          console.log("currentCart: ", currentCart);
+          var user = _.find(currentCart.users, {
+            "_id": Auth.getCurrentUser()._id
+          });
+          for (var i = 0; i < user.items.length; i++) {
+            if (user.items[i].product._id == product._id) {
+              product.quantity = user.items[i].quantity;
+              return product;
+            }
           }
-        }
-        return product;
+          callback(product);
+        });
       }
     };
 
