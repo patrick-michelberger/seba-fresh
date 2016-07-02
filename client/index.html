@@ -151,6 +151,17 @@
   <script src="components/util/util.service.js"></script>
   <!-- endinjector -->
   <!-- endbuild -->
+  <!-- Walmart SDK -->
+  <script>
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "//affil.walmart.com/buttons/buynow.min.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'walmart-buynow-js'));
+  </script>
   <script src="https://use.typekit.net/hob1ptb.js "></script>
   <script>
     try {

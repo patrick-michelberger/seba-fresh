@@ -35,6 +35,7 @@
     </div>
     <!-- ITEMS -->
     <div class="cart-cell-container" ng-repeat="item in shoppingCartCtrl.currentUserItems" layout="column">
+      <a ng-href="{{item.product.addToCartUrl}}" class="walmart-add-to-cart-link" target="walmart" style="display:none;"></a>
       <div layout="row">
         <div class="cart-cell-picture" layout="row" layout-align="start center">
           <img ng-src="{{item.product.mediumImage}}" />

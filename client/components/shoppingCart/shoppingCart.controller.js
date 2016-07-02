@@ -2,11 +2,12 @@
 
 class ShoppingCartController {
 
-  constructor($rootScope, $scope, $http, ShopService, Auth, DialogService) {
+  constructor($rootScope, $timeout, $scope, $http, ShopService, Auth, DialogService) {
     var self = this;
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.ShopService = ShopService;
+    this.$timeout = $timeout;
     this.getCurrentCart = ShopService.getCurrentCart;
     this.Auth = Auth;
     this.$http = $http;
@@ -41,15 +42,44 @@ class ShoppingCartController {
 
   checkout() {
     var self = this;
-    this.currentCart.users.forEach(function (user) {
-      user.items.forEach(function (item) {
-        console.log("item: ", item);
-        var url = item.product.addToCartUrl;
-        self.$http.post(url).then(function (res) {
-          console.log("res: ", res);
-        });
+    var links = document.getElementsByClassName("walmart-add-to-cart-link");
+    console.log("Links: ", links);
+
+    function addToWalmart(i) {
+      self.$timeout(function () {
+        links[i].click();
+      }, 100 * i);
+    }
+
+    for (var i = 0; i < links.length; i++) {
+      addToWalmart(i)
+    }
+    /*
+          this.currentCart.users.forEach(function (user) {
+                user.items.forEach(function (item) {
+                    var url = item.product.addToCartUrl;
+                    console.log("url: ", url);
+
+
+                    //window.open(url, '_blank');
+
+                    //console.log("Links: ", links[0]);
+
+
+                    /*self.$http.get(url).then(function (res) {
+                      console.log("res: ", res);
+                    });*/
+    /*
+        var obj = {
+          id: "051071822244",
+          type: "upc",
+          quantity: 1
+        };
+        walmartBuyNow.addItem('walmartCheckoutBtn', obj);
+
       });
     });
+    */
   }
 
   addToCart(product) {
