@@ -123,6 +123,13 @@ class ShoppingCartController {
   isCurrentUser(userId) {
     return this.Auth.getCurrentUser()._id === userId;
   }
+
+  isGroupAdmin() {
+    if (!this.currentCart || !this.currentCart.group) {
+      return false;
+    }
+    return this.Auth.getCurrentUser()._id === this.currentCart.group.admin;
+  }
 }
 
 angular.module('sebaFreshApp')

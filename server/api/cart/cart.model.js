@@ -19,7 +19,8 @@
  var CartSchema = new mongoose.Schema({
    "group": {
      type: mongoose.Schema.Types.ObjectId,
-     ref: 'Group'
+     ref: 'Group',
+     autopopulate: true
    },
    "users": [{
      "_id": mongoose.Schema.Types.ObjectId,
@@ -69,7 +70,7 @@
 
  // middleware
  var autoPopulateLead = function (next) {
-   this.populate('users.items');
+   this.populate('users.items user.group');
    next();
  };
 
@@ -77,7 +78,7 @@
 
  CartSchema.pre('remove', function (next) {
    this.model('Cart').remove({
-     group: this._id
+     'group._id': this._id
    }, next);
  });
 
