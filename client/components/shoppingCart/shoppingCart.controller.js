@@ -40,46 +40,29 @@ class ShoppingCartController {
     this.DialogService.showPayModal(this.currentCart);
   }
 
+  _getAddToCartUrl(cart) {
+    var items = "";
+    var users = cart.users;
+    for (var i = 0; i < users.length; i++) {
+      var user = users[i];
+      for (var x = 0; x < user.items.length; x++) {
+        var item = user.items[x];
+        var quantity = user.items[x].quantity;
+        items += item.product.id + "|" + quantity;
+        items += ',';
+      }
+    }
+    if (items.length < 1) {
+      return false;
+    }
+    return encodeURI("http://affil.walmart.com/cart/addToCart?items=" + items + "&affp1=|apk|&affilsrc=api&veh=aff&wmlspartner=readonlyapi");
+  }
+
   checkout() {
-    var self = this;
-    var links = document.getElementsByClassName("walmart-add-to-cart-link");
-    console.log("Links: ", links);
-
-    function addToWalmart(i) {
-      self.$timeout(function () {
-        links[i].click();
-      }, 100 * i);
+    var url = this._getAddToCartUrl(this.currentCart);
+    if (url) {
+      window.open(url, '_blank');
     }
-
-    for (var i = 0; i < links.length; i++) {
-      addToWalmart(i)
-    }
-    /*
-          this.currentCart.users.forEach(function (user) {
-                user.items.forEach(function (item) {
-                    var url = item.product.addToCartUrl;
-                    console.log("url: ", url);
-
-
-                    //window.open(url, '_blank');
-
-                    //console.log("Links: ", links[0]);
-
-
-                    /*self.$http.get(url).then(function (res) {
-                      console.log("res: ", res);
-                    });*/
-    /*
-        var obj = {
-          id: "051071822244",
-          type: "upc",
-          quantity: 1
-        };
-        walmartBuyNow.addItem('walmartCheckoutBtn', obj);
-
-      });
-    });
-    */
   }
 
   addToCart(product) {

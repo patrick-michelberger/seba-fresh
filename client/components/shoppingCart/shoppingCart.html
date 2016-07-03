@@ -35,7 +35,7 @@
     </div>
     <!-- ITEMS -->
     <div class="cart-cell-container" ng-repeat="item in shoppingCartCtrl.currentUserItems" layout="column">
-      <a ng-href="{{item.product.addToCartUrl}}" class="walmart-add-to-cart-link" target="walmart" style="display:none;"></a>
+      <a ng-href="{{item.product.addToCartUrl}}" data-quantity="{{item.quantity}}" class="walmart-add-to-cart-link" target="walmart" style="display:none;"></a>
       <div layout="row">
         <div class="cart-cell-picture" layout="row" layout-align="start center">
           <img ng-src="{{item.product.mediumImage}}" />
@@ -85,7 +85,8 @@
       </div>
     </div>
     <!-- ITEMS -->
-    <div ng-hide="shoppingCartCtrl.freeShipping" class="cart-cell-container" ng-repeat="item in flatmate.items" layout="column">
+    <div class="cart-cell-container" ng-repeat="item in flatmate.items" layout="column">
+      <a ng-href="{{item.product.addToCartUrl}}" data-quantity="{{item.quantity}}" class="walmart-add-to-cart-link" target="walmart" style="display:none;"></a>
       <div layout="row">
         <div class="cart-cell-picture" layout="row" layout-align="start center">
           <img ng-src="{{item.product.mediumImage}}" />
