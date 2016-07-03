@@ -37,3 +37,24 @@ main .background {
   color: $sf-color-yellow;
   font-weight: 100!important;
 }
+
+main .box {
+    // margin: 30px;
+
+    position: absolute;
+    background: url("/assets/images/seba-landing-page-1.jpg") no-repeat right center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-color: #d9d9d9;
+    height: 120%;
+    width: 100%;
+    z-index: 0;
+
+    // background-color: #dfecec;
+    // height:auto;
+    // border: 1px solid black;
+    opacity: .15;
+    // filter: alpha(opacity=60); /* For IE8 and earlier */
+}
