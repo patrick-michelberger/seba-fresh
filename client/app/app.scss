@@ -45,12 +45,11 @@ $sf-color-yellow: #FFC120; // Component styles are injected through grunt
 @import 'admin/admin';
 @import 'carts/carts';
 @import 'contact/contact';
-@import 'dialogs';
 @import 'join/join';
 @import 'main/main';
 @import 'onboarding/onboarding';
 @import 'products/products';
-@import 'test/test';
+@import '../components/dialog/dialogs';
 @import '../components/footer/footer';
 @import '../components/groupList/groupList';
 @import '../components/groups/groups';

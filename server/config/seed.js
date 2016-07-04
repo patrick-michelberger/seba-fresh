@@ -4,13 +4,12 @@
  */
 
 'use strict';
-import Thing from '../api/thing/thing.model';
 import User from '../api/user/user.model';
 import product from '../api/product/product.model';
 import payment from '../api/payment/payment.model';
 import order from '../api/order/order.model';
 
-/*User.find({}).remove()
+User.find({}).remove()
   .then(() => {
     User.create({
         provider: 'local',
@@ -119,4 +118,3 @@ import order from '../api/order/order.model';
         console.log('finished populating users');
       })
   });
-*/
