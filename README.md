@@ -1,7 +1,5 @@
 # seba-fresh
 
-This project was generated with the [Angular Full-Stack Generator](https://github.com/DaftMonk/generator-angular-fullstack) version 3.6.1.
-
 ## Getting Started
 
 ### Prerequisites
@@ -27,18 +25,14 @@ This project was generated with the [Angular Full-Stack Generator](https://githu
 
 Run `grunt build` for building and `grunt serve` for preview.
 
-## Testing
-
-Running `npm test` will run the unit tests with karma.
-
 
 ## SEBA Fresh Configurations
 
 **General**
 
 * Build Systems: `Gulp`
-* Testing: 
-  * `Jasmine`
+* Testing:
+  * tba
 
 **Client**
 
@@ -46,14 +40,12 @@ Running `npm test` will run the unit tests with karma.
 * Markup:  `HTML`
 * Stylesheets: `Sass`
 * Angular Routers: `ui-router`
-* CSS Frameworks: `Bootstrap`
-  * Option to include `UI Bootstrap`
+* CSS Frameworks: `Angular Material`
 
 **Server**
 
 * Scripts: `Babel`
 * Database:
   * `MongoDB`
-    * Authentication boilerplate: `Yes`
-    * oAuth integrations: `Facebook`
-    * Socket.io integration: `Yes`
+    * oAuth integrations: `Facebook`, `Paypal`
+    * Socket.io
