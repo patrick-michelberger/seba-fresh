@@ -26,14 +26,11 @@ function onConnect(socket) {
     connectedUsers[userId] = socket;
   }
 
-  console.log("number of connected users: ", Object.keys(connectedUsers).length);
-
   // user joins group chats for all in cart
   Cart.findOne({
     'users._id': userId
   }).exec().then(function (foundCart) {
     if (foundCart) {
-      console.log("user joins cart: ", foundCart._id);
       socket.join(foundCart._id);
     }
     socket.currentCart = foundCart._id;
