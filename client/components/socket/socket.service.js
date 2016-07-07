@@ -40,7 +40,10 @@ angular.module('sebaFreshApp')
           } else {
             event = 'updated';
           }
-          cb(event, model);
+          console.log("old amount: ", object.totalAmount);
+          _.merge(object, model);
+          console.log("New amount: ", object.totalAmount);
+          cb(event, object);
         });
 
         /**

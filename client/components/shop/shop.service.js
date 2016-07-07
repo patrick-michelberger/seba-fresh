@@ -2,14 +2,10 @@
 
 (function () {
 
-  function ShopService($rootScope, Util, Auth, Cart, $q) {
+  function ShopService($rootScope, Util, Auth, Cart, $q, socket) {
     var safeCb = Util.safeCb;
     var carts = [];
     var currentCart = false;
-
-    if (Auth.isLoggedIn()) {
-      currentCart = Cart.get();
-    }
 
     var Shop = {
       currentCart: currentCart,
@@ -28,7 +24,7 @@
             product: product,
             userId: Auth.getCurrentUser()._id
           }, function (data) {
-            currentCart = data;
+            // currentCart = data;
             $rootScope.$emit("cart:add", product);
             // TODO update carts data structure
             return safeCb(callback)(null);
@@ -54,8 +50,8 @@
             userId: Auth.getCurrentUser()._id,
             quantity: 1
           }, function (data) {
-            currentCart = data;
-            $rootScope.$emit("cart:remove", product);
+            //currentCart = data;
+            //$rootScope.$emit("cart:remove", product);
             // TODO update carts data structure
             return safeCb(callback)(null, carts[cartId]);
           },
@@ -64,29 +60,6 @@
           }).$promise;
       },
 
-      /**
-       * Gets all user's current carts
-       *   (synchronous|asynchronous)
-       *
-       * @param  {Function|*} callback - optional, funciton(user)
-       * @return {Object|Promise}
-       */
-      getCarts(callback) {
-        if (arguments.length === 0) {
-          return carts;
-        }
-
-        var value = (carts.hasOwnProperty('$promise')) ?
-          carts.$promise : carts;
-        return $q.when(value)
-          .then(carts => {
-            safeCb(callback)(carts);
-            return carts;
-          }, () => {
-            safeCb(callback)({});
-            return {};
-          });
-      },
       /**
        * Gets user's current cart
        *   (synchronous|asynchronous)
@@ -110,13 +83,12 @@
           });
       },
 
-      setCurrentCart(cart) {
-        currentCart = cart;
-      },
-
       queryCart() {
         currentCart = Cart.get();
-        return currentCart;
+        currentCart.$promise.then(function () {
+          socket.syncModelUpdates("cart", currentCart._id, currentCart);
+          return currentCart;
+        });
       },
 
       clear() {
@@ -125,6 +97,10 @@
       }
 
     };
+
+    if (Auth.isLoggedIn()) {
+      Shop.queryCart();
+    }
 
     return Shop;
   }

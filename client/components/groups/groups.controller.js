@@ -67,13 +67,12 @@ class GroupsController {
           function (data) {
             var createdGroup = data.group;
             var createdCart = data.cart;
-            // TODO 
-            self.ShopService.setCurrentCart(createdCart);
+            // TODO
+            self.ShopService.queryCart();
             self.isSending = false;
             form.$setUntouched();
             form.$setPristine();
             self.group = {};
-            var carts = self.ShopService.getCarts();
             self.$rootScope.$emit('onboarding:next');
           },
           function (err) {
