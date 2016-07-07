@@ -13,27 +13,11 @@ class ShoppingCartController {
     this.$http = $http;
     this.DialogService = DialogService;
     this.currentUserItems = [];
-    this.flatmatesItems = [];
     this.freeShipping = false;
   }
 
   $onInit() {
     var self = this;
-
-    this.$scope.$watch(function () {
-      return self.ShopService.getCurrentCart();
-    }, function (currentCart) {
-      if (currentCart) {
-        currentCart.$promise.then(function () {
-          self.currentCart = currentCart;
-          // TODO More efficient method?
-          var groupedItems = self.calculatedGroupedItems(currentCart.users);
-          self.flatmates = groupedItems.flatmates;
-          self.currentUserItems = groupedItems.currentUser;
-          self.freeShipping = currentCart.totalAmount && currentCart.totalAmount > 0 && ((currentCart.totalAmount / 50) >= 1) ? true : false;
-        });
-      }
-    });
   }
 
   pay() {
@@ -91,7 +75,7 @@ class ShoppingCartController {
   }
 
   calculateOrderAmount(items) {
-    if (items) {
+    if (items && items.length > 1) {
       items = items ||  [];
       var value = 0;
       items.forEach(function (item) {
@@ -102,21 +86,18 @@ class ShoppingCartController {
   }
 
   calculatedGroupedItems(users) {
+    console.log("calculatedGroupedItems...");
     var currentUserItems = [];
-    var flatmates = {};
     var currentUser = this.Auth.getCurrentUser();
     var currentUserIndex = _.findIndex(users, {
       "_id": currentUser._id
     });
-    if (currentUserIndex > -1) {
-      currentUserItems = users[currentUserIndex].items;
-      // make copy
-      users = users.slice();
-      users.splice(currentUserIndex, 1);
-    }
+    currentUserItems = users[currentUserIndex].items;
+    // make copy
+    users = users.slice();
+    users.splice(currentUserIndex, 1);
     return {
-      "currentUser": currentUserItems,
-      "flatmates": users
+      "currentUser": currentUserItems
     };
   }
 
@@ -129,6 +110,12 @@ class ShoppingCartController {
       return false;
     }
     return this.Auth.getCurrentUser()._id === this.currentCart.group.admin;
+  }
+
+  isFreeShippingAvailable() {
+    var currentCart = this.getCurrentCart();
+    var freeShipping = currentCart.totalAmount && currentCart.totalAmount > 0 && ((currentCart.totalAmount / 50) >= 1) ? true : false;
+    return freeShipping;
   }
 }
 

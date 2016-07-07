@@ -2,7 +2,7 @@
 'use strict';
 
 angular.module('sebaFreshApp')
-  .factory('socket', function (socketFactory, Auth) {
+  .factory('socket', function (socketFactory, Auth, $q) {
     // socket.io now auto-configures its connection when we ommit a connection url
     var ioSocket = io('', {
       // Send auth token on connection, you will need to DI the Auth service above
@@ -40,12 +40,11 @@ angular.module('sebaFreshApp')
           } else {
             event = 'updated';
           }
-          console.log("old amount: ", object.totalAmount);
           _.merge(object, model);
-          console.log("New amount: ", object.totalAmount);
-          cb(event, object);
+          // TODO fix
+          object.users = model.users;
+          cb(event, model);
         });
-
         /**
          * Syncs removed items on 'model:modelId:remove'
          */

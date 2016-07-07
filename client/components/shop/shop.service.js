@@ -24,8 +24,8 @@
             product: product,
             userId: Auth.getCurrentUser()._id
           }, function (data) {
-            // currentCart = data;
-            $rootScope.$emit("cart:add", product);
+            //currentCart = data;
+            //$rootScope.$emit("cart:add", product);
             // TODO update carts data structure
             return safeCb(callback)(null);
           },
