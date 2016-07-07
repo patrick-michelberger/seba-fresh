@@ -14,12 +14,16 @@ angular.module('sebaFreshApp')
           return ShopService.getCurrentCart();
         }, function (currentCart) {
           if (currentCart) {
-            scope.currentCart = currentCart;
-            var percent = Math.round((currentCart.totalAmount / 50) * 100);
-            scope.progressStyle = {
-              'width': percent + '%'
-            };
-            scope.freeShipping = currentCart.totalAmount && currentCart.totalAmount > 0 && ((currentCart.totalAmount / 50) >= 1) ? true : false;
+            currentCart.$promise.then(function () {
+              scope.currentCart = currentCart;
+              console.log("$promise: ", currentCart.totalAmount);
+              var percent = Math.round((currentCart.totalAmount / 50) * 100);
+
+              scope.progressStyle = {
+                'width': percent + '%'
+              };
+              scope.freeShipping = currentCart.totalAmount && currentCart.totalAmount > 0 && ((currentCart.totalAmount / 50) >= 1) ? true : false;
+            });
           }
         });
       }
