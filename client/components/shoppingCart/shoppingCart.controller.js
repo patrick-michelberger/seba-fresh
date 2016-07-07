@@ -25,13 +25,11 @@ class ShoppingCartController {
     }, function (currentCart) {
       if (currentCart) {
         self.currentCart = currentCart;
-        currentCart.$promise.then(function () {
-          // TODO More efficient method?
-          var groupedItems = self.calculatedGroupedItems(currentCart.users);
-          self.flatmates = groupedItems.flatmates;
-          self.currentUserItems = groupedItems.currentUser;
-          self.freeShipping = currentCart.totalAmount && currentCart.totalAmount > 0 && ((currentCart.totalAmount / 50) >= 1) ? true : false;
-        });
+        // TODO More efficient method?
+        var groupedItems = self.calculatedGroupedItems(currentCart.users);
+        self.flatmates = groupedItems.flatmates;
+        self.currentUserItems = groupedItems.currentUser;
+        self.freeShipping = currentCart.totalAmount && currentCart.totalAmount > 0 && ((currentCart.totalAmount / 50) >= 1) ? true : false;
       }
     });
   }

@@ -4,6 +4,7 @@
 'use strict';
 
 import config from './environment';
+import Cart from '../api/cart/cart.model';
 
 // When the user disconnects.. perform this
 function onDisconnect(socket) {}
@@ -26,6 +27,9 @@ function onConnect(socket) {
   require('../api/product/product.socket').register(socket);
 }
 
+// Store sockets by user id
+var connectedUsers = {};
+
 export default function (socketio) {
   // socket.io (v1.x.x) is powered by debug.
   // In order to see all the debug output, set DEBUG (in server/config/local.env.js) to including the desired scope.
@@ -37,16 +41,37 @@ export default function (socketio) {
   // 1. You will need to send the token in `client/components/socket/socket.service.js`
   //
   // 2. Require authentication here:
-  // socketio.use(require('socketio-jwt').authorize({
-  //   secret: config.secrets.session,
-  //   handshake: true
-  // }));
+  socketio.use(require('socketio-jwt').authorize({
+    secret: config.secrets.session,
+    handshake: true
+  }));
 
   socketio.on('connection', function (socket) {
     socket.address = socket.request.connection.remoteAddress +
       ':' + socket.request.connection.remotePort;
 
     socket.connectedAt = new Date();
+
+    if (socket.decoded_token && socket.decoded_token._id) {
+      var userId = socket.decoded_token._id;
+      connectedUsers[userId] = socket;
+    }
+
+    console.log("number of connected users: ", Object.keys(connectedUsers).length);
+
+    // user joins group chats for all in cart
+    Cart.findOne({
+      'users._id': userId
+    }).exec().then(function (foundCart) {
+      if (foundCart) {
+        console.log("user joins cart: ", foundCart._id);
+        socket.join(foundCart._id);
+      }
+    }, function (err) {
+      if (err) {
+        console.log("error: ", err);
+      }
+    });
 
     socket.log = function (...data) {
       console.log(`SocketIO ${socket.nsp.name} [${socket.address}]`, ...data);
