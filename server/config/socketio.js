@@ -7,7 +7,12 @@ import config from './environment';
 import Cart from '../api/cart/cart.model';
 
 // When the user disconnects.. perform this
-function onDisconnect(socket) {}
+function onDisconnect(socket) {
+  if (socket.decoded_token && socket.decoded_token._id) {
+    var userId = socket.decoded_token._id;
+    connectedUsers[userId] = null;
+  }
+}
 
 // When the user connects.. perform this
 function onConnect(socket) {
@@ -16,9 +21,31 @@ function onConnect(socket) {
     socket.log(JSON.stringify(data, null, 2));
   });
 
+  if (socket.decoded_token && socket.decoded_token._id) {
+    var userId = socket.decoded_token._id;
+    connectedUsers[userId] = socket;
+  }
+
+  console.log("number of connected users: ", Object.keys(connectedUsers).length);
+
+  // user joins group chats for all in cart
+  Cart.findOne({
+    'users._id': userId
+  }).exec().then(function (foundCart) {
+    if (foundCart) {
+      console.log("user joins cart: ", foundCart._id);
+      socket.join(foundCart._id);
+    }
+    socket.currentCart = foundCart._id;
+    require('../api/cart/cart.socket').register(socket);
+  }, function (err) {
+    if (err) {
+      console.log("error: ", err);
+    }
+  });
+
   // Insert sockets below
   require('../api/reminder/reminder.socket').register(socket);
-  require('../api/cart/cart.socket').register(socket);
   require('../api/invitation/invitation.socket').register(socket);
   require('../api/category/category.socket').register(socket);
   require('../api/group/group.socket').register(socket);
@@ -51,27 +78,6 @@ export default function (socketio) {
       ':' + socket.request.connection.remotePort;
 
     socket.connectedAt = new Date();
-
-    if (socket.decoded_token && socket.decoded_token._id) {
-      var userId = socket.decoded_token._id;
-      connectedUsers[userId] = socket;
-    }
-
-    console.log("number of connected users: ", Object.keys(connectedUsers).length);
-
-    // user joins group chats for all in cart
-    Cart.findOne({
-      'users._id': userId
-    }).exec().then(function (foundCart) {
-      if (foundCart) {
-        console.log("user joins cart: ", foundCart._id);
-        socket.join(foundCart._id);
-      }
-    }, function (err) {
-      if (err) {
-        console.log("error: ", err);
-      }
-    });
 
     socket.log = function (...data) {
       console.log(`SocketIO ${socket.nsp.name} [${socket.address}]`, ...data);

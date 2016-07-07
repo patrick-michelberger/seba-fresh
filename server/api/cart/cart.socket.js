@@ -10,11 +10,11 @@ import CartEvents from './cart.events';
 var events = ['save', 'remove'];
 
 export function register(socket) {
+  console.log("currentCart: ", socket.currentCart);
   // Bind model events to socket events
   for (var i = 0, eventsLength = events.length; i < eventsLength; i++) {
     var event = events[i];
-    var listener = createListener('cart:' + event, socket);
-
+    var listener = createListener('cart:' + socket.currentCart + ":" + event, socket);
     CartEvents.on(event, listener);
     socket.on('disconnect', removeListener(event, listener));
   }
