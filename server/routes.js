@@ -9,11 +9,6 @@ import path from 'path';
 
 export default function(app) {
 
-  // SSL pingback challenge
-  app.route('/.well-known/acme-challenge/u5w8EgsVK_QaGgWEfD_il4Tq0cOmoeB2B6IfIsqtCdk').get((req, res) => {
-    res.send("u5w8EgsVK_QaGgWEfD_il4Tq0cOmoeB2B6IfIsqtCdk.GG0gth3fx6v-tnaT8dyTwIlVJqxdOdUKFNg1i9AJfjg");
-  });
-
   // Insert routes below
   app.use('/api/reminders', require('./api/reminder'));
   app.use('/api/carts', require('./api/cart'));

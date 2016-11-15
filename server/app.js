@@ -18,11 +18,19 @@ mongoose.connection.on('error', function(err) {
 });
 
 // Populate databases with sample data
-if (config.seedDB) { require('./config/seed'); }
+if (config.seedDB) {
+  require('./config/seed');
+}
 
 // Setup server
 var app = express();
 var server = http.createServer(app);
+
+// SSL pingback challenge
+app.route('/.well-known/acme-challenge/zxJrCnlFFK-wz4gqHamVe2PPjcexl9-MTaF4LLsGpgk').get((req, res) => {
+  res.send("zxJrCnlFFK-wz4gqHamVe2PPjcexl9-MTaF4LLsGpgk.GG0gth3fx6v-tnaT8dyTwIlVJqxdOdUKFNg1i9AJfjg");
+});
+
 var socketio = require('socket.io')(server, {
   serveClient: config.env !== 'production',
   path: '/socket.io-client'
