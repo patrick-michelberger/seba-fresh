@@ -1,16 +1,10 @@
 main {
   height: 100%;
 }
-main .background {
-  position: absolute;
-  background: url("/assets/images/seba-landing-page-1.jpg") no-repeat right center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+#sf-main {
+  color: #fff;
   height: 100%;
-  width: 100%;
-  z-index: 0;
+  padding-top: 60px;
 }
 #sf-main .sf-hero-unit {
   z-index: 0;
@@ -19,11 +13,6 @@ main .background {
 .sf-panel {
   background-color: #fff;
   height: 350px;
-}
-#sf-main {
-  background-color: $sf-color-blue;
-  color: #fff;
-  height: 100%;
 }
 #sf-main .sf-hero-headline h1 {
   font-weight: 100;

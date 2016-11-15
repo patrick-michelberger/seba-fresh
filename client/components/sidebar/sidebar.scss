@@ -2,12 +2,16 @@ sidebar .sf-sidebar-nav {
   margin-top: 60px;
 }
 
-sidebar md-sidenav {
-  background: $sf-color-blue;
+sidebar md-toolbar {
+  background-color: white!important;
+  color: black!important;
+}
+
+sidebar .sf-brand span {
+    color: $sf-color-yellow;
 }
 
 sidebar md-list-item a,
 sidebar md-list-item p {
   margin: 0!important;
-  color: #fff!important;
 }

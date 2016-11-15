@@ -1,24 +1,24 @@
 'use strict';
 
 angular.module('sebaFreshApp', [
-  'sebaFreshApp.auth',
-  'sebaFreshApp.shop',
-  'sebaFreshApp.services',
-  'sebaFreshApp.admin',
-  'sebaFreshApp.assortment',
-  'sebaFreshApp.oauth-buttons',
-  'sebaFreshApp.constants',
-  'ngCookies',
-  'ngResource',
-  'ngSanitize',
-  'btford.socket-io',
-  'ui.router',
-  'validation.match',
-  'ngAnimate',
-  'ngMaterial',
-  'ngMap'
-])
-  .config(function ($urlRouterProvider, $locationProvider, $mdThemingProvider) {
+    'sebaFreshApp.auth',
+    'sebaFreshApp.shop',
+    'sebaFreshApp.services',
+    'sebaFreshApp.admin',
+    'sebaFreshApp.assortment',
+    'sebaFreshApp.oauth-buttons',
+    'sebaFreshApp.constants',
+    'ngCookies',
+    'ngResource',
+    'ngSanitize',
+    'btford.socket-io',
+    'ui.router',
+    'validation.match',
+    'ngAnimate',
+    'ngMaterial',
+    'ngMap'
+  ])
+  .config(function($urlRouterProvider, $locationProvider, $mdThemingProvider) {
     $urlRouterProvider
       .otherwise('/');
 
@@ -43,7 +43,8 @@ angular.module('sebaFreshApp', [
       'contrastDefaultColor': 'light', // whether, by default, text (contrast)
       // on this palette should be dark or light
       'contrastDarkColors': ['50', '100', //hues which contrast should be 'dark' by default
-       '200', '300', '400', 'A100'],
+        '200', '300', '400', 'A100'
+      ],
       'contrastLightColors': undefined // could also specify this if default was 'dark'
     });
 
@@ -65,7 +66,8 @@ angular.module('sebaFreshApp', [
       'contrastDefaultColor': 'light', // whether, by default, text (contrast)
       // on this palette should be dark or light
       'contrastDarkColors': ['50', '100', //hues which contrast should be 'dark' by default
-       '200', '300', '400', 'A100'],
+        '200', '300', '400', 'A100'
+      ],
       'contrastLightColors': undefined // could also specify this if default was 'dark'
     });
 
@@ -87,7 +89,8 @@ angular.module('sebaFreshApp', [
       'contrastDefaultColor': 'light', // whether, by default, text (contrast)
       // on this palette should be dark or light
       'contrastDarkColors': ['50', '100', //hues which contrast should be 'dark' by default
-       '200', '300', '400', 'A100'],
+        '200', '300', '400', 'A100'
+      ],
       'contrastLightColors': undefined // could also specify this if default was 'dark'
     });
 
@@ -96,13 +99,13 @@ angular.module('sebaFreshApp', [
       .accentPalette('sebaAccentPalette')
       .warnPalette('sebaWarnPalette');
   }).run(['$rootScope', '$window', 'Auth',
-    function ($rootScope, $window, Auth) {
+    function($rootScope, $window, Auth) {
 
       // Global variables and methods
       $rootScope.user = {};
       $rootScope.isLoggedIn = Auth.isLoggedIn;
 
-      $window.fbAsyncInit = function () {
+      $window.fbAsyncInit = function() {
         // Executed when the SDK is loaded
         FB.init({
 
@@ -144,7 +147,7 @@ angular.module('sebaFreshApp', [
         });
         //sAuth.watchAuthenticationStatusChange();
       };
-      (function (d) {
+      (function(d) {
         // load the Facebook javascript SDK
 
         var js,
@@ -163,4 +166,5 @@ angular.module('sebaFreshApp', [
         ref.parentNode.insertBefore(js, ref);
 
       }(document));
-      }]);
+    }
+  ]);
