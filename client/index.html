@@ -78,6 +78,8 @@
   <script src="bower_components/angular-messages/angular-messages.js"></script>
   <script src="bower_components/angular-material/angular-material.js"></script>
   <script src="bower_components/ngmap/build/scripts/ng-map.js"></script>
+  <script src="bower_components/firebase/firebase.js"></script>
+  <script src="bower_components/angularfire/dist/angularfire.js"></script>
   <!-- endbower -->
   <script src="socket.io-client/socket.io.js "></script>
   <!-- endbuild -->
@@ -119,6 +121,7 @@
   <script src="components/auth/interceptor.service.js"></script>
   <script src="components/auth/router.decorator.js"></script>
   <script src="components/auth/user.service.js"></script>
+  <script src="components/categories/categories.directive.js"></script>
   <script src="components/categories/category.service.js"></script>
   <script src="components/cents/cents.filter.js"></script>
   <script src="components/dialog/dialog.service.js"></script>
@@ -169,6 +172,18 @@
         async: true
       });
     } catch (e) {}
+  </script>
+
+  <!-- Firebase -->
+  <script>
+    // Initialize the Firebase SDK
+    var config = {
+      apiKey: 'AIzaSyBzIZaSfpEn416MWFT9hCUQFzt3xjvbUgQ',
+      authDomain: 'fresh-fbc88.firebaseapp.com',
+      databaseURL: 'https://fresh-fbc88.firebaseio.com',
+      storageBucket: 'fresh-fbc88.appspot.com',
+    };
+    firebase.initializeApp(config);
   </script>
 </body>
 

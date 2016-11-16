@@ -16,7 +16,8 @@ angular.module('sebaFreshApp', [
     'validation.match',
     'ngAnimate',
     'ngMaterial',
-    'ngMap'
+    'ngMap',
+    'firebase',
   ])
   .config(function($urlRouterProvider, $locationProvider, $mdThemingProvider) {
     $urlRouterProvider
@@ -99,7 +100,7 @@ angular.module('sebaFreshApp', [
       .accentPalette('sebaAccentPalette')
       .warnPalette('sebaWarnPalette');
   }).run(['$rootScope', '$window', 'Auth',
-    function($rootScope, $window, Auth) {
+    function($rootScope, $window, Auth, $firebaseObject) {
 
       // Global variables and methods
       $rootScope.user = {};

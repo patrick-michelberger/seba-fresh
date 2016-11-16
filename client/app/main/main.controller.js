@@ -1,15 +1,15 @@
 'use strict';
 
-(function () {
+(function() {
 
   class MainController {
 
     constructor($http, $state, $scope, socket, Auth) {
+
       this.$http = $http;
       this.socket = socket;
       this.isLoggedIn = Auth.isLoggedIn;
       this.getCurrentUser = Auth.getCurrentUser;
-
 
       // Check for user status
       var user = this.getCurrentUser();
