@@ -17,10 +17,7 @@ class GroupCellController {
     this.getCurrentUser = Auth.getCurrentUser;
   }
 
-  deleteGroup(group) {
-    this.$http.delete('/api/groups/' + group._id);
-    this.$rootScope.$emit("group:deleted", group._id);
-  }
+  deleteGroup(group) {}
 
   buyGroceries() {
     this.$rootScope.$emit('onboarding:next', 2);
@@ -34,11 +31,11 @@ class GroupCellController {
   // TODO Still used?
   inviteFriends(group) {
     var url = this.baseShareUrl + '/group/' + group._id + '/invite';
-    this.FacebookService.sendMessage(url).catch(function (err) {
+    this.FacebookService.sendMessage(url).catch(function(err) {
       console.log("FacebookService: err:", err);
-    }).then(function () {
+    }).then(function() {
       console.log("Facebook dialog closed");
-    }).finally(function () {
+    }).finally(function() {
       console.log("Finally, facebook dialog closed");
     });
   }
@@ -58,7 +55,7 @@ class GroupCellController {
       $scope.refreshMap = self.refreshMap;
       $scope.isSending = false;
 
-      $scope.sendEmail = function () {
+      $scope.sendEmail = function() {
         $scope.isSending = true;
         var email = $scope.invitee.email;
         $http.post('/api/invitations', {
@@ -69,39 +66,39 @@ class GroupCellController {
           group: {
             _id: group._id
           }
-        }).then(function () {
-          self.$timeout(function () {
+        }).then(function() {
+          self.$timeout(function() {
             $scope.isSending = false;
             var title = "We've sent an invitation link to " + email + "!";
             var content = "As soon as, the email has been confirmed. Your flatmate is added to your shopping group.";
             var popupLabel = "Next";
             self.DialogService.showAlert(title, content, popupLabel);
           }, 300);
-        }, function (err) {
+        }, function(err) {
           console.log("error: ", err);
         });
       };
 
-      $scope.decline = function () {
+      $scope.decline = function() {
         $mdDialog.cancel();
       };
-      $scope.next = function () {
+      $scope.next = function() {
         $mdDialog.hide("next");
       };
-      $scope.share = function (service) {
+      $scope.share = function(service) {
         var url = "";
         var shareUrl = this.baseShareUrl + '/group/' + group._id + '/invite';
         var refUrl = "";
 
         switch (service) {
-        case "facebook":
-          url = "http://m.facebook.com/sharer.php?u=" + shareUrl + "&redirect_uri=https://sebafresh.herokuapp.com/onboarding/inviteSent";
-          break;
-        case "whatsapp":
-          url = "whatsapp://send?text=" + shareUrl;
-          break;
-        default:
-          url = "mailto:?subject=LOVE this from ABOUT YOU!&amp;body=Hallo! Guck mal hier: auf " + shareUrl + " gefällt Dir bestimmt. Viel Spaß damit!";
+          case "facebook":
+            url = "http://m.facebook.com/sharer.php?u=" + shareUrl + "&redirect_uri=https://sebafresh.herokuapp.com/onboarding/inviteSent";
+            break;
+          case "whatsapp":
+            url = "whatsapp://send?text=" + shareUrl;
+            break;
+          default:
+            url = "mailto:?subject=LOVE this from ABOUT YOU!&amp;body=Hallo! Guck mal hier: auf " + shareUrl + " gefällt Dir bestimmt. Viel Spaß damit!";
         }
         $window.open(url, '_blank');
       }
@@ -115,15 +112,15 @@ class GroupCellController {
       fullscreen: useFullScreen,
       controller: ['$scope', '$state', '$mdDialog', '$window', '$http', 'Auth', DialogController],
       bindToController: true,
-    }).then(function (answer) {
+    }).then(function(answer) {
         //self.$rootScope.$emit('onboarding:invited');
       },
-      function () {
+      function() {
         console.log('You cancelled the dialog.');
       });
-    self.$scope.$watch(function () {
+    self.$scope.$watch(function() {
       return self.$mdMedia('xs') || self.$mdMedia('sm');
-    }, function (wantsFullScreen) {
+    }, function(wantsFullScreen) {
       self.customFullscreen = (wantsFullScreen === true);
     });
   }

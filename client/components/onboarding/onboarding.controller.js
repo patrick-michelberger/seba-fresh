@@ -18,26 +18,26 @@ class OnboardingController {
     this.getCurrentUser = Auth.getCurrentUser;
 
     // event listeners
-    $scope.$on('$destroy', function () {
+    $scope.$on('$destroy', function() {
       socket.unsyncUpdates('group');
     });
 
-    $rootScope.$on('onboarding:next', function (event, index) {
+    $rootScope.$on('onboarding:next', function(event, index) {
       if (index) {
         self._setIndex(index);
       } else {
         self.showSuccessMessage = true;
-        self.$timeout(function () {
+        self.$timeout(function() {
           self.showSuccessMessage = false;
           self._updateIndex();
         }, 1500);
       }
     });
 
-    $rootScope.$on('onboarding:invited', function () {
+    $rootScope.$on('onboarding:invited', function() {
       self.Auth.changeFriendsInvited(true);
       self.showSuccessMessage = true;
-      self.$timeout(function () {
+      self.$timeout(function() {
         self.showSuccessMessage = false;
         self._updateIndex();
       }, 1500);
@@ -47,11 +47,6 @@ class OnboardingController {
   // methods
   $onInit() {
     var self = this;
-    this.$http.get('/api/groups').then(response => {
-      self.groups = response.data;
-      self.socket.syncUpdates('group', this.groups);
-      self._updateIndex();
-    });
   }
 
   disableInviteFriends() {

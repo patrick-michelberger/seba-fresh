@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sebaFreshApp')
-  .config(function ($stateProvider) {
+  .config(function($stateProvider) {
     $stateProvider
       .state('login', {
         url: '/login',
@@ -16,7 +16,7 @@ angular.module('sebaFreshApp')
         url: '/logout?referrer',
         referrer: 'main',
         template: '',
-        controller: function ($state, Auth, ShopService) {
+        controller: function($state, Auth, ShopService) {
           var referrer = $state.params.referrer ||
             $state.current.referrer ||
             'main';
@@ -39,13 +39,25 @@ angular.module('sebaFreshApp')
         templateUrl: 'app/account/settings/settings.html',
         controller: 'SettingsController',
         controllerAs: 'vm',
-        authenticate: true
+        resolve: {
+          "currentAuth": ["FirebaseAuth", function(FirebaseAuth) {
+            return FirebaseAuth.$requireSignIn();
+          }]
+        }
       });
   })
-  .run(function ($rootScope) {
-    $rootScope.$on('$stateChangeStart', function (event, next, nextParams, current) {
+  .run(function($rootScope, $state) {
+    $rootScope.$on('$stateChangeStart', function(event, next, nextParams, current) {
       if (next.name === 'logout' && current && current.name && !current.authenticate) {
         next.referrer = current.name;
+      }
+    });
+
+    $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
+      // We can catch the error thrown when the $requireSignIn promise is rejected
+      // and redirect the user back to the home page
+      if (error === "AUTH_REQUIRED") {
+        $state.go("login");
       }
     });
   });

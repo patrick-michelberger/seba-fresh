@@ -1,18 +1,9 @@
 'use strict';
 
-(function () {
+(function() {
 
   function GroupResource($resource) {
-    return $resource('/api/groups/:id/:controller', {
-      id: '@_id'
-    }, {
-      acceptInvitation: {
-        method: 'POST',
-        params: {
-          controller: 'accept'
-        }
-      }
-    });
+    return {};
   }
 
   angular.module('sebaFreshApp.services')

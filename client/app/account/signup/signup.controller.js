@@ -7,9 +7,9 @@ class SignupController {
   submitted = false;
   //end-non-standard
 
-  constructor(Auth, $state, $stateParams, $location, ShopService) {
+  constructor($state, $stateParams, $location, ShopService, FirebaseAuth) {
     this.$stateParams = $stateParams;
-    this.Auth = Auth;
+    this.FirebaseAuth = FirebaseAuth;
     this.$state = $state;
     this.$location = $location;
     this.ShopService = ShopService;
@@ -21,29 +21,24 @@ class SignupController {
     this.submitted = true;
 
     if (form.$valid) {
-      this.Auth.createUser({
-          first_name: this.user.first_name,
-          last_name: this.user.last_name,
-          email: this.user.email,
-          password: this.user.password
-        })
-        .then((user) => {
-          self.ShopService.queryCart();
-          // Account created, redirect to next page
-          if (self.redirectUrl) {
-            self.$location.path(self.$stateParams.redirectUrl);
-          } else {
-            if (!user.friendsInvited) {
-              this.$state.go('onboarding');
-            } else {
-              this.$state.go('products');
-            }
-          }
-        })
-        .catch(err => {
-          err = err.data;
-          self.errors = {};
+      this.FirebaseAuth.$createUserWithEmailAndPassword(this.user.email, this.user.password).then((user) => {
+        return user.updateProfile({
+          displayName: self.user.first_name + " " + self.user.last_name
         });
+      }).then((user) => {
+        // TODO self.ShopService.queryCart();
+        if (self.redirectUrl) {
+          self.$location.path(self.$stateParams.redirectUrl);
+        } else {
+          if (!user.friendsInvited) {
+            self.$state.go('onboarding');
+          } else {
+            self.$state.go('products');
+          }
+        }
+      }).catch((error) => {
+        self.errors.other = error.message;
+      });
     }
   }
 }

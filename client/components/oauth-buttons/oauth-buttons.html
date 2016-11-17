@@ -1,10 +1,10 @@
 <section layout="column">
-  <md-button class="md-raised md-primary md-raised" flex ng-click="OauthButtons.loginOauth('facebook')">
+  <md-button class="md-raised md-primary md-raised" flex ng-click="OauthButtons.FirebaseAuth.$signInWithPopup('facebook')">
     <span ng-show="OauthButtons.$state.includes('signup')">Sign up with Facebook</span>
     <span ng-show="OauthButtons.$state.includes('login')">Login with Facebook</span>
   </md-button>
-  <md-button class="md-raised md-raised" flex ng-click="OauthButtons.loginOauth('paypal')">
+  <!--<md-button class="md-raised md-raised" flex ng-click="OauthButtons.loginOauth('paypal')">
     <span ng-show="OauthButtons.$state.includes('signup')">Sign up with PayPal</span>
     <span ng-show="OauthButtons.$state.includes('login')">Login with PayPal</span>
-  </md-button>
+  </md-button>-->
 </section>

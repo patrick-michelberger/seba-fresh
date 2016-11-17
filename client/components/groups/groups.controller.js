@@ -19,17 +19,12 @@ class GroupsController {
     self.$log = $log;
     self.$q = $q;
 
-    $scope.$on('$destroy', function () {
+    $scope.$on('$destroy', function() {
       socket.unsyncUpdates('group');
     });
   }
 
-  $onInit() {
-    this.$http.get('/api/groups').then(response => {
-      this.groups = response.data;
-      this.socket.syncUpdates('group', this.groups);
-    });
-  }
+  $onInit() {}
 
   createGroup(form) {
     var self = this;
@@ -40,7 +35,7 @@ class GroupsController {
 
       var query = this.group.street + " " + this.group.street_number + " " + this.group.postcode + " " + this.group.city;
 
-      self.NgMap.getGeoLocation(query).then(function (geolocation) {
+      self.NgMap.getGeoLocation(query).then(function(geolocation) {
         var latitude = geolocation.lat();
         var longitude = geolocation.lng();
 
@@ -64,10 +59,10 @@ class GroupsController {
         }
 
         self.Group.save(group,
-          function (data) {
+          function(data) {
             var createdGroup = data.group;
             var createdCart = data.cart;
-            // TODO 
+            // TODO
             self.ShopService.setCurrentCart(createdCart);
             self.isSending = false;
             form.$setUntouched();
@@ -76,7 +71,7 @@ class GroupsController {
             var carts = self.ShopService.getCarts();
             self.$rootScope.$emit('onboarding:next');
           },
-          function (err) {
+          function(err) {
             self.isSending = false;
             err = err.data;
             self.errors = {};

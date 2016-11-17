@@ -3,7 +3,8 @@
 class NavbarController {
   isCollapsed = true;
 
-  constructor($rootScope, $scope, Auth, socket, $timeout, $log, $mdSidenav, DialogService, ShopService) {
+  constructor($rootScope, $scope, FirebaseAuth, socket, $timeout, $log, $mdSidenav, DialogService, ShopService) {
+    var self = this;
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.$timeout = $timeout;
@@ -13,16 +14,18 @@ class NavbarController {
     this.DialogService = DialogService;
     this.ShopService = ShopService;
     this.getCurrentCart = ShopService.getCurrentCart
-    this.isLoggedIn = Auth.isLoggedIn;
-    this.isAdmin = Auth.isAdmin;
-    this.getCurrentUser = Auth.getCurrentUser;
     this.toggleLeft = this.buildDelayedToggler('left');
-
+    this.FirebaseAuth = FirebaseAuth;
     this.openCart = this.open;
     this.socket = socket;
 
-    $scope.$on('$destroy', function () {
+    $scope.$on('$destroy', function() {
       socket.unsyncUpdates('cart');
+    });
+
+    this.FirebaseAuth.$onAuthStateChanged(function(firebaseUser) {
+      console.log("firebaseUser: ", firebaseUser);
+      self.currentUser = firebaseUser;
     });
   }
 
@@ -37,7 +40,7 @@ class NavbarController {
   open() {
     var self = this;
     this.$mdSidenav('right').open()
-      .then(function () {});
+      .then(function() {});
   }
 
   /**
@@ -46,7 +49,7 @@ class NavbarController {
   close() {
     var self = this;
     this.$mdSidenav('left').close()
-      .then(function () {});
+      .then(function() {});
   }
 
   /**
@@ -59,7 +62,7 @@ class NavbarController {
       var self = this,
         args = Array.prototype.slice.call(arguments);
       self.$timeout.cancel(timer);
-      timer = self.$timeout(function () {
+      timer = self.$timeout(function() {
         timer = undefined;
         func.apply(context, args);
       }, wait || 10);
@@ -71,10 +74,10 @@ class NavbarController {
    */
   buildDelayedToggler(navID) {
     var self = this;
-    return self.debounce(function () {
+    return self.debounce(function() {
       self.$mdSidenav(navID)
         .toggle()
-        .then(function () {});
+        .then(function() {});
     }, 200);
   }
 }
