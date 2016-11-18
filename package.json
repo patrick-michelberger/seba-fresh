@@ -32,7 +32,6 @@
     "passport": "~0.3.0",
     "passport-facebook": "2.1.1",
     "passport-local": "^1.0.0",
-    "passport-paypal-oauth": "git://github.com/auth0/passport-paypal-oauth.git",
     "request": "2.72.0",
     "serve-favicon": "^2.3.0",
     "socket.io": "^1.3.5",
