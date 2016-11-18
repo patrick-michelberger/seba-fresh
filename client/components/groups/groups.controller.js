@@ -2,7 +2,7 @@
 
 class GroupsController {
 
-  constructor($rootScope, $scope, $http, $q, $log, socket, Group, Auth, NgMap, ShopService) {
+  constructor($rootScope, $scope, $http, socket, Group, Auth, NgMap, ShopService, FirebaseCart) {
     var self = this;
     this.errors = [];
     this.groups = [];
@@ -14,14 +14,8 @@ class GroupsController {
     this.$rootScope = $rootScope;
     self.Group = Group;
     this.ShopService = ShopService;
-    self.simulateQuery = true;
     self.isDisabled = false;
-    self.$log = $log;
-    self.$q = $q;
-
-    $scope.$on('$destroy', function() {
-      socket.unsyncUpdates('group');
-    });
+    this.FirebaseCart = FirebaseCart;
   }
 
   $onInit() {}
@@ -58,30 +52,31 @@ class GroupsController {
           group.address.additional_address = self.group.additional_address;
         }
 
-        self.Group.save(group,
-          function(data) {
-            var createdGroup = data.group;
-            var createdCart = data.cart;
-            // TODO
-            self.ShopService.setCurrentCart(createdCart);
-            self.isSending = false;
-            form.$setUntouched();
-            form.$setPristine();
-            self.group = {};
-            var carts = self.ShopService.getCarts();
-            self.$rootScope.$emit('onboarding:next');
-          },
-          function(err) {
-            self.isSending = false;
-            err = err.data;
-            self.errors = {};
 
-            // Update validity of form fields that match the mongoose errors
-            angular.forEach(err.errors, (error, field) => {
-              form[field].$setValidity('mongoose', false);
-              self.errors[field] = error.message;
-            });
-          });
+        self.FirebaseCart.create(group.name, group.address).then((cartKey) => {
+          console.log("cartKey:", cartKey);
+
+          /* TODO
+          var createdGroup = data.group;
+          var createdCart = data.cart;
+          // TODO
+          self.ShopService.setCurrentCart(createdCart);
+          */
+          self.isSending = false;
+          form.$setUntouched();
+          form.$setPristine();
+          self.group = {};
+
+          // var carts = self.ShopService.getCarts();
+          self.$rootScope.$emit('onboarding:next');
+
+        }).catch((err) => {
+          self.isSending = false;
+          err = err.data;
+          self.errors = {};
+
+          // TODO Update validity of form fields that match errors
+        });
       });
     }
   }

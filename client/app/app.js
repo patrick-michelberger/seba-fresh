@@ -4,7 +4,6 @@ angular.module('sebaFreshApp', [
     'sebaFreshApp.auth',
     'sebaFreshApp.shop',
     'sebaFreshApp.services',
-    'sebaFreshApp.admin',
     'sebaFreshApp.assortment',
     'sebaFreshApp.oauth-buttons',
     'sebaFreshApp.constants',
