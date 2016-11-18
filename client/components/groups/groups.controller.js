@@ -3,9 +3,8 @@
 class GroupsController {
 
   constructor($rootScope, $scope, $http, socket, Group, Auth, NgMap, ShopService, FirebaseCart) {
-    var self = this;
+    const self = this;
     this.errors = [];
-    this.groups = [];
     this.socket = socket;
     this.NgMap = NgMap;
     this.$http = $http;
@@ -16,9 +15,8 @@ class GroupsController {
     this.ShopService = ShopService;
     self.isDisabled = false;
     this.FirebaseCart = FirebaseCart;
+    this.$scope.groups = FirebaseCart.getCartList();
   }
-
-  $onInit() {}
 
   createGroup(form) {
     var self = this;

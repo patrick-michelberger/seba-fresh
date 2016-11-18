@@ -2,12 +2,13 @@
 
 class GroupCellController {
 
-  constructor($rootScope, $scope, $window, FacebookService, $http, Auth, $mdDialog, $mdMedia, $timeout, DialogService) {
+  constructor($rootScope, $scope, $window, FacebookService, $http, Auth, FirebaseAuth, FirebaseCart, $mdDialog, $mdMedia, $timeout, DialogService) {
     this.baseShareUrl = location.protocol + '//' + location.hostname + ':' + location.port;
     this.FacebookService = FacebookService;
     this.DialogService = DialogService;
     this.$http = $http;
     this.Auth = Auth;
+    this.FirebaseAuth = FirebaseAuth;
     this.$window = $window;
     this.$mdDialog = $mdDialog;
     this.$mdMedia = $mdMedia;
@@ -15,17 +16,20 @@ class GroupCellController {
     this.$rootScope = $rootScope;
     this.$timeout = $timeout;
     this.getCurrentUser = Auth.getCurrentUser;
+    this.FirebaseCart = FirebaseCart;
   }
 
-  deleteGroup(group) {}
+  deleteCart(cart) {
+    this.FirebaseCart.deleteCart(cart.id);
+  }
 
   buyGroceries() {
     this.$rootScope.$emit('onboarding:next', 2);
   }
 
   isAdmin(group) {
-    var userId = this.Auth.getCurrentUser()._id;
-    return userId === group.admin._id;
+    var userId = this.FirebaseAuth.$getAuth().uid;
+    return userId === group.createdByUserId;
   }
 
   // TODO Still used?

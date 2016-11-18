@@ -2,16 +2,17 @@
 
 class OnboardingController {
 
-  constructor($http, $timeout, socket, $scope, $rootScope, Auth) {
+  constructor($http, $timeout, socket, $scope, $rootScope, Auth, FirebaseCart) {
     var self = this;
     // dependencies
     this.socket = socket;
     this.$http = $http;
     this.$timeout = $timeout;
     this.Auth = Auth;
+    this.FirebaseCart = FirebaseCart;
 
     // properties
-    this.groups = [];
+    this.groups = FirebaseCart.getCartList();
     this.selectedIndex = 0;
     this.showSuccessMessage = false;
 
@@ -50,6 +51,7 @@ class OnboardingController {
   }
 
   disableInviteFriends() {
+
     var result = !this.groups || !this.groups[0];
     return result;
   }
@@ -60,7 +62,7 @@ class OnboardingController {
   }
 
   disableCreateGroup() {
-    var result = this.groups && this.groups[0];
+    var result = this.groups && this.groups[0] && true;
     return result;
   }
 
