@@ -24,7 +24,6 @@ class NavbarController {
     });
 
     this.FirebaseAuth.$onAuthStateChanged(function(firebaseUser) {
-      console.log("firebaseUser: ", firebaseUser);
       self.currentUser = firebaseUser;
     });
   }

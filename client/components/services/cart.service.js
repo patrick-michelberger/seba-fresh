@@ -7,14 +7,16 @@
     const usersCartRef = firebase.database().ref().child('cart-users');
     const usersRef = firebase.database().ref().child('users');
 
-    const get = () => {
-
+    const get = (cartId) => {
+      return cartsMetadataRef.child(cartId).once('value').then((snapshot) => {
+        return snapshot.val();
+      });
     };
 
     const joinCart = (cartId) => {
       const self = this;
 
-      get(cartId).then((cart) => {
+      return get(cartId).then((cart) => {
         const cartName = cart.name;
         const currentUser = FirebaseAuth.$getAuth();
 
@@ -23,7 +25,6 @@
         // Skip if we're already joined the cart
         // TODO if (self._carts[cartId])
         // self._rooms[roomId] = true;
-
 
         if (currentUser) {
           const userRef = usersCartRef.child(currentUser.uid);
@@ -86,7 +87,10 @@
       };
 
       return newCartRef.set(newCart).then(() => {
+        joinCart(newCartRef.key);
         return newCartRef.key;
+      }).catch((error) => {
+        console.log("Error: ", error);
       });
     }
 
