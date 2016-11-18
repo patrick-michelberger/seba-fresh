@@ -97,6 +97,15 @@
       return $firebaseArray(userCartsRef);
     };
 
+    const userIsAdmin = (cartId) => {
+
+    }
+
+    const userIsAdmin = (cartId) => {
+      const cartRef = cartsMetadataRef.child(cartId);
+      const currentUser = FirebaseAuth.$getAuth();
+      return cartRef.createdByUserId === currentUser.uid;
+    };
 
     // TODO
     const addItem = (cartId, itemId) => {};
@@ -108,7 +117,6 @@
 
     const getUsersByCart = () => {};
     const getCart = () => {};
-    const userIsAdmin = () => {};
 
     return {
       get,
@@ -126,7 +134,6 @@
       getCartList,
       getUsersByCart,
       getCart,
-      userIsAdmin,
     };
 
   }

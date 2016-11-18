@@ -17,6 +17,7 @@ class GroupCellController {
     this.$timeout = $timeout;
     this.getCurrentUser = Auth.getCurrentUser;
     this.FirebaseCart = FirebaseCart;
+    this.isAdmin = FirebaseCart.userIsAdmin;
   }
 
   deleteCart(cart) {
@@ -25,11 +26,6 @@ class GroupCellController {
 
   buyGroceries() {
     this.$rootScope.$emit('onboarding:next', 2);
-  }
-
-  isAdmin(group) {
-    var userId = this.FirebaseAuth.$getAuth().uid;
-    return userId === group.createdByUserId;
   }
 
   // TODO Still used?
