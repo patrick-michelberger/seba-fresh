@@ -1,5 +1,5 @@
 <div id="sf-products-container" flex layout="row" layout-wrap layout-padding>
-  <div class="sf-product" flex-xs="100" flex-sm="50" flex="25" ng-repeat=" product in vm.products" ng-if="product.stock=='Available'" layout-padding>
+  <div class="sf-product" flex-xs="100" flex-sm="50" flex="25" ng-repeat=" product in vm.products" ng-if="product.stock=='Available'" ng-controller="ProductCellController as cellCtrl" layout-padding>
     <md-card>
       <md-card-title layout="column" layout="center center">
         <md-card-title-text>
@@ -12,12 +12,12 @@
         <div class="sf-price md-title">{{product.price}} $</div>
       </md-card-title>
       <md-card-actions layout="row " layout-align="end center ">
-        <md-button flex ng-click="vm.removeFromCart(product)" class="md-raised" aria-label="remove rom cart" ng-disabled="!product.quantity||product.quantity<1">-</md-button>
-        <md-button flex class="product-quantity md-raised" ng-class="{'highlight': product.quantity>0}" aria-label="quantity" ng-disabled="true">{{product.quantity}}</md-button>
-        <md-button ng-hide="product.quantity>0" flex ng-click="vm.addToCart(product)" aria-label="add to cart" class="md-raised md-warn ">
+        <md-button flex ng-click="vm.removeFromCart(product)" class="md-raised" aria-label="remove rom cart" ng-disabled="!quantity||quantity<1">-</md-button>
+        <md-button flex class="product-quantity md-raised" ng-class="{'highlight': quantity>0}" aria-label="quantity" ng-disabled="true">{{cellCtrl.checkQuantity(cellCtrl.currentCartProducts, product)}}</md-button>
+        <md-button ng-hide="quantity>0" flex ng-click="vm.addToCart(product)" aria-label="add to cart" class="md-raised md-warn ">
           <i class="sf-md-cart-icon material-icons">shopping_cart</i>
         </md-button>
-        <md-button ng-show="product.quantity>0" flex ng-click="vm.addToCart(product, quantity)" aria-label="add to cart" class="md-raised">+</md-button>
+        <md-button ng-show="quantity>0" flex ng-click="vm.addToCart(product, quantity)" aria-label="add to cart" class="md-raised">+</md-button>
       </md-card-actions>
     </md-card>
   </div>

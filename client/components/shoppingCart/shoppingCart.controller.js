@@ -8,7 +8,7 @@ class ShoppingCartController {
     this.$rootScope = $rootScope;
     this.ShopService = ShopService;
     this.$timeout = $timeout;
-    this.getCurrentCart = ShopService.getCurrentCart;
+    this.getCurrentCart = null;
     this.Auth = Auth;
     this.$http = $http;
     this.DialogService = DialogService;
@@ -20,12 +20,12 @@ class ShoppingCartController {
   $onInit() {
     var self = this;
 
-    this.$scope.$watch(function () {
+    this.$scope.$watch(function() {
       return self.ShopService.getCurrentCart();
-    }, function (currentCart) {
+    }, function(currentCart) {
       if (currentCart) {
         self.currentCart = currentCart;
-        currentCart.$promise.then(function () {
+        currentCart.$promise.then(function() {
           // TODO More efficient method?
           var groupedItems = self.calculatedGroupedItems(currentCart.users);
           self.flatmates = groupedItems.flatmates;
@@ -66,13 +66,13 @@ class ShoppingCartController {
   }
 
   addToCart(product) {
-    this.ShopService.addToCart(product, function () {});
+    this.ShopService.addToCart(product, function() {});
     var quantity = product.quantity || 0;
     product.quantity = quantity + 1;
   }
 
   removeFromCart(product) {
-    this.ShopService.removeFromCart(product, function () {});
+    this.ShopService.removeFromCart(product, function() {});
     var quantity = product.quantity || 0;
     if (quantity > 0) {
       product.quantity = quantity - 1;
@@ -83,7 +83,7 @@ class ShoppingCartController {
     if (items) {
       items = items ||  [];
       var value = 0;
-      items.forEach(function (item) {
+      items.forEach(function(item) {
         value += item.product.price * item.quantity;
       });
       return value.toFixed(2);
@@ -94,7 +94,7 @@ class ShoppingCartController {
     if (items) {
       items = items ||  [];
       var value = 0;
-      items.forEach(function (item) {
+      items.forEach(function(item) {
         value += item.quantity;
       });
       return value;

@@ -51,7 +51,7 @@ class GroupsController {
         }
 
 
-        self.FirebaseCart.create(group.name, group.address).then((cartKey) => {
+        self.FirebaseCart.createCart(group.name, group.address).then((cartKey) => {
           console.log("cartKey:", cartKey);
 
           /* TODO

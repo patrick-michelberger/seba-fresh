@@ -1,17 +1,16 @@
 'use strict';
 
-(function () {
+(function() {
 
   function AssortmentService($rootScope, Util, ProductService, ShopService, Auth) {
     var safeCb = Util.safeCb;
     var products = [];
 
-    $rootScope.$on('cart:add', function (event, product) {
+    $rootScope.$on('cart:add', function(event, product) {
       Assortment.updateQuantities();
     });
 
-    $rootScope.$on('cart:remove', function (event, product) {
-      console.log("cart remove");
+    $rootScope.$on('cart:remove', function(event, product) {
       var cart = ShopService.getCurrentCart();
       for (var i = 0; i < products.length; i++) {
         if (products[i].quantity && products[i].quantity > 0 && products[i]._id === product._id) {
@@ -33,11 +32,9 @@
       fetch(productId, callback) {
         return ProductService.get({
           id: productId
-        }, function (product) {
-          Assortment.checkQuantity(product, function (product) {
-            return safeCb(callback)(product);
-          });
-        }, function () {
+        }, function(product) {
+
+        }, function() {
           return safeCb(callback)(null);
         });
       },
@@ -50,17 +47,17 @@
        * @return {Object|Promise}
        */
       fetchAll(callback)  {
-        return ProductService.query({}, function (data) {
+        return ProductService.query({}, function(data) {
           products = data;
           Assortment.updateQuantities();
           return safeCb(callback)(null, products);
-        }, function () {
+        }, function() {
           return safeCb(callback)(null, []);
         });
       },
 
       updateQuantities() {
-        ShopService.getCurrentCart(function (currentCart) {
+        ShopService.getCurrentCart(function(currentCart) {
           var user = _.find(currentCart.users, {
             "_id": Auth.getCurrentUser()._id
           });
@@ -79,21 +76,6 @@
         }
       },
 
-      checkQuantity(product, callback) {
-        ShopService.getCurrentCart(function (currentCart) {
-          console.log("currentCart: ", currentCart);
-          var user = _.find(currentCart.users, {
-            "_id": Auth.getCurrentUser()._id
-          });
-          for (var i = 0; i < user.items.length; i++) {
-            if (user.items[i].product._id == product._id) {
-              product.quantity = user.items[i].quantity;
-              return product;
-            }
-          }
-          callback(product);
-        });
-      }
     };
 
     return Assortment;

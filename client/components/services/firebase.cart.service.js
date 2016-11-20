@@ -3,18 +3,25 @@
 (function() {
   function FirebaseCartService($http, $firebaseObject, $firebaseArray, FirebaseAuth) {
 
+    var currentCartId = "-KWsMtWLpQH7hLc234nf";
+
     const cartsMetadataRef = firebase.database().ref().child("carts-metadata");
     const usersCartRef = firebase.database().ref().child('cart-users');
+    const cartProducts = firebase.database().ref().child('cart-products');
     const usersRef = firebase.database().ref().child('users');
     const invitationsRef = firebase.database().ref().child('invitations');
 
     const get = (cartId) => {
-      return cartsMetadataRef.child(cartId).once('value').then((snapshot) => {
-        return snapshot.val();
+      const cartRef = cartsMetadataRef.child(cartId);
+      return cartRef.once('value').then((snapshot) => {
+        return {
+          cart: snapshot.val(),
+          cartRef
+        };
       });
     };
 
-    const create = (cartName, cartAddress) => {
+    const createCart = (cartName, cartAddress) => {
       var self = this,
         newCartRef = cartsMetadataRef.push();
 
@@ -49,7 +56,11 @@
     const joinCart = (cartId) => {
       const self = this;
 
-      return get(cartId).then((cart) => {
+      return get(cartId).then((response) => {
+        const {
+          cart,
+          cartRef
+        } = response;
         const cartName = cart.name;
         const cartCreatedByUserId = cart.createdByUserId;
         const currentUser = FirebaseAuth.$getAuth();
@@ -98,31 +109,141 @@
       return $firebaseArray(userCartsRef);
     };
 
+    const getCart = (cartId) => {
+      const cartRef = cartsMetadataRef.child(cartId);
+      return $firebaseObject(cartRef);
+    };
+
+    const setCurrentCart = (cartId) => {
+      if (!cartId) {
+        return
+      }
+      currentCartId = cartId;
+    }
+
+    const getCurrentCart = () => {
+      const currentUser = FirebaseAuth.$getAuth();
+      if (!currentUser) {
+        return;
+      }
+      const userCartsRef = usersCartRef.child(currentUser.uid).child("carts").child(currentCartId);
+      return $firebaseObject(userCartsRef);
+    }
+
+    const getCurrentCartProducts = () => {
+      const currentUser = FirebaseAuth.$getAuth();
+      if (!currentUser) {
+        return;
+      }
+      const cartProductsRef = cartProducts.child(currentCartId);
+      return $firebaseObject(cartProductsRef);
+    }
+
     const userIsAdmin = (cartId) => {
       const cartRef = cartsMetadataRef.child(cartId);
       const currentUser = FirebaseAuth.$getAuth();
       return cartRef.createdByUserId === currentUser.uid;
     };
 
-    // TODO
-    const addItem = (cartId, itemId) => {};
-    const removeItem = (cartId, itemId) => {};
+    const addItem = (cartId, product, quantity) => {
+      const self = this;
+      const currentUser = FirebaseAuth.$getAuth();
+      quantity = quantity || 1;
+
+      if (!currentUser) {
+        return new Error('Not authenticated or user not set!');
+      }
+
+      const newProductRef = cartProducts.child(cartId).child(product.id);
+
+      // get current cart-products node
+      return newProductRef.once('value').then((snapshot) => {
+
+        let oldItem = snapshot.val();
+
+        if (snapshot) {
+          oldItem = snapshot.val();
+        }
+
+        let newItem = {
+          addedByUserId: currentUser.uid,
+          addedByUserName: currentUser.displayName,
+          addedAt: firebase.database.ServerValue.TIMESTAMP,
+          item: {
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            stock: product.stock,
+            brand: product.brand,
+            categoryPath: product.categoryPath,
+            addToCartUrl: product.addToCartUrl,
+            productUrl: product.productUrl,
+            largeImage: product.largeImage,
+            mediumImage: product.mediumImage,
+            thumbnailImage: product.thumbnailImage,
+          },
+          quantity: quantity
+        };
+
+        if (oldItem && oldItem.quantity) {
+          newItem.quantity = oldItem.quantity + newItem.quantity;
+        }
+
+        // update cart-products node
+        return newProductRef.update(newItem).then(() => {
+
+          // get current carts-metadata node
+          return get(cartId).then((response) => {
+            const {
+              cart,
+              cartRef
+            } = response;
+            const totalAmount = cart.totalAmount || 0;
+            const totalQuantity = cart.totalQuantity || 0;
+
+            // update carts-metadata node
+            return cartRef.update({
+              totalAmount: totalAmount + (product.price * quantity),
+              totalQuantity: totalQuantity + quantity,
+            });
+          });
+        });
+      });
+    };
+
+    const removeItem = (cartId, productId, quantity) => {
+      quantity = quantity ||  1;
+      const self = this;
+      const itemRef = cartProducts.child(cartId).child(productId);
+      return itemRef.once('value').then((snapshot) => {
+        const oldItem = snapshot.val();
+
+        if (oldItem.quantity > 0) {
+          return itemRef.update({
+            quantity: oldItem.quantity - quantity
+          })
+        } else {
+          return itemRef.remove();
+        }
+      });
+    };
 
     const getUsersByCart = () => {};
-    const getCart = () => {};
 
     return {
       get,
-      create,
+      createCart,
       deleteCart,
       joinCart,
       leaveCart,
       addItem,
       removeItem,
-
       getCartList,
       getUsersByCart,
       getCart,
+      setCurrentCart,
+      getCurrentCart,
+      getCurrentCartProducts,
     };
 
   }

@@ -2,7 +2,7 @@
 (function() {
 
   class ProductsComponent {
-    constructor($scope, $stateParams, socket, AssortmentService, FirebaseCart, DialogService, Cart) {
+    constructor($scope, $stateParams, socket, AssortmentService, FirebaseCart, DialogService, Cart, VendorAssortmentService) {
       var self = this;
       this.products = [];
       this.socket = socket;
@@ -10,7 +10,8 @@
       this.DialogService = DialogService;
       this.FirebaseCart = FirebaseCart;
       this.Cart = Cart;
-
+      this.currentCart = FirebaseCart.getCurrentCart();
+      this.currentCartProducts = FirebaseCart.getCurrentCartProducts();
       this.removeFromCart = this.removeFromCart;
       this.addToCart = this.addToCart;
 
@@ -37,12 +38,18 @@
       this.products = this.AssortmentService.fetchAll();
     }
 
-    addToCart(product) {
+    addToCart(product, quantity) {
+      const cartId = this.currentCart.id;
       this.FirebaseCart.addItem(cartId, product);
     }
 
-    removeFromCart(item) {
-      this.FirebaseCart.removeItem(cartId, product);
+    removeFromCart(product) {
+      if (!product && !this.currentCart) {
+        return;
+      }
+      const cartId = this.currentCart.id;
+      const productId = product.id;
+      this.FirebaseCart.removeItem(cartId, productId);
     }
   }
 
