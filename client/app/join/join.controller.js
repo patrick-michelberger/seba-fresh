@@ -2,60 +2,53 @@
 (function() {
 
   class JoinComponent {
-    constructor($scope, $stateParams, $timeout, $state, Group, $mdDialog, $mdMedia, NgMap, Auth, ShopService) {
+    constructor($scope, $stateParams, $timeout, $state, $mdDialog, $mdMedia, NgMap, FirebaseInvitationService, FirebaseAuth) {
       var self = this;
-      var groupId = $stateParams.groupId;
+      var invitationId = $stateParams.invitationId;
       this.$mdDialog = $mdDialog;
       this.$mdMedia = $mdMedia;
       this.$scope = $scope;
-      this.Group = Group;
-      this.ShopService = ShopService;
-      this.isLoggedIn = Auth.isLoggedIn;
-      this.getCurrentUser = Auth.getCurrentUser;
+      this.FirebaseInvitationService = FirebaseInvitationService;
+      this.FirebaseAuth = FirebaseAuth;
       this.$state = $state;
       this.NgMap = NgMap;
       this.$timeout = $timeout;
       this.refreshMap = true;
-      /*Group.get({
-        id: groupId
-      }, function (group) {
-        self.group = group;
-      });*/
+      this.invitation = FirebaseInvitationService.get(invitationId);
     }
     showJoinGroupDialog(ev) {
       var self = this;
       var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs')) && this.customFullscreen;
 
       function DialogController($rootScope, $scope, $state, $mdDialog) {
-        $scope.group = self.group;
+        $scope.invitation = self.invitation;
         $scope.refreshMap = self.refreshMap;
+
         $scope.decline = function() {
+          const currentUser = self.FirebaseAuth.$getAuth();
           $mdDialog.hide();
-          if (self.isLoggedIn()) {
-            self.Group.declineInvitation($scope.group._id);
+          if (currentUser) {
+            return self.FirebaseInvitationService.decline(self.invitation.id).catch((err) => {
+              console.log("error: ", err);
+            });
           } else {
             $state.go('login', {
-              'redirectUrl': '/group/' + $scope.group._id + '/decline'
+              'redirectUrl': '/invitations/' + $scope.invitation.id + '/decline'
             });
           }
         };
         $scope.accept = function() {
+          const currentUser = self.FirebaseAuth.$getAuth();
           $mdDialog.cancel();
-          if (self.isLoggedIn()) {
-            return self.Group.acceptInvitation({
-              id: self.group._id
-            }, {
-              id: self.getCurrentUser()._id
-            }, function() {
-              self.ShopService.queryCart();
+          if (currentUser) {
+            return self.FirebaseInvitationService.accept(self.invitation.id).then(() => {
               $state.go('products');
-            }, function(err) {
-              // TODO Error Page
+            }).catch((err) => {
               console.log("error: ", err);
-            }).$promise;
+            });
           } else {
             $state.go('signup', {
-              'redirectUrl': '/group/' + $scope.group._id + '/accept'
+              'redirectUrl': '/invitations/' + $scope.invitation.id + '/accept'
             });
           }
         };

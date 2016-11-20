@@ -1,22 +1,22 @@
 'use strict';
 
 angular.module('sebaFreshApp')
-  .config(function ($stateProvider) {
+  .config(function($stateProvider) {
     $stateProvider
       .state('join', {
-        url: '/group/:groupId',
+        url: '/invitations/:invitationId',
         template: '<join></join>'
       })
       .state('join-invite', {
-        url: '/group/:groupId/invite',
+        url: '/invitations/:invitationId/invite',
         template: '<join></join>'
       })
       .state('join-accept', {
-        url: '/group/:groupId/accept',
+        url: '/invitations/:invitationId/accept',
         template: '<join></join>'
       })
       .state('join-decline', {
-        url: '/group/:groupId/invite',
+        url: '/invitations/:invitationId/invite',
         template: '<join></join>'
       });
   });

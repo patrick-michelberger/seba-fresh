@@ -1,30 +1,30 @@
 'use strict';
-(function () {
+(function() {
 
   class ProductsComponent {
-    constructor($scope, $stateParams, socket, AssortmentService, ShopService, DialogService, Cart) {
+    constructor($scope, $stateParams, socket, AssortmentService, FirebaseCart, DialogService, Cart) {
       var self = this;
       this.products = [];
       this.socket = socket;
       this.AssortmentService = AssortmentService;
       this.DialogService = DialogService;
-      this.ShopService = ShopService;
+      this.FirebaseCart = FirebaseCart;
       this.Cart = Cart;
 
       this.removeFromCart = this.removeFromCart;
       this.addToCart = this.addToCart;
 
-      $scope.$on('$destroy', function () {
+      $scope.$on('$destroy', function() {
         socket.unsyncUpdates('product');
       });
-      $scope.$on('$locationChangeSuccess', function (event) {
+      $scope.$on('$locationChangeSuccess', function(event) {
         checkDetailView();
       });
 
       function checkDetailView() {
         var productId = $stateParams.productId;
         if (productId) {
-          self.AssortmentService.fetch(productId, function (product) {
+          self.AssortmentService.fetch(productId, function(product) {
             self.selectedProduct = product;
             self.DialogService.showProductModal(product);
           });
@@ -38,11 +38,11 @@
     }
 
     addToCart(product) {
-      this.ShopService.addToCart(product, function () {});
+      this.FirebaseCart.addItem(cartId, product);
     }
 
-    removeFromCart(product) {
-      this.ShopService.removeFromCart(product, function () {});
+    removeFromCart(item) {
+      this.FirebaseCart.removeItem(cartId, product);
     }
   }
 

@@ -1,10 +1,10 @@
 'use strict';
 
-(function () {
+(function() {
 
   function FacebookService($q, $document) {
     var Facebook = {
-      sendMessage: function (url) {
+      sendMessage: function(url) {
         var deferred = $q.defer();
 
         var options = {
@@ -14,10 +14,9 @@
           display: 'dialog',
           redirect_uri: location.protocol + '//' + location.hostname + ':' + location.port
         };
-        console.log("options: ", options);
 
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-          FB.ui(options, function (response) {
+          FB.ui(options, function(response) {
             console.log("share response: ", response);
             if (!response || response.error) {
               deferred.reject('Error occured');
@@ -30,7 +29,7 @@
             name: 'SEBA fresh - Shopping Cart Invitation',
             method: 'send',
             link: url
-          }, function (response) {
+          }, function(response) {
             console.log("send response: ", response);
             if (!response || response.error) {
               deferred.reject('Error occured');

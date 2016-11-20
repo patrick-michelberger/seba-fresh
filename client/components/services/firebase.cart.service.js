@@ -1,11 +1,12 @@
 'use strict';
 
 (function() {
-  function FirebaseCartService($firebaseObject, $firebaseArray, FirebaseAuth) {
+  function FirebaseCartService($http, $firebaseObject, $firebaseArray, FirebaseAuth) {
 
     const cartsMetadataRef = firebase.database().ref().child("carts-metadata");
     const usersCartRef = firebase.database().ref().child('cart-users');
     const usersRef = firebase.database().ref().child('users');
+    const invitationsRef = firebase.database().ref().child('invitations');
 
     const get = (cartId) => {
       return cartsMetadataRef.child(cartId).once('value').then((snapshot) => {
@@ -98,10 +99,6 @@
     };
 
     const userIsAdmin = (cartId) => {
-
-    }
-
-    const userIsAdmin = (cartId) => {
       const cartRef = cartsMetadataRef.child(cartId);
       const currentUser = FirebaseAuth.$getAuth();
       return cartRef.createdByUserId === currentUser.uid;
@@ -110,10 +107,6 @@
     // TODO
     const addItem = (cartId, itemId) => {};
     const removeItem = (cartId, itemId) => {};
-
-    const inviteUser = (userId, cartId) => {};
-    const acceptInvite = (inviteId) => {};
-    const declineInvite = (inviteId) => {};
 
     const getUsersByCart = () => {};
     const getCart = () => {};
@@ -127,10 +120,6 @@
       addItem,
       removeItem,
 
-      inviteUser,
-      acceptInvite,
-      declineInvite,
-
       getCartList,
       getUsersByCart,
       getCart,
@@ -139,5 +128,5 @@
   }
 
   angular.module('sebaFreshApp.services')
-    .factory('FirebaseCart', ["$firebaseObject", "$firebaseArray", "FirebaseAuth", FirebaseCartService]);
+    .factory('FirebaseCart', ["$http", "$firebaseObject", "$firebaseArray", "FirebaseAuth", FirebaseCartService]);
 })();

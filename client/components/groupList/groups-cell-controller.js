@@ -2,11 +2,10 @@
 
 class GroupCellController {
 
-  constructor($rootScope, $scope, $window, FacebookService, $http, Auth, FirebaseAuth, FirebaseCart, $mdDialog, $mdMedia, $timeout, DialogService) {
+  constructor($rootScope, $scope, $window, FacebookService, Auth, FirebaseAuth, FirebaseCart, FirebaseInvitationService, $mdDialog, $mdMedia, $timeout, DialogService) {
     this.baseShareUrl = location.protocol + '//' + location.hostname + ':' + location.port;
     this.FacebookService = FacebookService;
     this.DialogService = DialogService;
-    this.$http = $http;
     this.Auth = Auth;
     this.FirebaseAuth = FirebaseAuth;
     this.$window = $window;
@@ -17,6 +16,7 @@ class GroupCellController {
     this.$timeout = $timeout;
     this.getCurrentUser = Auth.getCurrentUser;
     this.FirebaseCart = FirebaseCart;
+    this.FirebaseInvitationService = FirebaseInvitationService;
     this.isAdmin = FirebaseCart.userIsAdmin;
   }
 
@@ -49,34 +49,34 @@ class GroupCellController {
     var self = this;
     var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs')) && this.customFullscreen;
 
-    function DialogController($scope, $state, $mdDialog, $window, $http, Auth) {
-      $scope.group = self.group;
+    function DialogController($scope, $state, $mdDialog, $window, FirebaseCart) {
+      $scope.group = group;
       $scope.invitee = {};
       $scope.refreshMap = self.refreshMap;
       $scope.isSending = false;
 
-      $scope.sendEmail = function() {
+
+      $scope.sendInvite = () => {
         $scope.isSending = true;
-        var email = $scope.invitee.email;
-        $http.post('/api/invitations', {
-          from: {
-            _id: Auth.getCurrentUser()._id
-          },
-          to: email,
-          group: {
-            _id: group._id
-          }
-        }).then(function() {
+        const email = $scope.invitee.email;
+        const cartId = $scope.group.id;
+
+        self.FirebaseInvitationService.inviteUserByEmail(email, cartId).then(() => {
           self.$timeout(function() {
             $scope.isSending = false;
             var title = "We've sent an invitation link to " + email + "!";
-            var content = "As soon as, the email has been confirmed. Your flatmate is added to your shopping group.";
+            var content = "As soon as, the email has been confirmed. Your flatmate is added to your shopping cart.";
             var popupLabel = "Next";
             self.DialogService.showAlert(title, content, popupLabel);
           }, 300);
-        }, function(err) {
-          console.log("error: ", err);
+        }).catch((error) => {
+          console.log("Error: ", error);
         });
+      };
+
+      $scope.sendEmail = function() {
+        $scope.isSending = true;
+        var email = $scope.invitee.email;
       };
 
       $scope.decline = function() {
@@ -110,7 +110,7 @@ class GroupCellController {
       targetEvent: ev,
       clickOutsideToClose: true,
       fullscreen: useFullScreen,
-      controller: ['$scope', '$state', '$mdDialog', '$window', '$http', 'Auth', DialogController],
+      controller: ['$scope', '$state', '$mdDialog', '$window', 'FirebaseCart', DialogController],
       bindToController: true,
     }).then(function(answer) {
         //self.$rootScope.$emit('onboarding:invited');

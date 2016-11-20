@@ -69,6 +69,13 @@ var all = {
     accessKey: process.env.AWS_ACCESS_KEY ||  'key',
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY ||  'secret',
     region: process.env.AWS_REGION ||  'region'
+  },
+
+  firebase: {
+    apiKey: process.env.FIREBASE_API_KEY ||  'key',
+    authDomain: process.env.FIREBASE_AUTH_DOMAIN ||  'authDomain',
+    databaseURL: process.env.FIREBASE_DATABASE_URL || 'databaseUrl',
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET || 'storageBucket',
   }
 };
 

@@ -19,6 +19,7 @@ class SignupController {
   register(form) {
     var self = this;
     this.submitted = true;
+    console.log("redirectUrl: ", self.redirectUrl);
 
     if (form.$valid) {
       this.FirebaseAuth.$createUserWithEmailAndPassword(this.user.email, this.user.password).then((user) => {
