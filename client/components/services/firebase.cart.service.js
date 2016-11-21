@@ -126,8 +126,8 @@
       if (!currentUser) {
         return;
       }
-      const userCartsRef = usersCartRef.child(currentUser.uid).child("carts").child(currentCartId);
-      return $firebaseObject(userCartsRef);
+      const cartRef = cartsMetadataRef.child(currentCartId);
+      return $firebaseObject(cartRef);
     }
 
     const getCurrentCartProducts = () => {
@@ -211,20 +211,39 @@
       });
     };
 
-    const removeItem = (cartId, productId, quantity) => {
+    const removeItem = (cartId, product, quantity) => {
       quantity = quantity ||  1;
       const self = this;
-      const itemRef = cartProducts.child(cartId).child(productId);
-      return itemRef.once('value').then((snapshot) => {
-        const oldItem = snapshot.val();
 
-        if (oldItem.quantity > 0) {
-          return itemRef.update({
-            quantity: oldItem.quantity - quantity
-          })
-        } else {
-          return itemRef.remove();
-        }
+      // get current carts-metadata node
+      return get(cartId).then((response) => {
+        const {
+          cart,
+          cartRef
+        } = response;
+        const totalAmount = cart.totalAmount || 0;
+        const totalQuantity = cart.totalQuantity || 0;
+
+        // update carts-metadata node
+        return cartRef.update({
+          totalAmount: totalAmount - (product.price * quantity),
+          totalQuantity: totalQuantity - quantity,
+        }).then(() => {
+          const productRef = cartProducts.child(cartId).child(product.id);
+          // get current cart-products node
+          return productRef.once('value').then((snapshot) => {
+            const oldItem = snapshot.val();
+
+            // update cart-products node
+            if (oldItem.quantity > 1) {
+              return productRef.update({
+                quantity: oldItem.quantity - quantity
+              })
+            } else {
+              return productRef.remove();
+            }
+          });
+        });
       });
     };
 

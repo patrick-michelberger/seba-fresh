@@ -48,8 +48,7 @@
         return;
       }
       const cartId = this.currentCart.id;
-      const productId = product.id;
-      this.FirebaseCart.removeItem(cartId, productId);
+      this.FirebaseCart.removeItem(cartId, product);
     }
   }
 
