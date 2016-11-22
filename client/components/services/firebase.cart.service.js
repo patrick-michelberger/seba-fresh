@@ -3,8 +3,6 @@
 (function() {
   function FirebaseCartService($rootScope, $http, $q, $firebaseObject, $firebaseArray, FirebaseAuth, FirebaseUser) {
 
-    var currentCart = null;
-
     const cartsMetadataRef = firebase.database().ref().child("carts-metadata");
     const usersCartRef = firebase.database().ref().child('cart-users');
     const cartProducts = firebase.database().ref().child('cart-products');
@@ -114,44 +112,29 @@
       return $firebaseObject(cartRef);
     };
 
-    const setCurrentCart = (cartId) => {
-      if (!cartId) {
-        return
-      }
-      // currentCart.id = cartId;
-    }
-
     const getCurrentCart = () => {
       const deferred = $q.defer();
-      /*
       FirebaseUser.getUser().then((user) => {
-        if (user && user.currentCartId) {
-          const cartId = user.currentCartId;
-          const cartRef = cartsMetadataRef.child(cartId);
-          deferred.resolve($firebaseObject(cartRef));
-        } else {
-          deferred.reject();
-        }
-        user.$destroy();
+        user.$loaded().then((user) => {
+          if (user && user.currentCartId) {
+            const cartRef = cartsMetadataRef.child(user.currentCartId);
+            deferred.resolve($firebaseObject(cartRef));
+          } else {
+            deferred.reject();
+          }
+        });
       });
-      */
       return deferred.promise;
     }
 
     const getCurrentCartProducts = () => {
-      const currentUser = FirebaseAuth.$getAuth();
-      if (!currentUser ||  !currentCart ||  !currentCart.id) {
-        return;
-      }
-      const cartProductsRef = cartProducts.child(currentCart.id);
-      return $firebaseObject(cartProductsRef);
+      return getCurrentCart().then((cartRef) => {
+        return cartRef.$loaded().then((cart) => {
+          const cartProductsRef = cartProducts.child(cart.id);
+          return $firebaseObject(cartProductsRef);
+        });
+      });
     }
-
-    const userIsAdmin = (cartId) => {
-      const cartRef = cartsMetadataRef.child(cartId);
-      const currentUser = FirebaseAuth.$getAuth();
-      return cartRef.createdByUserId === currentUser.uid;
-    };
 
     const addItem = (cartId, product, quantity) => {
       const self = this;
@@ -200,8 +183,10 @@
         // update cart-products node
         return newProductRef.update(newItem).then(() => {
 
+          console.log("get cart...");
           // get current carts-metadata node
           return get(cartId).then((response) => {
+            console.log("update");
             const {
               cart,
               cartRef
@@ -268,7 +253,6 @@
       getCartList,
       getUsersByCart,
       getCart,
-      setCurrentCart,
       getCurrentCart,
       getCurrentCartProducts,
     };

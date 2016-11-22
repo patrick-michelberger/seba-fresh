@@ -62,7 +62,9 @@
       showProductModal(product, useFullScreen) {
         // controller
         function ProductDialogController($rootScope, $scope, $state, $mdDialog, FirebaseCart) {
-          $scope.currentCart = FirebaseCart.getCurrentCart();
+          FirebaseCart.getCurrentCart().then((cart) => {
+            $scope.currentCart = cart;
+          });
           $scope.product = product;
           $scope.cancel = function() {
             $mdDialog.cancel();

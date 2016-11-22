@@ -3,8 +3,12 @@
 class ProductCellController {
   constructor($rootScope, $scope, FirebaseCart, VendorAssortmentService) {
     const self = this;
-    this.currentCart = FirebaseCart.getCurrentCart();
-    this.currentCartProducts = FirebaseCart.getCurrentCartProducts();
+    FirebaseCart.getCurrentCart().then((currentCart) => {
+      self.currentCart = currentCart;
+    });
+    FirebaseCart.getCurrentCartProducts().then((currentCartProducts) => {
+      self.currentCartProducts = currentCartProducts;
+    });
 
     this.checkQuantity = (cart, product) => {
       return $scope.quantity = VendorAssortmentService.checkQuantity(cart, product);

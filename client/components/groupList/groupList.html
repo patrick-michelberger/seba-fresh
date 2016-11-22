@@ -1,8 +1,8 @@
-<md-card ng-repeat="group in groups" ng-controller="GroupCellController as cellCtrl">
+<md-card ng-repeat="cart in groups" ng-controller="GroupCellController as cellCtrl">
   <img ng-src="{{imagePath}}" class="md-card-image">
   <md-card-title>
     <md-card-title-text>
-      <span class="md-headline">{{group.name}}</span>
+      <span class="md-headline">{{cart.name}}</span>
     </md-card-title-text>
   </md-card-title>
   <md-card-content>
@@ -17,9 +17,9 @@
   </md-card-content>
   <md-card-actions layout="row" layout-align="end center">
     <md-button class="md-raised" ng-click="cellCtrl.buyGroceries()">Shop Now</md-button>
-    <md-button ng-hide="groupListCtrl.isMobile" class="md-raised md-warn" ng-click="cellCtrl.showInviteDialog(group)">Invite Flatmate</md-button>
-    <md-button ng-show="groupListCtrl.isMobile" class="md-raised" ng-click="cellCtrl.share('whatsapp', group)">
+    <md-button ng-hide="groupListCtrl.isMobile" class="md-raised md-warn" ng-click="cellCtrl.showInviteDialog(cart)">Invite Flatmate</md-button>
+    <md-button ng-show="groupListCtrl.isMobile" class="md-raised" ng-click="cellCtrl.share('whatsapp', cart)">
       Whatsapp </md-button>
-    <md-button class="md-raised" ng-show="cellCtrl.isAdmin(group)" ng-click="cellCtrl.deleteCart(group)">Delete</md-button>
+    <md-button class="md-raised" ng-show="cellCtrl.cart.admin == cellCtrl.currentUser.id" ng-click="cellCtrl.deleteCart(cart)">Delete</md-button>
   </md-card-actions>
 </md-card>

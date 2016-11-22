@@ -30,6 +30,7 @@ class NavbarController {
     });
 
     FirebaseCart.getCurrentCart().then((currentCart) => {
+      console.log("currentCart: ", currentCart);
       self.currentCart = currentCart;
     });
   }

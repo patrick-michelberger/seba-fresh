@@ -2,20 +2,14 @@
 
 class GroupsController {
 
-  constructor($rootScope, $scope, $http, socket, Group, Auth, NgMap, ShopService, FirebaseCart) {
+  constructor($rootScope, NgMap, FirebaseCart, FirebaseUser) {
     const self = this;
-    this.errors = [];
-    this.socket = socket;
-    this.NgMap = NgMap;
-    this.$http = $http;
-    this.$scope = $scope;
-    this.getCurrentUser = Auth.getCurrentUser;
     this.$rootScope = $rootScope;
-    self.Group = Group;
-    this.ShopService = ShopService;
-    self.isDisabled = false;
+    this.NgMap = NgMap;
     this.FirebaseCart = FirebaseCart;
-    this.groups = FirebaseCart.getCartList();
+
+    this.carts = FirebaseCart.getCartList();
+    this.currentUser = FirebaseUser.getUser();
 
   }
 
@@ -26,20 +20,20 @@ class GroupsController {
       this.submitted = true;
       this.isSending = true;
 
-      var query = this.group.street + " " + this.group.street_number + " " + this.group.postcode + " " + this.group.city;
+      var query = this.cart.street + " " + this.cart.street_number + " " + this.cart.postcode + " " + this.cart.city;
 
       self.NgMap.getGeoLocation(query).then(function(geolocation) {
         var latitude = geolocation.lat();
         var longitude = geolocation.lng();
 
         var group = {
-          name: self.group.name,
-          admin: self.getCurrentUser()._id,
+          name: self.cart.name,
+          admin: self.currentUser.id,
           address: {
-            street: self.group.street,
-            street_number: self.group.street_number,
-            postcode: self.group.postcode,
-            city: self.group.city,
+            street: self.cart.street,
+            street_number: self.cart.street_number,
+            postcode: self.cart.postcode,
+            city: self.cart.city,
             geolocation: {
               latitude: latitude,
               longitude: longitude
@@ -47,27 +41,24 @@ class GroupsController {
           }
         };
 
-        if (self.group.additional_address) {
-          group.address.additional_address = self.group.additional_address;
+        if (self.cart.additional_address) {
+          group.address.additional_address = self.cart.additional_address;
         }
 
 
         self.FirebaseCart.createCart(group.name, group.address).then((cartKey) => {
-          console.log("cartKey:", cartKey);
-
-          /* TODO
-          var createdGroup = data.group;
-          var createdCart = data.cart;
-          // TODO
-          self.ShopService.setCurrentCart(createdCart);
-          */
-          self.isSending = false;
-          form.$setUntouched();
-          form.$setPristine();
-          self.group = {};
-
-          // var carts = self.ShopService.getCarts();
-          self.$rootScope.$emit('onboarding:next');
+          self.currentUser.then((currentUser) => {
+            currentUser.currentCartId = cartKey;
+            currentUser.$save().then(() => {
+              self.isSending = false;
+              form.$setUntouched();
+              form.$setPristine();
+              self.cart = {};
+              self.$rootScope.$emit('onboarding:next');
+            }, (error) => {
+              console.log("error: ", error);
+            });
+          });
 
         }).catch((err) => {
           self.isSending = false;
