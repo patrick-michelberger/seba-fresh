@@ -1,5 +1,7 @@
 'use strict';
 
+window.openFirebaseConnections = [];
+
 angular.module('sebaFreshApp', [
     'sebaFreshApp.auth',
     'sebaFreshApp.shop',
@@ -18,7 +20,7 @@ angular.module('sebaFreshApp', [
     'ngMap',
     'firebase',
   ])
-  .config(function($urlRouterProvider, $locationProvider, $mdThemingProvider) {
+  .config(function($urlRouterProvider, $locationProvider, $mdThemingProvider, $provide) {
     $urlRouterProvider
       .otherwise('/');
 
@@ -98,6 +100,18 @@ angular.module('sebaFreshApp', [
       .primaryPalette('sebaPrimaryPalette')
       .accentPalette('sebaAccentPalette')
       .warnPalette('sebaWarnPalette');
-  }).run(['$rootScope',
-    function($rootScope) {}
-  ]);
+
+    // Whenever $firebaseArray's and $firebaseObjects are created,
+    // they'll now be tracked by window.openFirebaseConnections
+    $provide.decorator("$firebaseArray", firebaseDecorator);
+    $provide.decorator("$firebaseObject", firebaseDecorator);
+
+    function firebaseDecorator($delegate) {
+      return function(ref) {
+        var list = $delegate(ref);
+        window.openFirebaseConnections.push(list);
+        return list;
+      };
+    }
+
+  });

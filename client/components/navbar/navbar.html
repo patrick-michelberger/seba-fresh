@@ -9,13 +9,13 @@
       <a class="sf-brand" href="/">project <span>fresh.</span></a>
     </h2>
     <div class="sf-navigation-bar" hide-xs>
-      <div ng-hide="nav.currentUser" layout="row" flex>
+      <div ng-hide="nav.authUser" layout="row" flex>
         <md-button ui-sref="signup">sign up</md-button>
         <md-button ui-sref="login">login</md-button>
       </div>
-      <div ng-show="nav.currentUser">
-        <md-button class="sf-user-name" ui-sref="settings"><span class="greeting">Hello</span> {{ nav.currentUser.displayName }}</md-button>
-        <md-button ng-click="nav.FirebaseAuth.$signOut()">Logout</md-button>
+      <div ng-show="nav.authUser">
+        <md-button class="sf-user-name" ui-sref="settings"><span class="greeting">Hello</span> {{ nav.authUser.displayName }}</md-button>
+        <md-button ng-click="nav.logout()">Logout</md-button>
         <a ng-show="nav.currentCart.id" class="sf-mini-cart md-button" ng-click="nav.openCart()">
           <div class="sf-cart-toggle">
             <span class="sf-cart-total-amount">

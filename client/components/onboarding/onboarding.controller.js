@@ -12,16 +12,10 @@ class OnboardingController {
     this.FirebaseCart = FirebaseCart;
 
     // properties
-    this.groups = FirebaseCart.getCartList();
     this.selectedIndex = 0;
     this.showSuccessMessage = false;
-
     this.getCurrentUser = Auth.getCurrentUser;
-
-    // event listeners
-    $scope.$on('$destroy', function() {
-      socket.unsyncUpdates('group');
-    });
+    this.groups = FirebaseCart.getCartList();
 
     $rootScope.$on('onboarding:next', function(event, index) {
       if (index) {

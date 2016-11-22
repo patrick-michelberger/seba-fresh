@@ -1,15 +1,15 @@
 'use strict';
 
 (function() {
-  function FirebaseCartService($http, $firebaseObject, $firebaseArray, FirebaseAuth) {
+  function FirebaseCartService($rootScope, $http, $q, $firebaseObject, $firebaseArray, FirebaseAuth, FirebaseUser) {
 
-    var currentCartId = "-KWsMtWLpQH7hLc234nf";
+    var currentCart = null;
 
     const cartsMetadataRef = firebase.database().ref().child("carts-metadata");
     const usersCartRef = firebase.database().ref().child('cart-users');
     const cartProducts = firebase.database().ref().child('cart-products');
-    const usersRef = firebase.database().ref().child('users');
     const invitationsRef = firebase.database().ref().child('invitations');
+    const usersRef = firebase.database().ref().child('users');
 
     const get = (cartId) => {
       const cartRef = cartsMetadataRef.child(cartId);
@@ -118,24 +118,32 @@
       if (!cartId) {
         return
       }
-      currentCartId = cartId;
+      // currentCart.id = cartId;
     }
 
     const getCurrentCart = () => {
-      const currentUser = FirebaseAuth.$getAuth();
-      if (!currentUser) {
-        return;
-      }
-      const cartRef = cartsMetadataRef.child(currentCartId);
-      return $firebaseObject(cartRef);
+      const deferred = $q.defer();
+      /*
+      FirebaseUser.getUser().then((user) => {
+        if (user && user.currentCartId) {
+          const cartId = user.currentCartId;
+          const cartRef = cartsMetadataRef.child(cartId);
+          deferred.resolve($firebaseObject(cartRef));
+        } else {
+          deferred.reject();
+        }
+        user.$destroy();
+      });
+      */
+      return deferred.promise;
     }
 
     const getCurrentCartProducts = () => {
       const currentUser = FirebaseAuth.$getAuth();
-      if (!currentUser) {
+      if (!currentUser ||  !currentCart ||  !currentCart.id) {
         return;
       }
-      const cartProductsRef = cartProducts.child(currentCartId);
+      const cartProductsRef = cartProducts.child(currentCart.id);
       return $firebaseObject(cartProductsRef);
     }
 
@@ -268,5 +276,5 @@
   }
 
   angular.module('sebaFreshApp.services')
-    .factory('FirebaseCart', ["$http", "$firebaseObject", "$firebaseArray", "FirebaseAuth", FirebaseCartService]);
+    .factory('FirebaseCart', ["$rootScope", "$http", "$q", "$firebaseObject", "$firebaseArray", "FirebaseAuth", "FirebaseUser", FirebaseCartService]);
 })();

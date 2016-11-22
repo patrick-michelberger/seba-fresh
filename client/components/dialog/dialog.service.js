@@ -1,6 +1,6 @@
 'use strict';
 
-(function () {
+(function() {
 
   /**
    * The Dialog service
@@ -20,14 +20,15 @@
           .ok(actionLabel)
         );
       },
+
       showPayModal(cart, useFullScreen) {
         // controller
         function PayDialogController($scope, $state, $mdDialog, $http) {
           $scope.cart = cart;
-          $scope.cancel = function () {
+          $scope.cancel = function() {
             $mdDialog.cancel();
           };
-          $scope.usePaypal = function () {
+          $scope.usePaypal = function() {
 
 
             /*
@@ -49,42 +50,55 @@
             clickOutsideToClose: true,
             fullscreen: useFullScreen
           })
-          .then(function (answer) {}, function () {});
+          .then(function(answer) {}, function() {});
 
-        $rootScope.$watch(function () {
+        $rootScope.$watch(function() {
           return $mdMedia('xs') || $mdMedia('sm');
-        }, function (wantsFullScreen) {
+        }, function(wantsFullScreen) {
           $rootScope.customFullscreen = (wantsFullScreen === true);
         });
       },
+
       showProductModal(product, useFullScreen) {
         // controller
-        function ProductDialogController($scope, $state, $mdDialog) {
+        function ProductDialogController($rootScope, $scope, $state, $mdDialog, FirebaseCart) {
+          $scope.currentCart = FirebaseCart.getCurrentCart();
           $scope.product = product;
-          $scope.cancel = function () {
+          $scope.cancel = function() {
             $mdDialog.cancel();
+          };
+
+          $scope.addToCart = function(product) {
+            if (!product ||  !$scope.currentCart) {
+              $state.go('login');
+              $scope.cancel();
+              return;
+            }
+            FirebaseCart.addItem($scope.currentCart.id, product).then(() => {
+              $scope.cancel();
+            });
           };
         }
 
         // open dialog
         $mdDialog.show({
-            controller: ['$scope', '$state', '$mdDialog', ProductDialogController],
+            controller: ['$rootScope', '$scope', '$state', '$mdDialog', 'FirebaseCart', ProductDialogController],
             templateUrl: 'assets/templates/product-dialog.tmpl.html',
             parent: angular.element(document.body),
             //targetEvent: $event,
             clickOutsideToClose: true,
             fullscreen: useFullScreen
           })
-          .then(function (answer) {}, function () {
+          .then(function(answer) {}, function() {
             $state.go('products', {}, {
               reload: false,
               notify: false
             });
           });
 
-        $rootScope.$watch(function () {
+        $rootScope.$watch(function() {
           return $mdMedia('xs') || $mdMedia('sm');
-        }, function (wantsFullScreen) {
+        }, function(wantsFullScreen) {
           $rootScope.customFullscreen = (wantsFullScreen === true);
         });
       }

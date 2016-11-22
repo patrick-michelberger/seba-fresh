@@ -15,7 +15,8 @@ class GroupsController {
     this.ShopService = ShopService;
     self.isDisabled = false;
     this.FirebaseCart = FirebaseCart;
-    this.$scope.groups = FirebaseCart.getCartList();
+    this.groups = FirebaseCart.getCartList();
+
   }
 
   createGroup(form) {

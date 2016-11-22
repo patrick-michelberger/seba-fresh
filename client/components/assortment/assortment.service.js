@@ -33,7 +33,7 @@
         return ProductService.get({
           id: productId
         }, function(product) {
-
+          return safeCb(callback)(product);
         }, function() {
           return safeCb(callback)(null);
         });

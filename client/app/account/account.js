@@ -13,17 +13,10 @@ angular.module('sebaFreshApp')
         }
       })
       .state('logout', {
-        url: '/logout?referrer',
-        referrer: 'main',
-        template: '',
-        controller: function($state, Auth, ShopService) {
-          var referrer = $state.params.referrer ||
-            $state.current.referrer ||
-            'main';
-          Auth.logout();
-          ShopService.clear();
-          $state.go(referrer);
-        }
+        url: '/logout',
+        templateUrl: 'app/account/logout/logout.html',
+        controller: 'LogoutController',
+        controllerAs: 'vm',
       })
       .state('signup', {
         url: '/signup',

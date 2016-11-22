@@ -3,9 +3,11 @@
 class NavbarController {
   isCollapsed = true;
 
-  constructor($rootScope, $scope, FirebaseAuth, socket, $timeout, $log, $mdSidenav, DialogService, ShopService, FirebaseCart) {
+  constructor($rootScope, $state, $scope, FirebaseAuth, socket, $timeout, $log, $mdSidenav, DialogService, ShopService, FirebaseUser, FirebaseCart) {
     var self = this;
     this.$scope = $scope;
+    this.$state = $state;
+    this.$rootScope = $rootScope;
     this.$rootScope = $rootScope;
     this.$timeout = $timeout;
     this.$log = $log;
@@ -13,24 +15,32 @@ class NavbarController {
     this.$mdSidenav = $mdSidenav;
     this.DialogService = DialogService;
     this.ShopService = ShopService;
-    this.currentCart = FirebaseCart.getCurrentCart();
     this.toggleLeft = this.buildDelayedToggler('left');
     this.FirebaseAuth = FirebaseAuth;
     this.openCart = this.open;
     this.socket = socket;
+    this.logout = this.logout;
 
-    $scope.$on('$destroy', function() {
-      socket.unsyncUpdates('cart');
+    FirebaseAuth.$onAuthStateChanged((authUser) => {
+      self.authUser = authUser;
     });
 
-    this.FirebaseAuth.$onAuthStateChanged(function(firebaseUser) {
-      self.currentUser = firebaseUser;
+    FirebaseUser.getUser().then((user) => {
+      self.currentUser = user;
+    });
+
+    FirebaseCart.getCurrentCart().then((currentCart) => {
+      self.currentCart = currentCart;
     });
   }
 
   $onInit() {
     var self = this;
     this.socket.syncUpdates('cart', this.carts);
+  }
+
+  logout() {
+    this.$state.go('logout');
   }
 
   /**

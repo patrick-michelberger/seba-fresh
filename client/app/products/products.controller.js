@@ -2,22 +2,25 @@
 (function() {
 
   class ProductsComponent {
-    constructor($scope, $stateParams, socket, AssortmentService, FirebaseCart, DialogService, Cart, VendorAssortmentService) {
+    constructor($rootScope, $state, $scope, $stateParams, AssortmentService, DialogService, FirebaseCart, VendorAssortmentService) {
+      // Dependencies
       var self = this;
-      this.products = [];
-      this.socket = socket;
+      this.$state = $state;
       this.AssortmentService = AssortmentService;
       this.DialogService = DialogService;
       this.FirebaseCart = FirebaseCart;
-      this.Cart = Cart;
-      this.currentCart = FirebaseCart.getCurrentCart();
-      this.currentCartProducts = FirebaseCart.getCurrentCartProducts();
+
+      // Attributes
+      FirebaseCart.getCurrentCart().then((currentCart) => {
+        self.currentCart = currentCart;
+      });
+
+      FirebaseCart.getCurrentCartProducts();
+
+      // Methods
       this.removeFromCart = this.removeFromCart;
       this.addToCart = this.addToCart;
 
-      $scope.$on('$destroy', function() {
-        socket.unsyncUpdates('product');
-      });
       $scope.$on('$locationChangeSuccess', function(event) {
         checkDetailView();
       });
@@ -25,7 +28,7 @@
       function checkDetailView() {
         var productId = $stateParams.productId;
         if (productId) {
-          self.AssortmentService.fetch(productId, function(product) {
+          AssortmentService.fetch(productId, function(product) {
             self.selectedProduct = product;
             self.DialogService.showProductModal(product);
           });
@@ -37,18 +40,21 @@
     $onInit() {
       this.products = this.AssortmentService.fetchAll();
     }
-
-    addToCart(product, quantity) {
-      const cartId = this.currentCart.id;
-      this.FirebaseCart.addItem(cartId, product);
+    addToCart(product) {
+      console.log("add: ", this.currentCart);
+      if (!product ||  !this.currentCart) {
+        this.$state.go('login');
+        return;
+      }
+      this.FirebaseCart.addItem(this.currentCart.id, product);
     }
 
     removeFromCart(product) {
-      if (!product && !this.currentCart) {
+      if (!product ||  !this.currentCart) {
+        this.$state.go('login');
         return;
       }
-      const cartId = this.currentCart.id;
-      this.FirebaseCart.removeItem(cartId, product);
+      this.FirebaseCart.removeItem(this.currentCart.id, product);
     }
   }
 

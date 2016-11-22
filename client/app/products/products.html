@@ -1,4 +1,6 @@
 <div id="sf-products-container" flex layout="row" layout-wrap layout-padding>
+  currentCart:
+  {{vm.currentCart}}
   <div class="sf-product" flex-xs="100" flex-sm="50" flex="25" ng-repeat=" product in vm.products" ng-if="product.stock=='Available'" ng-controller="ProductCellController as cellCtrl" layout-padding>
     <md-card>
       <md-card-title layout="column" layout="center center">
