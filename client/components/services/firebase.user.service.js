@@ -5,6 +5,12 @@
 
     const usersRef = firebase.database().ref().child("users");
 
+
+    /**
+     *  Get current user's info
+     *
+     * @return {Promise}
+     */
     const getUser = () => {
       const deferred = $q.defer();
       const authUser = FirebaseAuth.$getAuth();
@@ -22,18 +28,34 @@
       return deferred.promise;
     }
 
-    const createUser = (authData) => {
-      const newUserRef = usersRef.child(authData.uid);
+
+    /**
+     * Create user
+     *
+     * @param {Number} userId
+     * @param {String} displayName
+     *
+     * @return {Promise}
+     */
+    const createUser = (userId, displayName) => {
+      const newUserRef = usersRef.child(userId);
       const newUser = {
-        id: authData.uid,
-        displayName: authData.displayName,
+        id: userId,
+        displayName: displayName,
         createdAt: firebase.database.ServerValue.TIMESTAMP,
       };
       return newUserRef.set(newUser);
     }
 
-    const loadMetadata = (uid, callback) => {
-      const userRef = usersRef.child(uid);
+    /**
+     * Load user info by id
+     *
+     * @param {String} userId      user id
+     * @param {Function} callback
+     *
+     */
+    const loadMetadata = (userId, callback) => {
+      const userRef = usersRef.child(userId);
       callback($firebaseObject(userRef));
     }
 

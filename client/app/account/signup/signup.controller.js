@@ -7,13 +7,12 @@ class SignupController {
   submitted = false;
   //end-non-standard
 
-  constructor($state, $stateParams, $location, ShopService, FirebaseAuth, FirebaseUser) {
+  constructor($state, $stateParams, $location, FirebaseAuth, FirebaseUser) {
     this.$stateParams = $stateParams;
     this.FirebaseAuth = FirebaseAuth;
     this.FirebaseUser = FirebaseUser;
     this.$state = $state;
     this.$location = $location;
-    this.ShopService = ShopService;
     this.redirectUrl = $stateParams.redirectUrl || false;
   }
 
@@ -28,7 +27,7 @@ class SignupController {
         });
       }).then((user) => {
         const currentUser = self.FirebaseAuth.$getAuth();
-        return self.FirebaseUser.createUser(currentUser).then((user) => {
+        return self.FirebaseUser.createUser(currentUser.uid, currentUser.displayName).then((user) => {
           if (self.redirectUrl) {
             self.$location.path(self.$stateParams.redirectUrl);
           } else {

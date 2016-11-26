@@ -4,11 +4,26 @@
   function FirebaseInvitationService($http, $firebaseObject, FirebaseAuth, FirebaseCart) {
     const invitationsRef = firebase.database().ref().child('invitations');
 
+    /**
+     * Get invitation
+     *
+     * @param {String} invitationId invitation id
+     *
+     * @return {Promise}
+     */
     const get = (invitationId) => {
       const invitationRef = invitationsRef.child(invitationId);
       return $firebaseObject(invitationRef);
     };
 
+
+    /**
+     * Accept invitation
+     *
+     * @param {String} invitationId invitation id
+     *
+     * @return {Promise}
+     */
     const accept = (inviteId) => {
       var self = this;
       const currentUser = FirebaseAuth.$getAuth();
@@ -32,6 +47,14 @@
       });
     };
 
+
+    /**
+     * Decline invitation
+     *
+     * @param {String} invitationId invitation id
+     *
+     * @return {Promise}
+     */
     const decline = (inviteId) => {
       const self = this;
       const currentUser = FirebaseAuth.$getAuth();
@@ -49,6 +72,15 @@
       return invitationsRef.child(inviteId).update(updates);
     };
 
+
+    /**
+     * Invite user to a shopping cart by email
+     *
+     * @param {String} email  invitee's email
+     * @param {String} cartId cart id
+     *
+     * @return {Promise}
+     */
     const inviteUserByEmail = (email, cartId) => {
       const self = this;
       const currentUser = FirebaseAuth.$getAuth();
@@ -94,6 +126,14 @@
       });
     };
 
+    /**
+     * Invite user to a shopping cart by user id
+     *
+     * @param {String} userId user id
+     * @param {String} cartId cart id
+     *
+     * @return {Promise}
+     */
     const inviteUserByUserId = (userId, cartId) => {
       const self = this;
       const currentUser = FirebaseAuth.$getAuth();

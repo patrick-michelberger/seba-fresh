@@ -3,12 +3,23 @@
 (function() {
   function FirebaseCartService($rootScope, $http, $q, $firebaseObject, $firebaseArray, FirebaseAuth, FirebaseUser) {
 
+    const self = this;
+
     const cartsMetadataRef = firebase.database().ref().child("carts-metadata");
     const usersCartRef = firebase.database().ref().child('cart-users');
     const cartProducts = firebase.database().ref().child('cart-products');
     const invitationsRef = firebase.database().ref().child('invitations');
     const usersRef = firebase.database().ref().child('users');
 
+    self.currentCartProduct;
+
+    /**
+     * Get a single shopping cart by id
+     *
+     * @param {String} cartId cart id
+     *
+     * @return {Promise}
+     */
     const get = (cartId) => {
       const cartRef = cartsMetadataRef.child(cartId);
       return cartRef.once('value').then((snapshot) => {
@@ -19,6 +30,70 @@
       });
     };
 
+    const getCart = (cartId) => {
+      const cartRef = cartsMetadataRef.child(cartId);
+      return $firebaseObject(cartRef);
+    };
+
+    /**
+     * Get current user's carts
+     *
+     * @return {Promise}
+     */
+    const getCartList = () => {
+      const userCartsRef = usersCartRef.child(FirebaseAuth.$getAuth().uid).child("carts");
+      return $firebaseArray(userCartsRef);
+    };
+
+    /**
+     * Get user's current cart
+     *
+     * @return {Promise}
+     */
+    const getCurrentCart = () => {
+      const deferred = $q.defer();
+      FirebaseUser.getUser().then((user) => {
+        user.$loaded().then((user) => {
+          if (user && user.currentCartId) {
+            const cartRef = cartsMetadataRef.child(user.currentCartId);
+            deferred.resolve($firebaseObject(cartRef));
+          } else {
+            deferred.reject();
+          }
+        });
+      });
+      return deferred.promise;
+    }
+
+    /**
+     * Get user's current cart's products
+     *
+     * @return {Promise}
+     */
+    const getCurrentCartProducts = () => {
+      return getCurrentCart().then((cartRef) => {
+        return cartRef.$loaded().then((cart) => {
+          const cartProductsRef = cartProducts.child(cart.id);
+          return $firebaseObject(cartProductsRef);
+        });
+      });
+    }
+
+    /**
+     * Create a shopping cart
+     *
+     * @param {String} cartName    cart name
+     * @param {Object} cartAddress shipping address
+     * @param {String} cartAddress.street street
+     * @param {number} cartAddress.street_number street number
+     * @param {Number} cartAddress.postcode postcode
+     * @param {String} cartAddress.city city
+     * @param {Object} cartAddress.geolocation geolocation Object
+     * @param {Number} cartAddress.geolocation.latitude latitude value
+     * @param {Number} cartAddress.geolocation.longitude longitude value
+     *
+     * @return {Promise}
+     */
     const createCart = (cartName, cartAddress) => {
       var self = this,
         newCartRef = cartsMetadataRef.push();
@@ -41,16 +116,29 @@
       });
     }
 
+    /**
+     * Delete shopping cart
+     *
+     * @param {String} cartId cart id
+     *
+     * @return {Promise}
+     */
     const deleteCart = (cartId) => {
       const self = this;
       const currentUser = FirebaseAuth.$getAuth();
       const userCartRef = usersCartRef.child(currentUser.uid).child('carts').child(cartId);
       const cartRef = cartsMetadataRef.child(cartId);
 
-      userCartRef.remove();
-      cartRef.remove();
+      return userCartRef.remove().then(cartRef.remove);
     }
 
+    /**
+     * Join shopping cart (current user)
+     *
+     * @param {String} cartId cart id
+     *
+     * @return {Promise}
+     */
     const joinCart = (cartId) => {
       const self = this;
 
@@ -78,6 +166,13 @@
       });
     };
 
+    /**
+     * Leave shopping cart
+     *
+     * @param {String} cartId cart id
+     *
+     * @return {Promise}
+     */
     const leaveCart = (cartId) => {
       const self = this,
         userCartRef = usersCartRef.child(cartId);
@@ -102,40 +197,25 @@
       */
     };
 
-    const getCartList = () => {
-      const userCartsRef = usersCartRef.child(FirebaseAuth.$getAuth().uid).child("carts");
-      return $firebaseArray(userCartsRef);
-    };
-
-    const getCart = (cartId) => {
-      const cartRef = cartsMetadataRef.child(cartId);
-      return $firebaseObject(cartRef);
-    };
-
-    const getCurrentCart = () => {
-      const deferred = $q.defer();
-      FirebaseUser.getUser().then((user) => {
-        user.$loaded().then((user) => {
-          if (user && user.currentCartId) {
-            const cartRef = cartsMetadataRef.child(user.currentCartId);
-            deferred.resolve($firebaseObject(cartRef));
-          } else {
-            deferred.reject();
-          }
-        });
-      });
-      return deferred.promise;
-    }
-
-    const getCurrentCartProducts = () => {
-      return getCurrentCart().then((cartRef) => {
-        return cartRef.$loaded().then((cart) => {
-          const cartProductsRef = cartProducts.child(cart.id);
-          return $firebaseObject(cartProductsRef);
-        });
-      });
-    }
-
+    /**
+     * Add item to shopping cart
+     *
+     * @param {String} cartId   cart id
+     * @param {Object} product  product
+     * @param {Number} product.id  product id
+     * @param {String} product.name  product name
+     * @param {Boolean} product.stock  is product available in stock
+     * @param {String} product.brand  product brand name
+     * @param {String} product.categoryPath product category path string
+     * @param {String} product.addToCartUrl product add to cart url (affiliate)
+     * @param {String} product.productUrl  product url
+     * @param {String} product.largeImage  product image large
+     * @param {String} product.mediumImage product image medium
+     * @param {String} product.thumbnailImage  product image thumbnail
+     * @param {Number} quantity quantity
+     *
+     * @return {Promise}
+     */
     const addItem = (cartId, product, quantity) => {
       const self = this;
       const currentUser = FirebaseAuth.$getAuth();
@@ -183,10 +263,8 @@
         // update cart-products node
         return newProductRef.update(newItem).then(() => {
 
-          console.log("get cart...");
           // get current carts-metadata node
           return get(cartId).then((response) => {
-            console.log("update");
             const {
               cart,
               cartRef
@@ -204,6 +282,17 @@
       });
     };
 
+    /**
+     * Remove item from shopping cart
+     *
+     * @param {String} cartId   cart id
+     * @param {Object} product  product
+     * @param {String} product.id  product id
+     * @param {Number} product.price  product price
+     * @param {Number} quantity quantity
+     *
+     * @return {Promise}
+     */
     const removeItem = (cartId, product, quantity) => {
       quantity = quantity ||  1;
       const self = this;
@@ -228,7 +317,7 @@
             const oldItem = snapshot.val();
 
             // update cart-products node
-            if (oldItem.quantity > 1) {
+            if (oldItem && oldItem.quantity > 1) {
               return productRef.update({
                 quantity: oldItem.quantity - quantity
               })
@@ -240,7 +329,26 @@
       });
     };
 
-    const getUsersByCart = () => {};
+    /**
+     * Get quantity of a product in current shopping cart
+     *
+     * @param {String} productId product id
+     *
+     * @return {Number} Quantity of product
+     */
+    const getQuantity = (productId) => {
+      if (self.currentCartProducts && self.currentCartProducts[productId]) {
+        return self.currentCartProducts[productId].quantity;
+      }
+      return 0;
+    };
+
+    // Load current cart products
+    getCurrentCartProducts().then((currentCartProducts) => {
+      currentCartProducts.$loaded().then((products) => {
+        self.currentCartProducts = products;
+      });
+    });
 
     return {
       get,
@@ -251,10 +359,10 @@
       addItem,
       removeItem,
       getCartList,
-      getUsersByCart,
       getCart,
       getCurrentCart,
       getCurrentCartProducts,
+      getQuantity,
     };
 
   }
