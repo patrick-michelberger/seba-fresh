@@ -25,9 +25,9 @@ var mailer = {};
  * {String} data.subject - subject of the email
  * {Object} data.payload - data included in template file
  */
-mailer.send = function (data, callback) {
+mailer.send = function(data, callback) {
   // From
-  var from = 'sebafresh.grocery@gmail.com';
+  var from = 'invitation@project-fresh.com';
 
   console.log("sending email...");
 
@@ -65,7 +65,7 @@ mailer.send = function (data, callback) {
     html: html
   };
   transport.sendMail(payload,
-    function (err) {
+    function(err) {
       if (err) {
         console.log('Send mail:', err);
         return callback(err);

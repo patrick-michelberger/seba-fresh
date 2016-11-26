@@ -6,14 +6,12 @@
     </md-card-title-text>
   </md-card-title>
   <md-card-content>
-    <!-- TODO
-    <ng-map zoom="15" center="{{group.address.geolocation.latitude}},{{group.address.geolocation.longitude}}" zoom="3">
-      <marker position="[{{group.address.geolocation.latitude}},{{group.address.geolocation.longitude}}]"></marker>
+    <ng-map zoom="15" center="{{cart.address.geolocation.latitude}},{{cart.address.geolocation.longitude}}" zoom="3">
+      <marker position="[{{cart.address.geolocation.latitude}},{{cart.address.geolocation.longitude}}]"></marker>
     </ng-map>
     <p class="sf-group-address">
-      {{group.address.street}} {{group.address.street_number}}, {{group.address.postcode}} {{group.address.city}}
+      {{cart.address.street}} {{cart.address.street_number}}, {{cart.address.postcode}} {{cart.address.city}}
     </p>
-    -->
   </md-card-content>
   <md-card-actions layout="row" layout-align="end center">
     <md-button class="md-raised" ng-click="cellCtrl.buyGroceries()">Shop Now</md-button>

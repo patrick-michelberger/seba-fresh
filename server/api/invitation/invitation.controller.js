@@ -16,7 +16,7 @@ import mail from '../../components/mail';
 
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
-  return function (entity) {
+  return function(entity) {
     console.log("respond with result: ", entity);
     if (entity) {
       res.status(statusCode).json(entity);
@@ -25,7 +25,7 @@ function respondWithResult(res, statusCode) {
 }
 
 function saveUpdates(updates) {
-  return function (entity) {
+  return function(entity) {
     var updated = _.merge(entity, updates);
     return updated.save()
       .then(updated => {
@@ -35,7 +35,7 @@ function saveUpdates(updates) {
 }
 
 function removeEntity(res) {
-  return function (entity) {
+  return function(entity) {
     if (entity) {
       return entity.remove()
         .then(() => {
@@ -46,7 +46,7 @@ function removeEntity(res) {
 }
 
 function handleEntityNotFound(res) {
-  return function (entity) {
+  return function(entity) {
     if (!entity) {
       res.status(404).end();
       return null;
@@ -57,7 +57,7 @@ function handleEntityNotFound(res) {
 
 function handleError(res, statusCode) {
   statusCode = statusCode || 500;
-  return function (err) {
+  return function(err) {
     console.log("ERROR: ", err);
     res.status(statusCode).send(err);
   };
@@ -80,25 +80,33 @@ export function show(req, res) {
 
 // Creates a new Invitation in the DB
 export function create(req, res) {
-  return Invitation.create(req.body)
-    .then(function (createdInvitation) {
-      var data = {
-        to: createdInvitation.to,
-        template: 'invite.hbs',
-        subject: 'SEBA fresh invitation',
-        payload: {
-          user: req.use,
-          group: createdInvitation.group,
-          url: config.domain + '/group/' + createdInvitation.group
-        }
-      };
-      mail.send(data, function (err) {
-        if (err) {
-          console.log("Error: sending invitation mail: ", err);
-        }
-        respondWithResult(res, 201)(createdInvitation);
-      });
-    }).catch(handleError(res));
+  console.log("req.body: ", req.body);
+  const to = req.body.to;
+  const fromId = req.body.from ? req.body.from.id : false;
+  const fromName = req.body.from ? req.body.from.name : false;
+  const invitationId = req.body.invitation;
+
+  if (!to ||  !fromId || !fromName || !invitationId) {
+    return handleError(res);
+  } else {
+    var data = {
+      to: to,
+      template: 'invite.hbs',
+      subject: 'project fresh invitation',
+      payload: {
+        fromName: fromName,
+        fromId: fromId,
+        invitationId: invitationId,
+        url: config.domain + '/invitations/' + invitationId
+      }
+    };
+    mail.send(data, function(err) {
+      if (err) {
+        console.log("Error: sending invitation mail: ", err);
+      }
+      respondWithResult(res, 201)(data);
+    })
+  }
 }
 
 // Updates an existing Invitation in the DB

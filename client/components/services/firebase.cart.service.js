@@ -1,4 +1,4 @@
-w 'use strict';
+'use strict';
 
 (function() {
   function FirebaseCartService($rootScope, $http, $q, $firebaseObject, $firebaseArray, FirebaseAuth, FirebaseUser) {
@@ -157,7 +157,7 @@ w 'use strict';
           });
 
           usersCartRef.child(cartId).child(currentUser.uid).set({
-            uid: currentUser.id,
+            uid: currentUser.uid,
             displayName: currentUser.displayName
           });
         }
@@ -179,26 +179,13 @@ w 'use strict';
 
       const currentUser = FirebaseAuth.$getAuth();
 
-
-
-      // usersCartRef.
-
-      /* TODO
-      if (currentUser) {
-        var presenceRef = userCartRef.child(currentUser.uid).child(self._sessionId);
-
-        // Remove presence bit for the room and cancel on-disconnect removal.
-        self._removePresenceOperation(presenceRef, null);
-
-        // Remove session bit for the room.
-        self._userRef.child('rooms').child(roomId).remove();
+      if (currentUser && currentUser.uid) {
+        const userCartRef = usersCartRef.child(cartId).child(currentUser.uid);
+        return userCartRef.remove().then(() => {
+          const userRef = usersRef.child(currentUser.uid).child(cartId);
+          return userRef.remove();
+        });
       }
-
-      delete self._rooms[roomId];
-
-      Invoke event callbacks for the room-exit event.
-      self._onLeaveRoom(roomId);
-      */
     };
 
     /**
@@ -355,7 +342,7 @@ w 'use strict';
      * @return {Promise }
      */
     const getUsersByCart = (cartId) => {
-      cosnt cartRef = usersCartRef.child(cartId);
+      const cartRef = usersCartRef.child(cartId);
       return $firebaseObject(cartRef);
     };
 

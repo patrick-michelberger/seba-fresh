@@ -16,14 +16,28 @@
       this.refreshMap = true;
       this.invitation = FirebaseInvitationService.get(invitationId);
     }
+
+    /**
+     * Show confirmation dialog
+     */
     showJoinGroupDialog(ev) {
       var self = this;
       var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs')) && this.customFullscreen;
 
+
+
+      /**
+       * Dialog Controller
+       */
       function DialogController($rootScope, $scope, $state, $mdDialog) {
         $scope.invitation = self.invitation;
         $scope.refreshMap = self.refreshMap;
 
+        /**
+         * Decline invitation
+         *
+         * @return {Promise}
+         */
         $scope.decline = function() {
           const currentUser = self.FirebaseAuth.$getAuth();
           $mdDialog.hide();
@@ -37,6 +51,12 @@
             });
           }
         };
+
+        /**
+         * Accept invitation
+         *
+         * @return {Promise}
+         */
         $scope.accept = function() {
           const currentUser = self.FirebaseAuth.$getAuth();
           $mdDialog.cancel();
@@ -54,6 +74,7 @@
         };
       }
 
+      // open confirmation dialog
       this.$mdDialog.show({
         templateUrl: 'assets/templates/join-dialog.tmpl.html',
         parent: angular.element(document.body),

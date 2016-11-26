@@ -2,5 +2,5 @@
   <div>
     <h1>{{vm.invitation.fromUserName}} <br/> has invited you.<h1>
   </div>
-  <md-button class="sf-btn-join md-raised md-warn" ng-click="vm.showJoinGroupDialog()">Join Cart</md-button>
+  <md-button class="sf-btn-join md-raised md-warn" ng-click="vm.showJoinGroupDialog()" ng-disabled="!vm.invitation.fromUserName">Join Cart</md-button>
 </div>
