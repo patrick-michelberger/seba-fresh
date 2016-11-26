@@ -2,11 +2,10 @@
 
 class ShoppingCartController {
 
-  constructor($rootScope, $timeout, $scope, $http, ShopService, Auth, DialogService) {
+  constructor($rootScope, $timeout, $scope, $http, Auth, DialogService) {
     var self = this;
     this.$scope = $scope;
     this.$rootScope = $rootScope;
-    this.ShopService = ShopService;
     this.$timeout = $timeout;
     this.getCurrentCart = null;
     this.Auth = Auth;
@@ -20,6 +19,7 @@ class ShoppingCartController {
   $onInit() {
     var self = this;
 
+    /* TODO
     this.$scope.$watch(function() {
       return self.ShopService.getCurrentCart();
     }, function(currentCart) {
@@ -34,6 +34,7 @@ class ShoppingCartController {
         });
       }
     });
+    */
   }
 
   pay() {
@@ -66,17 +67,11 @@ class ShoppingCartController {
   }
 
   addToCart(product) {
-    this.ShopService.addToCart(product, function() {});
-    var quantity = product.quantity || 0;
-    product.quantity = quantity + 1;
+    // TODO
   }
 
   removeFromCart(product) {
-    this.ShopService.removeFromCart(product, function() {});
-    var quantity = product.quantity || 0;
-    if (quantity > 0) {
-      product.quantity = quantity - 1;
-    }
+    // TODO 
   }
 
   calculateOrderValue(items) {

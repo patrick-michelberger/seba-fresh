@@ -4,7 +4,6 @@ window.openFirebaseConnections = [];
 
 angular.module('sebaFreshApp', [
     'sebaFreshApp.auth',
-    'sebaFreshApp.shop',
     'sebaFreshApp.services',
     'sebaFreshApp.assortment',
     'sebaFreshApp.oauth-buttons',

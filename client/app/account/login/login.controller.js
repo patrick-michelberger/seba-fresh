@@ -1,11 +1,10 @@
 'use strict';
 
 class LoginController {
-  constructor($state, $stateParams, ShopService, FirebaseAuth) {
+  constructor($state, $stateParams, FirebaseAuth) {
     this.user = {};
     this.errors = {};
     this.submitted = false;
-    this.ShopService = ShopService;
     this.$state = $state;
     this.redirectUrl = $stateParams.redirectUrl || false;
     this.FirebaseAuth = FirebaseAuth;
@@ -17,7 +16,6 @@ class LoginController {
 
     if (form.$valid) {
       this.FirebaseAuth.$signInWithEmailAndPassword(this.user.email, this.user.password).then((user) => {
-        // TODO self.ShopService.queryCart();
         // Logged in, redirect to home
         if (self.redirectUrl) {
           self.$location.path(self.$stateParams.redirectUrl);

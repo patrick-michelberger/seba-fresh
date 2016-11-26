@@ -2,9 +2,8 @@
 
 class GroupCellController {
 
-  constructor($rootScope, $scope, $window, FacebookService, Auth, FirebaseAuth, FirebaseCart, FirebaseInvitationService, $mdDialog, $mdMedia, $timeout, DialogService) {
+  constructor($rootScope, $scope, $window, Auth, FirebaseAuth, FirebaseCart, FirebaseInvitationService, $mdDialog, $mdMedia, $timeout, DialogService) {
     this.baseShareUrl = location.protocol + '//' + location.hostname + ':' + location.port;
-    this.FacebookService = FacebookService;
     this.DialogService = DialogService;
     this.Auth = Auth;
     this.FirebaseAuth = FirebaseAuth;
@@ -26,18 +25,6 @@ class GroupCellController {
 
   buyGroceries() {
     this.$rootScope.$emit('onboarding:next', 2);
-  }
-
-  // TODO Still used?
-  inviteFriends(group) {
-    var url = this.baseShareUrl + '/group/' + group._id + '/invite';
-    this.FacebookService.sendMessage(url).catch(function(err) {
-      console.log("FacebookService: err:", err);
-    }).then(function() {
-      console.log("Facebook dialog closed");
-    }).finally(function() {
-      console.log("Finally, facebook dialog closed");
-    });
   }
 
   /**

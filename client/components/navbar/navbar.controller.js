@@ -3,7 +3,7 @@
 class NavbarController {
   isCollapsed = true;
 
-  constructor($rootScope, $state, $scope, FirebaseAuth, socket, $timeout, $log, $mdSidenav, DialogService, ShopService, FirebaseUser, FirebaseCart) {
+  constructor($rootScope, $state, $scope, FirebaseAuth, socket, $timeout, $log, $mdSidenav, DialogService, FirebaseUser, FirebaseCart) {
     var self = this;
     this.$scope = $scope;
     this.$state = $state;
@@ -14,7 +14,6 @@ class NavbarController {
     this.carts = [];
     this.$mdSidenav = $mdSidenav;
     this.DialogService = DialogService;
-    this.ShopService = ShopService;
     this.toggleLeft = this.buildDelayedToggler('left');
     this.FirebaseAuth = FirebaseAuth;
     this.openCart = this.open;
