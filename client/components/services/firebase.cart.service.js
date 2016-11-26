@@ -11,7 +11,7 @@
     const invitationsRef = firebase.database().ref().child('invitations');
     const usersRef = firebase.database().ref().child('users');
 
-    self.currentCartProduct;
+    self.currentCartProducts = {};
 
     /**
      * Get a single shopping cart by id
@@ -28,11 +28,6 @@
           cartRef
         };
       });
-    };
-
-    const getCart = (cartId) => {
-      const cartRef = cartsMetadataRef.child(cartId);
-      return $firebaseObject(cartRef);
     };
 
     /**
@@ -337,16 +332,21 @@
      * @return {Number} Quantity of product
      */
     const getQuantity = (productId) => {
-      if (self.currentCartProducts && self.currentCartProducts[productId]) {
-        return self.currentCartProducts[productId].quantity;
+      if (!self.currentCartProducts[productId]) {
+        return 0;
       }
-      return 0;
+      return self.currentCartProducts[productId].quantity;
     };
 
     // Load current cart products
     getCurrentCartProducts().then((currentCartProducts) => {
       currentCartProducts.$loaded().then((products) => {
         self.currentCartProducts = products;
+        for (let productId in products) {
+          if (!isNaN(productId)) {
+            $rootScope.$broadcast('cart:add:' + productId);
+          }
+        }
       });
     });
 
@@ -359,7 +359,6 @@
       addItem,
       removeItem,
       getCartList,
-      getCart,
       getCurrentCart,
       getCurrentCartProducts,
       getQuantity,

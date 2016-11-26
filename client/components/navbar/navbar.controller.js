@@ -26,11 +26,9 @@ class NavbarController {
 
     FirebaseUser.getUser().then((user) => {
       self.currentUser = user;
-    });
-
-    FirebaseCart.getCurrentCart().then((currentCart) => {
-      console.log("currentCart: ", currentCart);
-      self.currentCart = currentCart;
+      FirebaseCart.getCurrentCart().then((currentCart) => {
+        self.currentCart = currentCart;
+      });
     });
   }
 
