@@ -25,6 +25,19 @@ angular.module('sebaFreshApp', [
 
     $locationProvider.html5Mode(true);
 
+    // Whenever $firebaseArray's and $firebaseObjects are created,
+    // they'll now be tracked by window.openFirebaseConnections
+    $provide.decorator("$firebaseArray", firebaseDecorator);
+    $provide.decorator("$firebaseObject", firebaseDecorator);
+
+    function firebaseDecorator($delegate) {
+      return function(ref) {
+        var list = $delegate(ref);
+        window.openFirebaseConnections.push(list);
+        return list;
+      };
+    };
+
     // SEBA fresh CSS theme configuration
     $mdThemingProvider.definePalette('sebaPrimaryPalette', {
       '50': '007DC6',
@@ -99,18 +112,4 @@ angular.module('sebaFreshApp', [
       .primaryPalette('sebaPrimaryPalette')
       .accentPalette('sebaAccentPalette')
       .warnPalette('sebaWarnPalette');
-
-    // Whenever $firebaseArray's and $firebaseObjects are created,
-    // they'll now be tracked by window.openFirebaseConnections
-    $provide.decorator("$firebaseArray", firebaseDecorator);
-    $provide.decorator("$firebaseObject", firebaseDecorator);
-
-    function firebaseDecorator($delegate) {
-      return function(ref) {
-        var list = $delegate(ref);
-        window.openFirebaseConnections.push(list);
-        return list;
-      };
-    }
-
   });

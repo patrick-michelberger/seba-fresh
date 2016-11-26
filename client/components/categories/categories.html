@@ -1,7 +1,7 @@
 <md-menu-bar>
   <md-menu ng-repeat="category in categories">
-    <button ng-click="category.children.length>0&&$mdOpenMenu()">
-      {{category.name}}
+    <button ng-click="::(category.children.length>0)&&$mdOpenMenu()">
+      {{::category.name}}
     </button>
     <md-menu-content>
        <md-menu-item ng-repeat="category in category.children" ng-include='"menu_item.html"'></md-menu-item>
@@ -10,11 +10,11 @@
 </md-menu-bar>
 
 <script type="text/ng-template" id="menu_item.html">
-    <md-button ng-click="$mdOpenMenu()" ng-if="!category.children">
-      {{category.name}}
+    <md-button ng-click="$mdOpenMenu()" ng-if="::(!category.children)">
+      {{::category.name}}
     </md-button>
-    <md-menu ng-if="category.children.length">
-      <md-button ng-click="$mdOpenMenu()">{{category.name}}</md-button>
+    <md-menu ng-if="::(category.children.length)">
+      <md-button ng-click="$mdOpenMenu()">{{::category.name}}</md-button>
       <md-menu-content>
         <md-menu-item><md-button ng-click="ctrl.sampleAction('New Document', $event)">Document</md-button></md-menu-item>
         <md-menu-item><md-button ng-click="ctrl.sampleAction('New Spreadsheet', $event)">Spreadsheet</md-button></md-menu-item>
