@@ -1,4 +1,4 @@
-'use strict';
+w 'use strict';
 
 (function() {
   function FirebaseCartService($rootScope, $http, $q, $firebaseObject, $firebaseArray, FirebaseAuth, FirebaseUser) {
@@ -36,7 +36,7 @@
      * @return {Promise}
      */
     const getCartList = () => {
-      const userCartsRef = usersCartRef.child(FirebaseAuth.$getAuth().uid).child("carts");
+      const userCartsRef = usersRef.child(FirebaseAuth.$getAuth().uid).child("carts");
       return $firebaseArray(userCartsRef);
     };
 
@@ -121,7 +121,7 @@
     const deleteCart = (cartId) => {
       const self = this;
       const currentUser = FirebaseAuth.$getAuth();
-      const userCartRef = usersCartRef.child(currentUser.uid).child('carts').child(cartId);
+      const userCartRef = usersRef.child(currentUser.uid).child('carts').child(cartId);
       const cartRef = cartsMetadataRef.child(cartId);
 
       return userCartRef.remove().then(cartRef.remove);
@@ -149,11 +149,16 @@
         if (!cartId ||  !cartName ||  !cartCreatedByUserId) return;
 
         if (currentUser) {
-          const userRef = usersCartRef.child(currentUser.uid);
+          const userRef = usersRef.child(currentUser.uid);
           userRef.child('carts').child(cartId).set({
             id: cartId,
             name: cartName,
             createdByUserId: cartCreatedByUserId
+          });
+
+          usersCartRef.child(cartId).child(currentUser.uid).set({
+            uid: currentUser.id,
+            displayName: currentUser.displayName
           });
         }
 
@@ -170,9 +175,13 @@
      */
     const leaveCart = (cartId) => {
       const self = this,
-        userCartRef = usersCartRef.child(cartId);
+        userCartRef = usersRef.child(cartId);
 
       const currentUser = FirebaseAuth.$getAuth();
+
+
+
+      // usersCartRef.
 
       /* TODO
       if (currentUser) {
@@ -338,6 +347,18 @@
       return self.currentCartProducts[productId].quantity;
     };
 
+    /**
+     * Get cart's users
+     *
+     * @param {String} cartId cart id
+     *
+     * @return {Promise }
+     */
+    const getUsersByCart = (cartId) => {
+      cosnt cartRef = usersCartRef.child(cartId);
+      return $firebaseObject(cartRef);
+    };
+
     // Load current cart products
     getCurrentCartProducts().then((currentCartProducts) => {
       currentCartProducts.$loaded().then((products) => {
@@ -362,6 +383,7 @@
       getCurrentCart,
       getCurrentCartProducts,
       getQuantity,
+      getUsersByCart,
     };
 
   }
