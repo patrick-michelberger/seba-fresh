@@ -7,7 +7,7 @@
             <span class="md-title">{{::product.name}}</span>
           </md-card-title-text>
           <md-card-title-media layout-padding>
-            <img ui-sref="productsDetail({ productId: product._id })" ui-sref-opts="{reload: false, notify: false}" ng-src="{{::product.mediumImage}}" />
+            <img ui-sref="productsDetail(::{ productId: product._id})" ui-sref-opts="{reload: false, notify: false}" ng-src="{{::product.mediumImage}}" />
           </md-card-title-media>
           <div class="sf-price md-title">{{::product.price}} $</div>
         </md-card-title>
