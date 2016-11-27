@@ -1,17 +1,16 @@
 'use strict';
 
 class SettingsController {
-  constructor(Auth) {
+  constructor() {
     this.errors = {};
     this.submitted = false;
-
-    this.Auth = Auth;
   }
 
   changePassword(form) {
     this.submitted = true;
 
     if (form.$valid) {
+      /* TODO Write with firebase auth
       this.Auth.changePassword(this.user.oldPassword, this.user.newPassword)
         .then(() => {
           this.message = 'Password successfully changed.';
@@ -21,6 +20,7 @@ class SettingsController {
           this.errors.other = 'Incorrect password';
           this.message = '';
         });
+        */
     }
   }
 }

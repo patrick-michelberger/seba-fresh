@@ -1,3 +1,38 @@
 onboarding h1 {
   font-weight: 100;
 }
+
+onboarding .md-tab.md-active {
+  color: rgba(0,0,0,0.54);
+}
+
+onboarding md-tabs md-ink-bar {
+  color: #0066a3;
+  background: #0066a3;
+}
+
+onboarding md-tabs {
+  border: 1px solid #e1e1e1;
+  border-radius: 2px;
+}
+
+onboarding md-tabs-wrapper {
+  background: #fff;
+}
+
+onboarding md-content {
+  background: #fff;
+}
+
+onboarding md-ink-bar {
+  height: 4px;
+}
+
+onboarding .md-tab {
+  text-align: center;
+}
+
+onboarding .md-tab.md-active {
+  color: #0066a3;
+  font-weight: bold;
+}

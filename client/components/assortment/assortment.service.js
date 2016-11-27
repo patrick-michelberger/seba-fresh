@@ -2,7 +2,7 @@
 
 (function() {
 
-  function AssortmentService($rootScope, Util, ProductService, Auth) {
+  function AssortmentService($rootScope, Util, ProductService) {
     var safeCb = Util.safeCb;
     var products = [];
 

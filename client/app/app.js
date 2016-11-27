@@ -3,15 +3,12 @@
 window.openFirebaseConnections = [];
 
 angular.module('sebaFreshApp', [
-    'sebaFreshApp.auth',
     'sebaFreshApp.services',
     'sebaFreshApp.assortment',
     'sebaFreshApp.oauth-buttons',
-    'sebaFreshApp.constants',
     'ngCookies',
     'ngResource',
     'ngSanitize',
-    'btford.socket-io',
     'ui.router',
     'validation.match',
     'ngAnimate',
@@ -25,6 +22,9 @@ angular.module('sebaFreshApp', [
 
     $locationProvider.html5Mode(true);
 
+    /**
+     *  Firebase configuration
+     */
     // Whenever $firebaseArray's and $firebaseObjects are created,
     // they'll now be tracked by window.openFirebaseConnections
     $provide.decorator("$firebaseArray", firebaseDecorator);
@@ -38,7 +38,9 @@ angular.module('sebaFreshApp', [
       };
     };
 
-    // SEBA fresh CSS theme configuration
+    /**
+     *  CSS / theme configuration
+     */
     $mdThemingProvider.definePalette('sebaPrimaryPalette', {
       '50': '007DC6',
       '100': '007DC6',

@@ -1,13 +1,13 @@
 <md-content>
-  <md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always" md-selected="onboarding.selectedIndex" layout-fill>
+  <md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always" md-selected="onboarding.selectedIndex">
     <md-tab label="Create Group">
       <md-content layout-padding layout="row">
         <div class="sf-success-message" ng-show="onboarding.showSuccessMessage" layout="column" layout-align="center center" flex="100">
           <success-check></success-check>
         </div>
-        <div ng-hide="onboarding.showSuccessMessage" hide-xs layout="row" layout-align="center top" flex-xs="100" flex="50">
+        <!--<div ng-hide="onboarding.showSuccessMessage" hide-xs layout="row" layout-align="center top" flex-xs="100" flex="50">
           <h1>Create A Group</h1>
-        </div>
+        </div>-->
         <div ng-hide="onboarding.showSuccessMessage" flex-xs="100" flex="50">
           <groups></groups>
         </div>
@@ -16,9 +16,9 @@
     <md-tab label="Invite Friends" ng-disabled="onboarding.disableInviteFriends()">
       <md-content class="md-padding">
         <md-content layout-padding layout="row">
-          <div layout="column" layout-align="top center" hide-xs flex="50">
+          <!--<div layout="column" layout-align="top center" hide-xs flex="50">
             <h1>Invite Your Flatmates</h1>
-          </div>
+          </div>-->
           <div flex-xs="100" flex="50">
             <group-list ng-if="!onboarding.disableInviteFriends()" groups="onboarding.groups"></group-list>
           </div>

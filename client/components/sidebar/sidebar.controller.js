@@ -1,11 +1,9 @@
 'use strict';
 
 class SidebarController {
-  constructor(Auth, $mdSidenav) {
+  constructor(FirebaseAuth, $mdSidenav) {
     this.$mdSidenav = $mdSidenav;
-    this.isLoggedIn = Auth.isLoggedIn;
-    this.isAdmin = Auth.isAdmin;
-    this.getCurrentUser = Auth.getCurrentUser;
+    this.currentUser = FirebaseAuth.$getAuth();
   }
 
   /**
@@ -14,7 +12,7 @@ class SidebarController {
   close() {
     var self = this;
     this.$mdSidenav('left').close()
-      .then(function () {});
+      .then(function() {});
   }
 }
 

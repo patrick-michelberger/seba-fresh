@@ -2,18 +2,38 @@
 
 class ShoppingCartController {
 
-  constructor($rootScope, $timeout, $scope, $http, Auth, DialogService) {
+  constructor($rootScope, $scope, $state, DialogService, FirebaseAuth, FirebaseCart) {
     var self = this;
-    this.$scope = $scope;
+
     this.$rootScope = $rootScope;
-    this.$timeout = $timeout;
-    this.getCurrentCart = null;
-    this.Auth = Auth;
-    this.$http = $http;
+    this.$scope = $scope;
+    this.$state = $state;
+
     this.DialogService = DialogService;
+    this.FirebaseAuth = FirebaseAuth;
+    this.FirebaseCart = FirebaseCart;
+
     this.currentUserItems = [];
     this.flatmatesItems = [];
     this.freeShipping = false;
+
+    FirebaseCart.getCurrentCart().then((cart) => {
+      self.currentCart = cart;
+    });
+
+    FirebaseCart.getCurrentCartProducts().then((products) => {
+      self.currentUserItems = products;
+    });
+
+
+    this.currentUser = FirebaseAuth.$getAuth();
+
+    console.log("this.currentUser: ", this.currentUser);
+
+
+    this.calculateOrderValue = this.calculateOrderValue;
+    this.calculateOrderAmount = this.calculateOrderAmount;
+    this._emitChangeEvent = this._emitChangeEvent;
   }
 
   $onInit() {
@@ -67,19 +87,40 @@ class ShoppingCartController {
   }
 
   addToCart(product) {
-    // TODO
+    const self = this;
+
+    if (!product ||  !this.currentCart) {
+      this.$state.go('login');
+      return;
+    }
+
+    this._emitChangeEvent(product.id, true);
+    return this.FirebaseCart.addItem(this.currentCart.id, product).then(() => {
+      self._emitChangeEvent(product.id, false);
+    });
   }
 
   removeFromCart(product) {
-    // TODO 
+    const self = this;
+
+    if (!product ||  !this.currentCart) {
+      this.$state.go('login');
+      return;
+    }
+
+    this._emitChangeEvent(product.id, true);
+    return this.FirebaseCart.removeItem(this.currentCart.id, product).then(() => {
+      self._emitChangeEvent(product.id, false);
+    });
   }
 
   calculateOrderValue(items) {
+
     if (items) {
-      items = items ||  [];
+      items = items || [];
       var value = 0;
       items.forEach(function(item) {
-        value += item.product.price * item.quantity;
+        value += item.item.price * item.quantity;
       });
       return value.toFixed(2);
     }
@@ -99,7 +140,7 @@ class ShoppingCartController {
   calculatedGroupedItems(users) {
     var currentUserItems = [];
     var flatmates = {};
-    var currentUser = this.Auth.getCurrentUser();
+    var currentUser = FirebaseAuth.$getAuth();
     var currentUserIndex = _.findIndex(users, {
       "_id": currentUser._id
     });
@@ -116,14 +157,31 @@ class ShoppingCartController {
   }
 
   isCurrentUser(userId) {
-    return this.Auth.getCurrentUser()._id === userId;
+    const currentUser = this.FirebaseAuth.$getAuth();
+    return currentUser._id === userId;
   }
 
   isGroupAdmin() {
     if (!this.currentCart || !this.currentCart.group) {
       return false;
     }
-    return this.Auth.getCurrentUser()._id === this.currentCart.group.admin;
+    const currentUser = this.FirebaseAuth.$getAuth();
+    return currentUser._id === this.currentCart.group.admin;
+  }
+
+  /**
+   * Trigger recompile for an individual product item
+   *
+   * @param {String} productId Description
+   * @param {Boolean} isLoading
+   *
+   */
+  _emitChangeEvent(productId, isLoading) {
+    if (!productId) {
+      return;
+    }
+    this.$rootScope.$broadcast('cart:add:' + productId);
+    this.isLoading = isLoading;
   }
 }
 

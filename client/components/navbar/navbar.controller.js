@@ -1,25 +1,29 @@
 'use strict';
 
 class NavbarController {
-  isCollapsed = true;
 
-  constructor($rootScope, $state, $scope, FirebaseAuth, socket, $timeout, $log, $mdSidenav, DialogService, FirebaseUser, FirebaseCart) {
+  constructor($rootScope, $scope, $state, $timeout, $mdSidenav, DialogService, FirebaseAuth, FirebaseUser, FirebaseCart) {
     var self = this;
+
+    // Dependencies bindings
+    this.$rootScope = $rootScope;
     this.$scope = $scope;
     this.$state = $state;
-    this.$rootScope = $rootScope;
-    this.$rootScope = $rootScope;
     this.$timeout = $timeout;
-    this.$log = $log;
-    this.carts = [];
     this.$mdSidenav = $mdSidenav;
+
     this.DialogService = DialogService;
-    this.toggleLeft = this.buildDelayedToggler('left');
     this.FirebaseAuth = FirebaseAuth;
+
+    // Attributes
+    this.carts = [];
+
+    // Method bindings
+    this.toggleLeft = this.buildDelayedToggler('left');
     this.openCart = this.open;
-    this.socket = socket;
     this.logout = this.logout;
 
+    // Listeners
     FirebaseAuth.$onAuthStateChanged((authUser) => {
       self.authUser = authUser;
     });
@@ -30,11 +34,6 @@ class NavbarController {
         self.currentCart = currentCart;
       });
     });
-  }
-
-  $onInit() {
-    var self = this;
-    this.socket.syncUpdates('cart', this.carts);
   }
 
   logout() {

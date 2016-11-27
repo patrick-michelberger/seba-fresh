@@ -2,19 +2,16 @@
 
 class OnboardingController {
 
-  constructor($http, $timeout, socket, $scope, $rootScope, Auth, FirebaseCart) {
+  constructor($timeout, $scope, $rootScope, FirebaseCart) {
     var self = this;
+
     // dependencies
-    this.socket = socket;
-    this.$http = $http;
     this.$timeout = $timeout;
-    this.Auth = Auth;
     this.FirebaseCart = FirebaseCart;
 
     // properties
     this.selectedIndex = 0;
     this.showSuccessMessage = false;
-    this.getCurrentUser = Auth.getCurrentUser;
     this.groups = FirebaseCart.getCartList();
 
     $rootScope.$on('onboarding:next', function(event, index) {
@@ -30,7 +27,6 @@ class OnboardingController {
     });
 
     $rootScope.$on('onboarding:invited', function() {
-      self.Auth.changeFriendsInvited(true);
       self.showSuccessMessage = true;
       self.$timeout(function() {
         self.showSuccessMessage = false;
@@ -51,7 +47,7 @@ class OnboardingController {
   }
 
   disableProducts() {
-    var result = !this.groups || !this.groups[0] ||  !this.Auth.getCurrentUser().friendsInvited;
+    var result = !this.groups || !this.groups[0];
     return result;
   }
 
@@ -65,7 +61,7 @@ class OnboardingController {
   }
 
   _updateIndex() {
-    if (this.groups && this.groups[0] && this.getCurrentUser().friendsInvited) {
+    if (this.groups && this.groups[0]) {
       this.selectedIndex = 2;
     } else if (this.groups && this.groups[0]) {
       this.selectedIndex = 1;

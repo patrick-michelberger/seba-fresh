@@ -2,8 +2,8 @@
   <div ng-hide="hideCart||shoppingCartCtrl.isGroupAdmin()&&shoppingCartCtrl.freeShipping">
     <span class="description">Total (Flat): </span>
     <div class="cart-order-info">
-      <span class="cart-total-quantity">{{shoppingCartCtrl.getCurrentCart().totalQuantity}} Items </span>
-      <span class="cart-total-amount">$ {{shoppingCartCtrl.getCurrentCart().totalAmount | price}}</span>
+      <span class="cart-total-quantity">{{shoppingCartCtrl.currentCart.totalQuantity}} Items </span>
+      <span class="cart-total-amount">$ {{shoppingCartCtrl.currentCart.totalAmount | price}}</span>
     </div>
   </div>
   <div ng-show="hideCart||shoppingCartCtrl.isGroupAdmin()&&shoppingCartCtrl.freeShipping">
@@ -18,12 +18,12 @@
     <!--<div class="your-share-hint">Your share:</div>-->
     <div class="user-container cart-cell-container" layout="row">
       <div class="user-picture cart-cell-picture" layout="row" layout-align="start center">
-        <img ng-src="{{shoppingCartCtrl.Auth.getCurrentUser().picture}}" />
+        <img ng-src="{{shoppingCartCtrl.currentUser.photoURL}}" />
       </div>
       <div class="user-info cart-cell-info">
         <div layout="column">
           <div flex class="user-name cart-cell-title">
-            {{shoppingCartCtrl.Auth.getCurrentUser().first_name}} {{shoppingCartCtrl.Auth.getCurrentUser().last_name}}
+            {{shoppingCartCtrl.currentUser.displayName}}
           </div>
           <div flex class="user-cart-quantity cart-cell-description">
             {{shoppingCartCtrl.calculateOrderAmount(shoppingCartCtrl.currentUserItems) }} Items
@@ -38,12 +38,12 @@
     <div class="cart-cell-container" ng-repeat="item in shoppingCartCtrl.currentUserItems" layout="column">
       <div layout="row">
         <div class="cart-cell-picture" layout="row" layout-align="start center">
-          <img ng-src="{{item.product.mediumImage}}" />
+          <img ng-src="{{item.item.mediumImage}}" />
         </div>
         <div class="cart-cell-info">
           <div layout="column">
             <div flex class="cart-cell-title">
-              {{item.product.name}}
+              {{item.item.name}}
             </div>
             <div flex class="cart-cell-description">
               <span>Sold by:</span> Walmart.com
@@ -51,16 +51,16 @@
           </div>
         </div>
         <div flex class="cart-cell-total-amount">
-          $ {{item.product.price}}
+          $ {{item.item.price}}
         </div>
       </div>
       <div flex layout="row" class="cart-item-actions">
-        <md-button flex ng-click="shoppingCartCtrl.removeFromCart(item.product, quantity)" class="md-raised" aria-label="remove rom cart" ng-disabled="!item.quantity||item.quantity<1">-</md-button>
+        <md-button flex ng-click="shoppingCartCtrl.removeFromCart(item.item, quantity)" class="md-raised" aria-label="remove rom cart" ng-disabled="!item.quantity||item.quantity<1">-</md-button>
         <md-button flex class="product-quantity md-raised" ng-class="{'highlight': item.quantity>0}" aria-label="quantity" ng-disabled="true">{{item.quantity}}</md-button>
-        <md-button ng-hide="item.quantity>0" flex ng-click="shoppingCartCtrl.addToCart(item.product)" aria-label="add to cart" class="md-raised md-warn ">
+        <md-button ng-hide="item.quantity>0" flex ng-click="shoppingCartCtrl.addToCart(item.item)" aria-label="add to cart" class="md-raised md-warn ">
           <i class="sf-md-cart-icon material-icons">shopping_cart</i>
         </md-button>
-        <md-button ng-show="item.quantity>0" flex ng-click="shoppingCartCtrl.addToCart(item.product)" aria-label="add to cart" class="md-raised">+</md-button>
+        <md-button ng-show="item.quantity>0" flex ng-click="shoppingCartCtrl.addToCart(item.item)" aria-label="add to cart" class="md-raised">+</md-button>
       </div>
     </div>
   </div>
@@ -68,7 +68,7 @@
   <div class="single-cart cart-cell" ng-repeat="flatmate in shoppingCartCtrl.flatmates">
     <div class="user-container cart-cell-container" layout="row">
       <div class="user-picture cart-cell-picture" layout="row" layout-align="start center">
-        <img ng-src="{{flatmate.picture}}" />
+        <img ng-src="{{flatmate.photoURL}}" />
       </div>
       <div class="user-info cart-cell-info">
         <div layout="column">
@@ -88,12 +88,12 @@
     <div class="cart-cell-container" ng-repeat="item in flatmate.items" layout="column">
       <div layout="row">
         <div class="cart-cell-picture" layout="row" layout-align="start center">
-          <img ng-src="{{item.product.mediumImage}}" />
+          <img ng-src="{{item.item.mediumImage}}" />
         </div>
         <div class="cart-cell-info">
           <div layout="column">
             <div flex class="cart-cell-title">
-              {{item.product.name}}
+              {{item.item.name}}
             </div>
             <div flex class="cart-cell-description">
               <span>Sold by:</span> Walmart.com
@@ -101,7 +101,7 @@
           </div>
         </div>
         <div flex class="cart-cell-total-amount">
-          $ {{item.product.price}}
+          $ {{item.item.price}}
         </div>
       </div>
     </div>
@@ -115,12 +115,12 @@
     <!--<div class="your-share-hint">Your share:</div>-->
     <div class="user-container cart-cell-container" layout="row">
       <div class="user-picture cart-cell-picture" layout="row" layout-align="start center">
-        <img ng-src="{{shoppingCartCtrl.Auth.getCurrentUser().picture}}" />
+        <img ng-src="{{shoppingCartCtrl.currentUser.photoURL}}" />
       </div>
       <div class="user-info cart-cell-info">
         <div layout="column">
           <div flex class="user-name cart-cell-title">
-            {{shoppingCartCtrl.Auth.getCurrentUser().first_name}} {{shoppingCartCtrl.Auth.getCurrentUser().last_name}}
+            {{shoppingCartCtrl.currentUser.displayName}}
           </div>
           <div flex class="user-cart-quantity cart-cell-description">
             $ {{shoppingCartCtrl.calculateOrderValue(shoppingCartCtrl.currentUserItems) | price}} | {{shoppingCartCtrl.calculateOrderAmount(shoppingCartCtrl.currentUserItems) }} Items
@@ -143,7 +143,7 @@
     <div class="single-cart cart-cell single-cart-flatmate" ng-repeat="flatmate in shoppingCartCtrl.flatmates">
       <div class="user-container cart-cell-container" layout="row">
         <div class="user-picture cart-cell-picture" layout="row" layout-align="start center">
-          <img ng-src="{{flatmate.picture}}" />
+          <img ng-src="{{flatmate.photoURL}}" />
         </div>
         <div class="user-info cart-cell-info">
           <div layout="column">

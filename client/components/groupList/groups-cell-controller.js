@@ -2,10 +2,9 @@
 
 class GroupCellController {
 
-  constructor($rootScope, $scope, $window, Auth, FirebaseAuth, FirebaseCart, FirebaseInvitationService, $mdDialog, $mdMedia, $timeout, DialogService) {
+  constructor($rootScope, $scope, $window, FirebaseAuth, FirebaseCart, FirebaseInvitationService, $mdDialog, $mdMedia, $timeout, DialogService) {
     this.baseShareUrl = location.protocol + '//' + location.hostname + ':' + location.port;
     this.DialogService = DialogService;
-    this.Auth = Auth;
     this.FirebaseAuth = FirebaseAuth;
     this.$window = $window;
     this.$mdDialog = $mdDialog;
@@ -13,10 +12,12 @@ class GroupCellController {
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.$timeout = $timeout;
-    this.getCurrentUser = Auth.getCurrentUser;
     this.FirebaseCart = FirebaseCart;
     this.FirebaseInvitationService = FirebaseInvitationService;
     this.isAdmin = FirebaseCart.userIsAdmin;
+
+    this.currentUser = FirebaseAuth.$getAuth();
+    console.log("this.currentUser: ", this.currentUser);
   }
 
   deleteCart(cart) {

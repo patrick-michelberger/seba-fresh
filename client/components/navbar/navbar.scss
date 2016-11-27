@@ -8,16 +8,15 @@ navbar md-toolbar.sf-transparent {
 }
 navbar .sf-brand {
   font-weight: bold;
-  color: black;
+  color: #79b9e7;
 }
 navbar .sf-user-name {
   color: black;
+  text-transform: lowercase;
 }
-navbar .sf-user-name .greeting {
-  color: $sf-color-yellow;
-}
+
 navbar .sf-brand span {
-  color: $sf-color-yellow;
+  color: #0066a3;
 }
 navbar .md-toolbar-tools {
   height: 60px;
@@ -32,12 +31,14 @@ navbar .sf-navigation-bar .sf-call-to-action {
   position: relative;
   top: -11px;
 }
+
 navbar .sf-navigation-bar .md-button {
   line-height: 68px;
   padding: 0 19px;
   font-weight: bold;
-  text-transform: uppercase;
+  text-transform: lowercase;
 }
+
 navbar .sf-navigation-bar .md-button:hover {
   background: none!important;
 }
@@ -59,8 +60,10 @@ navbar .sf-cart-total-amount {
   position: absolute;
   display: block;
   border-radius: 10px;
+  color: #fff;
   background-color: #0066a3;
   height: 38px;
+  line-height: 56px;
   margin-top: 13px;
   right: 20px;
   padding-left: 10px;
@@ -101,7 +104,7 @@ navbar .sf-cart-total-icon {
 }
 navbar .sf-md-cart-icon {
   position: relative;
-  top: 4px;
+  top: 3px;
 }
 navbar .sf-cart-badge {
   background-color: #ffc120;
