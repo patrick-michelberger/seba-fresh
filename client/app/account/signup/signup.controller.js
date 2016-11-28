@@ -31,7 +31,7 @@ class SignupController {
           if (self.redirectUrl) {
             self.$location.path(self.$stateParams.redirectUrl);
           } else {
-            if (!user.friendsInvited) {
+            if (!user.currentCartId) {
               self.$state.go('onboarding');
             } else {
               self.$state.go('products');

@@ -1,7 +1,7 @@
 <div class="pos-upsell" ng-hide="freeShipping">
   <div class="pos-upsell-from">$0</div>
   <div class="pos-upsell-progress">
-    <span ng-style="progressStyle" class="meter-bar under"></span>
+    <span ng-style="updateProgressStyle(carts.current)" class="meter-bar under"></span>
   </div>
   <div class="pos-upsell-to">$50</div>
   <p class="upsell-message">

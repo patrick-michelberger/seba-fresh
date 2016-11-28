@@ -2,8 +2,8 @@
   <div ng-hide="hideCart||shoppingCartCtrl.isGroupAdmin()&&shoppingCartCtrl.freeShipping">
     <span class="description">Total (Flat): </span>
     <div class="cart-order-info">
-      <span class="cart-total-quantity">{{shoppingCartCtrl.currentCart.totalQuantity}} Items </span>
-      <span class="cart-total-amount">$ {{shoppingCartCtrl.currentCart.totalAmount | price}}</span>
+      <span class="cart-total-quantity">{{shoppingCartCtrl.carts.current.totalQuantity}} Items </span>
+      <span class="cart-total-amount">$ {{shoppingCartCtrl.carts.current.totalAmount | price}}</span>
     </div>
   </div>
   <div ng-show="hideCart||shoppingCartCtrl.isGroupAdmin()&&shoppingCartCtrl.freeShipping">
@@ -26,16 +26,16 @@
             {{shoppingCartCtrl.currentUser.displayName}}
           </div>
           <div flex class="user-cart-quantity cart-cell-description">
-            {{shoppingCartCtrl.calculateOrderAmount(shoppingCartCtrl.currentUserItems) }} Items
+            {{shoppingCartCtrl.calculateOrderAmount(shoppingCartCtrl.currentUserItems.current) }} Items
           </div>
         </div>
       </div>
       <div flex class="user-cart-total-amount cart-cell-total-amount">
-        $ {{shoppingCartCtrl.calculateOrderValue(shoppingCartCtrl.currentUserItems) | price}}
+        $ {{shoppingCartCtrl.calculateOrderValue(shoppingCartCtrl.currentUserItems.current) | price}}
       </div>
     </div>
     <!-- ITEMS -->
-    <div class="cart-cell-container" ng-repeat="item in shoppingCartCtrl.currentUserItems" layout="column">
+    <div class="cart-cell-container" ng-repeat="item in shoppingCartCtrl.currentUserItems.current" layout="column">
       <div layout="row">
         <div class="cart-cell-picture" layout="row" layout-align="start center">
           <img ng-src="{{item.item.mediumImage}}" />
@@ -123,7 +123,7 @@
             {{shoppingCartCtrl.currentUser.displayName}}
           </div>
           <div flex class="user-cart-quantity cart-cell-description">
-            $ {{shoppingCartCtrl.calculateOrderValue(shoppingCartCtrl.currentUserItems) | price}} | {{shoppingCartCtrl.calculateOrderAmount(shoppingCartCtrl.currentUserItems) }} Items
+            $ {{shoppingCartCtrl.calculateOrderValue(shoppingCartCtrl.currentUserItems.current) | price}} | {{shoppingCartCtrl.calculateOrderAmount(shoppingCartCtrl.currentUserItems.current) }} Items
           </div>
         </div>
       </div>
@@ -174,12 +174,12 @@
               Total (Flat):
             </div>
             <div flex class="cart-cell-description">
-              {{shoppingCartCtrl.getCurrentCart().totalQuantity}} Items
+              {{shoppingCartCtrl.carts.current.totalQuantity}} Items
             </div>
           </div>
         </div>
         <div flex class="cart-cell-total-amount">
-          $ {{shoppingCartCtrl.getCurrentCart().totalAmount | price}}
+          $ {{shoppingCartCtrl.carts.current.totalAmount | price}}
         </div>
       </div>
     </div>

@@ -13,9 +13,7 @@
       this.isLoading = false;
 
       // Attributes
-      FirebaseCart.getCurrentCart().then((currentCart) => {
-        self.currentCart = currentCart;
-      });
+      this.carts = FirebaseCart.getCarts();
 
       // Methods
       this.removeFromCart = this.removeFromCart;
@@ -58,13 +56,13 @@
         return;
       }
 
-      if (!product ||  !this.currentCart) {
+      if (!product ||  !this.carts.current) {
         this.$state.go('login');
         return;
       }
 
       this._emitChangeEvent(product.id, true);
-      return this.FirebaseCart.addItem(this.currentCart.id, product).then(() => {
+      return this.FirebaseCart.addItem(this.carts.current.id, product).then(() => {
         self._emitChangeEvent(product.id, false);
       });
     }
@@ -84,13 +82,13 @@
         return;
       }
 
-      if (!product ||  !this.currentCart) {
+      if (!product ||  !this.carts) {
         this.$state.go('login');
         return;
       }
 
       this._emitChangeEvent(product.id, true);
-      return this.FirebaseCart.removeItem(this.currentCart.id, product).then(() => {
+      return this.FirebaseCart.removeItem(this.carts.current.id, product).then(() => {
         self._emitChangeEvent(product.id, false);
       });
     }

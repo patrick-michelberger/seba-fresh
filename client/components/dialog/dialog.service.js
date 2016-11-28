@@ -62,21 +62,19 @@
       showProductModal(product, useFullScreen) {
         // controller
         function ProductDialogController($rootScope, $scope, $state, $mdDialog, FirebaseCart) {
-          FirebaseCart.getCurrentCart().then((cart) => {
-            $scope.currentCart = cart;
-          });
+          var carts = FirebaseCart.getCarts();
           $scope.product = product;
           $scope.cancel = function() {
             $mdDialog.cancel();
           };
 
           $scope.addToCart = function(product) {
-            if (!product ||  !$scope.currentCart) {
+            if (!product ||  !carts ||  !carts.current) {
               $state.go('login');
               $scope.cancel();
               return;
             }
-            FirebaseCart.addItem($scope.currentCart.id, product).then(() => {
+            FirebaseCart.addItem(carts.current.id, product).then(() => {
               $scope.cancel();
             });
           };

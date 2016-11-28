@@ -3,6 +3,12 @@
 (function() {
   function FirebaseCartService($rootScope, $http, $q, $firebaseObject, $firebaseArray, FirebaseAuth, FirebaseUser) {
 
+    var carts = {};
+    carts.current = null;
+
+    var products = {};
+    products.current = null;
+
     const self = this;
 
     const cartsMetadataRef = firebase.database().ref().child("carts-metadata");
@@ -11,7 +17,34 @@
     const invitationsRef = firebase.database().ref().child('invitations');
     const usersRef = firebase.database().ref().child('users');
 
-    self.currentCartProducts = {};
+    const currentUser = FirebaseUser.getCurrentUser();
+
+    // Auth listener
+    FirebaseAuth.$onAuthStateChanged(() => {
+      if (currentUser && currentUser.data) {
+        currentUser.data.$loaded().then((user) => {
+          if (user && user.currentCartId) {
+            // Load current cart
+            const cartRef = cartsMetadataRef.child(user.currentCartId);
+            carts.current = $firebaseObject(cartRef);
+
+            // Load current cart's products
+            const cartProductsRef = cartProducts.child(user.currentCartId);
+            products.current = $firebaseObject(cartProductsRef);
+
+            // Update products quantity values
+            products.current.$loaded().then((cartProducts) => {
+              console.log("products loaded: ", products.current);
+              for (let productId in cartProducts) {
+                if (!isNaN(productId)) {
+                  $rootScope.$broadcast('cart:add:' + productId);
+                }
+              }
+            });
+          }
+        });
+      }
+    });
 
     /**
      * Get a single shopping cart by id
@@ -41,37 +74,21 @@
     };
 
     /**
-     * Get user's current cart
+     * Get user's current carts
      *
-     * @return {Promise}
+     * @return {FirebaseObject}
      */
-    const getCurrentCart = () => {
-      const deferred = $q.defer();
-      FirebaseUser.getUser().then((user) => {
-        user.$loaded().then((user) => {
-          if (user && user.currentCartId) {
-            const cartRef = cartsMetadataRef.child(user.currentCartId);
-            deferred.resolve($firebaseObject(cartRef));
-          } else {
-            deferred.reject();
-          }
-        });
-      });
-      return deferred.promise;
+    const getCarts = () => {
+      return carts;
     }
 
     /**
-     * Get user's current cart's products
+     * Get user's current carts' products
      *
-     * @return {Promise}
+     * @return {FirebaseObject}
      */
-    const getCurrentCartProducts = () => {
-      return getCurrentCart().then((cartRef) => {
-        return cartRef.$loaded().then((cart) => {
-          const cartProductsRef = cartProducts.child(cart.id);
-          return $firebaseObject(cartProductsRef);
-        });
-      });
+    const getProducts = () => {
+      return products;
     }
 
     /**
@@ -93,14 +110,12 @@
       var self = this,
         newCartRef = cartsMetadataRef.push();
 
-      // TODO Change to server side timestamp: firebase.database.ServerValue.TIMESTAMP
       var newCart = {
         id: newCartRef.key,
         name: cartName,
         address: cartAddress,
         createdByUserId: FirebaseAuth.$getAuth().uid,
-        // TODO admin: this._userId,
-        createdAt: new Date()
+        createdAt: firebase.database.ServerValue.TIMESTAMP
       };
 
       return newCartRef.set(newCart).then(() => {
@@ -161,8 +176,6 @@
             displayName: currentUser.displayName
           });
         }
-
-        // TODO Setup products listeners
       });
     };
 
@@ -328,10 +341,10 @@
      * @return {Number} Quantity of product
      */
     const getQuantity = (productId) => {
-      if (!self.currentCartProducts[productId]) {
+      if (!products ||  !products.current  || !products.current[productId]) {
         return 0;
       }
-      return self.currentCartProducts[productId].quantity;
+      return products.current[productId].quantity;
     };
 
     /**
@@ -346,18 +359,6 @@
       return $firebaseObject(cartRef);
     };
 
-    // Load current cart products
-    getCurrentCartProducts().then((currentCartProducts) => {
-      currentCartProducts.$loaded().then((products) => {
-        self.currentCartProducts = products;
-        for (let productId in products) {
-          if (!isNaN(productId)) {
-            $rootScope.$broadcast('cart:add:' + productId);
-          }
-        }
-      });
-    });
-
     return {
       get,
       createCart,
@@ -367,8 +368,8 @@
       addItem,
       removeItem,
       getCartList,
-      getCurrentCart,
-      getCurrentCartProducts,
+      getCarts,
+      getProducts,
       getQuantity,
       getUsersByCart,
     };

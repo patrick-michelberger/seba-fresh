@@ -1,8 +1,9 @@
 'use strict';
 
 class LogoutController {
-  constructor($rootScope, FirebaseAuth) {
+  constructor($rootScope, FirebaseAuth, FirebaseUser) {
     this.FirebaseAuth = FirebaseAuth;
+    this.FirebaseUser = FirebaseUser;
     this.$rootScope = $rootScope;
     this.logout = this.logout;
     this.logout();
@@ -14,6 +15,7 @@ class LogoutController {
     angular.forEach(window.openFirebaseConnections, function(item) {
       item.$destroy();
     });
+    self.FirebaseUser.logoutUser();
     self.FirebaseAuth.$signOut();
   }
 }

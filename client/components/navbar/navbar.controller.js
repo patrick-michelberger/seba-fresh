@@ -2,11 +2,10 @@
 
 class NavbarController {
 
-  constructor($rootScope, $scope, $state, $timeout, $mdSidenav, DialogService, FirebaseAuth, FirebaseUser, FirebaseCart) {
+  constructor($scope, $state, $timeout, $mdSidenav, DialogService, FirebaseAuth, FirebaseUser, FirebaseCart) {
     var self = this;
 
     // Dependencies bindings
-    this.$rootScope = $rootScope;
     this.$scope = $scope;
     this.$state = $state;
     this.$timeout = $timeout;
@@ -15,25 +14,14 @@ class NavbarController {
     this.DialogService = DialogService;
     this.FirebaseAuth = FirebaseAuth;
 
-    // Attributes
-    this.carts = [];
+    // Dynamic attributes
+    this.carts = FirebaseCart.getCarts();
+    this.currentUser = FirebaseUser.getCurrentUser();
 
     // Method bindings
     this.toggleLeft = this.buildDelayedToggler('left');
     this.openCart = this.open;
     this.logout = this.logout;
-
-    // Listeners
-    FirebaseAuth.$onAuthStateChanged((authUser) => {
-      self.authUser = authUser;
-    });
-
-    FirebaseUser.getUser().then((user) => {
-      self.currentUser = user;
-      FirebaseCart.getCurrentCart().then((currentCart) => {
-        self.currentCart = currentCart;
-      });
-    });
   }
 
   logout() {

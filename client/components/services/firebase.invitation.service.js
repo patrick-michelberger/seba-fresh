@@ -117,13 +117,7 @@
         return;
       }
 
-      return FirebaseCart.get(cartId).then((response) => {
-        const {
-          cart,
-          cartRef
-        } = response;
-        return sendInvite();
-      });
+      return sendInvite();
     };
 
     /**

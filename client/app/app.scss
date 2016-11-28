@@ -37,6 +37,7 @@ hr {
 #sf-root.transparentNavbar {
   margin-top: 0;
 }
+
 /* SEBA fresh CI Colors */
 $sf-color-blue: #007DC6;
 $sf-color-green: #94BF54;
@@ -44,6 +45,8 @@ $sf-color-red: #D94848;
 $sf-color-orange: #F47421;
 $sf-color-yellow: #FFC120; // Component styles are injected through grunt
 /* inject:scss */
+@import 'account/login/login';
+@import 'account/signup/signup';
 @import 'carts/carts';
 @import 'contact/contact';
 @import 'dialogs';

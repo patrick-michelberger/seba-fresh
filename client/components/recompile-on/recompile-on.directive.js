@@ -14,7 +14,6 @@ angular.module('sebaFreshApp')
         // Internal: Will trigger a recompilation if the event is triggered.
         const recompileOnEvent = (eventName) => {
           scope.$on(eventName, (event) => {
-
             // Remove the previously added listener, if any.
             if (removeListener) {
               removeListener();

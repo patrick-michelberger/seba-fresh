@@ -5,29 +5,32 @@
 
     const usersRef = firebase.database().ref().child("users");
 
+    var user = {};
+    user.auth = null;
+    user.data = null;
+
+    // Auth listener
+    FirebaseAuth.$onAuthStateChanged((authUser) => {
+      if (authUser) {
+        user.auth = authUser;
+        const userRef = usersRef.child(authUser.uid);
+        user.data = $firebaseObject(userRef);
+      }
+    });
 
     /**
      *  Get current user's info
      *
      * @return {Promise}
      */
-    const getUser = () => {
-      const deferred = $q.defer();
-      const authUser = FirebaseAuth.$getAuth();
-      if (authUser && authUser.uid) {
-        const userRef = usersRef.child(authUser.uid);
-        deferred.resolve($firebaseObject(userRef));
-      } else {
-        FirebaseAuth.$onAuthStateChanged((authUser) => {
-          if (authUser && authUser.uid) {
-            const userRef = usersRef.child(authUser.uid);
-            deferred.resolve($firebaseObject(userRef));
-          }
-        });
-      }
-      return deferred.promise;
+    const getCurrentUser = () => {
+      return user;
     }
 
+    const logoutUser = () => {
+      user.auth = null;
+      user.data = null;
+    }
 
     /**
      * Create user
@@ -60,9 +63,10 @@
     }
 
     return {
-      getUser,
+      getCurrentUser,
       createUser,
       loadMetadata,
+      logoutUser
     };
   }
 

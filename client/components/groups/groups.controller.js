@@ -2,15 +2,14 @@
 
 class GroupsController {
 
-  constructor($rootScope, NgMap, FirebaseCart, FirebaseUser) {
+  constructor($rootScope, $scope, NgMap, FirebaseCart, FirebaseUser) {
     const self = this;
     this.$rootScope = $rootScope;
     this.NgMap = NgMap;
     this.FirebaseCart = FirebaseCart;
 
     this.carts = FirebaseCart.getCartList();
-    this.currentUser = FirebaseUser.getUser();
-
+    this.currentUser = FirebaseUser.getCurrentUser();
   }
 
   createGroup(form) {
@@ -28,7 +27,7 @@ class GroupsController {
 
         var group = {
           name: self.cart.name,
-          admin: self.currentUser.id,
+          admin: self.currentUser.auth.uid,
           address: {
             street: self.cart.street,
             street_number: self.cart.street_number,
@@ -47,7 +46,7 @@ class GroupsController {
 
 
         self.FirebaseCart.createCart(group.name, group.address).then((cartKey) => {
-          self.currentUser.then((currentUser) => {
+          self.currentUser.$loaded().then((currentUser) => {
             currentUser.currentCartId = cartKey;
             currentUser.$save().then(() => {
               self.isSending = false;

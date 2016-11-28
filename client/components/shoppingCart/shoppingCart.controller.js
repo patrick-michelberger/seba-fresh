@@ -2,9 +2,10 @@
 
 class ShoppingCartController {
 
-  constructor($rootScope, $scope, $state, DialogService, FirebaseAuth, FirebaseCart) {
+  constructor($rootScope, $scope, $state, DialogService, FirebaseAuth, FirebaseCart, FirebaseUser) {
     var self = this;
 
+    // Dependencies
     this.$rootScope = $rootScope;
     this.$scope = $scope;
     this.$state = $state;
@@ -13,24 +14,15 @@ class ShoppingCartController {
     this.FirebaseAuth = FirebaseAuth;
     this.FirebaseCart = FirebaseCart;
 
-    this.currentUserItems = [];
-    this.flatmatesItems = [];
+    // Dynamic attributes
     this.freeShipping = false;
+    this.carts = FirebaseCart.getCarts();
+    this.currentUserItems = FirebaseCart.getProducts();
+    this.flatmatesItems = [];
 
-    FirebaseCart.getCurrentCart().then((cart) => {
-      self.currentCart = cart;
-    });
+    this.currentUser = FirebaseUser.getCurrentUser();
 
-    FirebaseCart.getCurrentCartProducts().then((products) => {
-      self.currentUserItems = products;
-    });
-
-
-    this.currentUser = FirebaseAuth.$getAuth();
-
-    console.log("this.currentUser: ", this.currentUser);
-
-
+    // Methods
     this.calculateOrderValue = this.calculateOrderValue;
     this.calculateOrderAmount = this.calculateOrderAmount;
     this._emitChangeEvent = this._emitChangeEvent;
@@ -58,7 +50,7 @@ class ShoppingCartController {
   }
 
   pay() {
-    this.DialogService.showPayModal(this.currentCart);
+    this.DialogService.showPayModal(this.carts.current);
   }
 
   _getAddToCartUrl(cart) {
@@ -80,7 +72,7 @@ class ShoppingCartController {
   }
 
   checkout() {
-    var url = this._getAddToCartUrl(this.currentCart);
+    var url = this._getAddToCartUrl(this.carts.current);
     if (url) {
       window.open(url, '_blank');
     }
@@ -89,13 +81,13 @@ class ShoppingCartController {
   addToCart(product) {
     const self = this;
 
-    if (!product ||  !this.currentCart) {
+    if (!product ||  !this.carts.current) {
       this.$state.go('login');
       return;
     }
 
     this._emitChangeEvent(product.id, true);
-    return this.FirebaseCart.addItem(this.currentCart.id, product).then(() => {
+    return this.FirebaseCart.addItem(this.carts.current.id, product).then(() => {
       self._emitChangeEvent(product.id, false);
     });
   }
@@ -103,19 +95,18 @@ class ShoppingCartController {
   removeFromCart(product) {
     const self = this;
 
-    if (!product ||  !this.currentCart) {
+    if (!product ||  !this.carts.current) {
       this.$state.go('login');
       return;
     }
 
     this._emitChangeEvent(product.id, true);
-    return this.FirebaseCart.removeItem(this.currentCart.id, product).then(() => {
+    return this.FirebaseCart.removeItem(this.carts.current.id, product).then(() => {
       self._emitChangeEvent(product.id, false);
     });
   }
 
   calculateOrderValue(items) {
-
     if (items) {
       items = items || [];
       var value = 0;
@@ -157,16 +148,14 @@ class ShoppingCartController {
   }
 
   isCurrentUser(userId) {
-    const currentUser = this.FirebaseAuth.$getAuth();
-    return currentUser._id === userId;
+    return this.currentUser.auth.uid === userId;
   }
 
   isGroupAdmin() {
-    if (!this.currentCart || !this.currentCart.group) {
+    if (!this.carts || !this.carts.current || !this.currentUser.auth) {
       return false;
     }
-    const currentUser = this.FirebaseAuth.$getAuth();
-    return currentUser._id === this.currentCart.group.admin;
+    return this.currentUser.auth.uid === this.carts.current.createdByUserId;
   }
 
   /**
