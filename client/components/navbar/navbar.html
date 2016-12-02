@@ -9,7 +9,6 @@
       <a class="sf-brand" href="/">project <span>fresh.</span></a>
     </h2>
     <div class="sf-navigation-bar" hide-xs>
-
       <!-- Menu LOGGED OUT -->
       <div ng-hide="nav.currentUser.auth" layout="row" flex>
         <md-button ui-sref="signup">sign up</md-button>
@@ -43,7 +42,9 @@
             </span>
           </div>
         </a>
-
+        <div class="sf-switch-carts" ng-show="nav.carts.current" ng-click="nav.switchCart()">
+          <i class="sf-switch-carts-icon material-icons">swap_horiz</i>
+        </div>
       </div>
 
     </div>

@@ -44,19 +44,17 @@ class GroupsController {
           group.address.additional_address = self.cart.additional_address;
         }
 
-
         self.FirebaseCart.createCart(group.name, group.address).then((cartKey) => {
-          self.currentUser.$loaded().then((currentUser) => {
-            currentUser.currentCartId = cartKey;
-            currentUser.$save().then(() => {
-              self.isSending = false;
-              form.$setUntouched();
-              form.$setPristine();
-              self.cart = {};
-              self.$rootScope.$emit('onboarding:next');
-            }, (error) => {
-              console.log("error: ", error);
-            });
+          self.currentUser.data.currentCartId = cartKey;
+          self.currentUser.data.$save().then(() => {
+            console.log("current user saved: ");
+            self.isSending = false;
+            form.$setUntouched();
+            form.$setPristine();
+            self.cart = {};
+            self.$rootScope.$emit('onboarding:next');
+          }, (error) => {
+            console.log("error: ", error);
           });
 
         }).catch((err) => {

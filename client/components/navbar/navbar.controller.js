@@ -22,10 +22,19 @@ class NavbarController {
     this.toggleLeft = this.buildDelayedToggler('left');
     this.openCart = this.open;
     this.logout = this.logout;
+    this.switchCart = this.switchCart;
   }
 
   logout() {
     this.$state.go('logout');
+  }
+
+  /**
+   * Open switch cart modal
+   *
+   */
+  switchCart() {
+    this.DialogService.showUserCartsModal();
   }
 
   /**

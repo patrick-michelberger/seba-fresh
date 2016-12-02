@@ -1,0 +1,42 @@
+<md-dialog id="userCartsDialog" class="sf-dialog" aria-label="User Carts" flex-xs="100" flex-sm="75" flex-gt-sm="60" ng-cloak>
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h3 class="product-name">Your carts</h3>
+        <span flex></span>
+        <i class="sf-close-button material-icons" aria-label="Close dialog" ng-click="cancel()">clear</i>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+      <div class="md-dialog-content" layout="row">
+        <md-list>
+          <md-subheader class="md-no-sticky">Select or leave a shared shopping cart.</md-subheader>
+          <md-radio-group ng-model="selected.cart" ng-change="selectCart()">
+          <md-list-item ng-repeat="cart in carts">
+            <md-radio-button class="md-warn" value="{{cart.id}}"></md-radio-button>
+            <p>{{cart.name}} <span class="current-cart-label" ng-show="cart.id===currentUser.data.currentCartId">Current Cart</span></p>
+            <!--<i class="sf-delete-button material-icons" ng-click="selectCart(cart.id)">shopping_cart</i>-->
+          </md-list-item>
+        </md-radio-group>
+        </md-list>
+      </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row ">
+
+      <md-button ng-show="carts.length" class="delete-button md-raised md-warn" ng-click="deleteCarts()">
+        <i class="material-icons">delete_forever</i> <span class="button-description">leave cart</span>
+      </md-button>
+
+      <md-button class="md-raised md-primary" ng-click="cancel()">
+        <i class="material-icons">shopping_cart</i> <span class="button-description">Shop</span>
+      </md-button>
+
+
+      <md-button class="sf-delete-button md-raised md-warn" ng-click="leaveCarts()">
+        <i class="material-icons">delete_forever</i> <span class="button-description">Delete Firebase</span>
+      </md-button>
+
+
+    </md-dialog-actions>
+  </form>
+</md-dialog>

@@ -32,6 +32,18 @@ navbar .sf-navigation-bar .sf-call-to-action {
   top: -11px;
 }
 
+navbar .sf-switch-carts {
+  position: absolute;
+  right: 10px;
+  top: 20px;
+  cursor: pointer;
+
+  .sf-switch-carts-icon {
+    line-height: 30px;
+    font-size: 30px;
+  }
+}
+
 navbar .sf-navigation-bar .md-button {
   line-height: 68px;
   padding: 0 19px;
@@ -50,7 +62,7 @@ navbar .sf-navigation-bar {
 navbar .sf-navigation-bar .md-button {}
 navbar .sf-mini-cart {
   padding: 0 !important;
-  margin-right: 20px;
+  margin-right: 40px;
 }
 navbar .sf-cart-toggle {
   height: 60px;

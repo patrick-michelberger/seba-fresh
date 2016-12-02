@@ -11,11 +11,13 @@
 
     // Auth listener
     FirebaseAuth.$onAuthStateChanged((authUser) => {
+
       if (authUser) {
         user.auth = authUser;
         const userRef = usersRef.child(authUser.uid);
         user.data = $firebaseObject(userRef);
       }
+
     });
 
     /**
@@ -40,12 +42,13 @@
      *
      * @return {Promise}
      */
-    const createUser = (userId, displayName) => {
+    const createUser = (userId, displayName, photoURL) => {
       const newUserRef = usersRef.child(userId);
       const newUser = {
         id: userId,
         displayName: displayName,
         createdAt: firebase.database.ServerValue.TIMESTAMP,
+        photoURL: photoURL,
       };
       return newUserRef.set(newUser);
     }
@@ -62,11 +65,17 @@
       callback($firebaseObject(userRef));
     }
 
+    const setCurrentCart = (cartId) => {
+      user.data.currentCartId = cartId;
+      return user.data.$save();
+    };
+
     return {
       getCurrentUser,
       createUser,
       loadMetadata,
-      logoutUser
+      logoutUser,
+      setCurrentCart,
     };
   }
 

@@ -23,6 +23,7 @@ hr {
 }
 .md-button {
   text-transform: inherit;
+  line-height: 12px;
 }
 .browserupgrade {
   margin: 0.2em 0;
@@ -54,6 +55,7 @@ $sf-color-yellow: #FFC120; // Component styles are injected through grunt
 @import 'main/main';
 @import 'onboarding/onboarding';
 @import 'products/products';
+@import '../components/dialog/dialog';
 @import '../components/footer/footer';
 @import '../components/groupList/groupList';
 @import '../components/groups/groups';

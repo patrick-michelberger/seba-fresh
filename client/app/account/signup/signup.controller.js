@@ -27,15 +27,11 @@ class SignupController {
         });
       }).then((user) => {
         const currentUser = self.FirebaseAuth.$getAuth();
-        return self.FirebaseUser.createUser(currentUser.uid, currentUser.displayName).then((user) => {
+        return self.FirebaseUser.createUser(currentUser.uid, currentUser.displayName).then(() => {
           if (self.redirectUrl) {
             self.$location.path(self.$stateParams.redirectUrl);
           } else {
-            if (!user.currentCartId) {
-              self.$state.go('onboarding');
-            } else {
-              self.$state.go('products');
-            }
+            self.$state.go('onboarding');
           }
         });
       }).catch((error) => {
