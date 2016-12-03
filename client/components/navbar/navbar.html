@@ -5,12 +5,12 @@
     <md-button hide-gt-xs ng-click="nav.toggleLeft()" class="md-icon-button" aria-label="Settings">
       <i class="material-icons">menu</i>
     </md-button>
-    <h2>
+    <h2 hide-xs>
       <a class="sf-brand" href="/">project <span>fresh.</span></a>
     </h2>
-    <div class="sf-navigation-bar" hide-xs>
+    <div class="sf-navigation-bar">
       <!-- Menu LOGGED OUT -->
-      <div ng-hide="nav.currentUser.auth" layout="row" flex>
+      <div ng-hide="nav.currentUser.auth" layout="row" hide-xs flex>
         <md-button ui-sref="signup">sign up</md-button>
         <md-button ui-sref="login">login</md-button>
       </div>
@@ -19,8 +19,8 @@
       <div ng-show="nav.currentUser.auth">
 
         <!-- Actions -->
-        <md-button class="sf-user-name" ui-sref="settings">{{ nav.currentUser.auth.displayName }}</md-button>
-        <md-button ng-click="nav.logout()">Logout</md-button>
+        <md-button hide-xs class="sf-user-name" ui-sref="settings">{{ nav.currentUser.auth.displayName }}</md-button>
+        <md-button hide-xs ng-click="nav.logout()">Logout</md-button>
 
         <!-- Shopping Cart -->
         <a ng-show="nav.carts.current.id" class="sf-mini-cart md-button" ng-click="nav.openCart()">

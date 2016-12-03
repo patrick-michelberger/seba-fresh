@@ -17,9 +17,11 @@ class ShoppingCartController {
     // Dynamic attributes
     this.freeShipping = false;
     this.carts = FirebaseCart.getCarts();
-    this.currentUserItems = FirebaseCart.getProducts();
+    this.currentUserItems = [];
     this.flatmatesItems = [];
 
+    this.users = FirebaseCart.getUsers();
+    this.products = FirebaseCart.getProducts();
     this.currentUser = FirebaseUser.getCurrentUser();
 
     // Methods
@@ -31,7 +33,7 @@ class ShoppingCartController {
   $onInit() {
     var self = this;
 
-    /* TODO
+    /*
     this.$scope.$watch(function() {
       return self.ShopService.getCurrentCart();
     }, function(currentCart) {
@@ -106,26 +108,12 @@ class ShoppingCartController {
     });
   }
 
-  calculateOrderValue(items) {
-    if (items) {
-      items = items || [];
-      var value = 0;
-      items.forEach(function(item) {
-        value += item.item.price * item.quantity;
-      });
-      return value.toFixed(2);
-    }
+  calculateOrderValue(uid) {
+    return this.FirebaseCart.getOrderValue(uid);
   }
 
-  calculateOrderAmount(items) {
-    if (items) {
-      items = items ||  [];
-      var value = 0;
-      items.forEach(function(item) {
-        value += item.quantity;
-      });
-      return value;
-    }
+  calculateOrderAmount(uid) {
+    return this.FirebaseCart.getOrderQuantity(uid);
   }
 
   calculatedGroupedItems(users) {

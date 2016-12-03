@@ -48,8 +48,10 @@
         id: userId,
         displayName: displayName,
         createdAt: firebase.database.ServerValue.TIMESTAMP,
-        photoURL: photoURL,
       };
+      if (photoURL)  {
+        newUser.photoURL = photoURL;
+      }
       return newUserRef.set(newUser);
     }
 

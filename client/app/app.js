@@ -14,7 +14,7 @@ angular.module('sebaFreshApp', [
     'ngAnimate',
     'ngMaterial',
     'ngMap',
-    'firebase',
+    'firebase'
   ])
   .config(function($urlRouterProvider, $locationProvider, $mdThemingProvider, $provide) {
     $urlRouterProvider

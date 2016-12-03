@@ -12,12 +12,12 @@
           <div class="sf-price md-title">{{::product.price}} $</div>
         </md-card-title>
         <md-card-actions layout="row " layout-align="end center ">
-          <button recompile-on="cart:add:{{::product.id}}" flex class="md-raised md-button md-ink-ripple" ng-click="vm.removeFromCart(product)" class="md-raised" aria-label="remove rom cart" ng-disabled="::(vm.getQuantity(product.id)<1||vm.isLoading)">-</button>
-          <button recompile-on="cart:add:{{::product.id}}" flex class="product-quantity md-raised md-button md-ink-ripple" ng-class="::{highlight:(vm.getQuantity(product.id)>0)}" aria-label="quantity" ng-disabled="::(vm.getQuantity(product.id)<1)">{{::vm.getQuantity(product.id)}}</button>
-          <button recompile-on="cart:add:{{::product.id}}" flex class="md-raised md-warn md-button md-ink-ripple" ng-click="vm.addToCart(product)" aria-label="add to cart" class="md-raised md-warn" ng-show="::(vm.getQuantity(product.id)<1)">
+          <button recompile-on="cart:add:{{::product.id}}" flex class="md-raised md-button md-ink-ripple" ng-click="vm.removeFromCart(product)" class="md-raised" aria-label="remove rom cart" ng-disabled="::(vm.getQuantity(vm.currentUser.auth.uid, product.id)<1||vm.isLoading)">-</button>
+          <button recompile-on="cart:add:{{::product.id}}" flex class="product-quantity md-raised md-button md-ink-ripple" ng-class="::{highlight:(vm.getQuantity(vm.currentUser.auth.uid, product.id)>0)}" aria-label="quantity" ng-disabled="::(vm.getQuantity(vm.currentUser.auth.uid, product.id)<1)">{{::vm.getQuantity(vm.currentUser.auth.uid, product.id)}}</button>
+          <button recompile-on="cart:add:{{::product.id}}" flex class="md-raised md-warn md-button md-ink-ripple" ng-click="vm.addToCart(product)" aria-label="add to cart" class="md-raised md-warn" ng-show="::(vm.getQuantity(vm.currentUser.auth.uid, product.id)<1)">
             <i class="sf-md-cart-icon material-icons">shopping_cart</i>
           </button>
-          <button recompile-on="cart:add:{{::product.id}}" flex class="md-raised md- md-button md-ink-ripple" ng-click="vm.addToCart(product, quantity)" aria-label="add to cart" class="md-raised" ng-hide="::(vm.getQuantity(product.id)<1)" ng-disabled="::(vm.isLoading)">+</button>
+          <button recompile-on="cart:add:{{::product.id}}" flex class="md-raised md- md-button md-ink-ripple" ng-click="vm.addToCart(product, quantity)" aria-label="add to cart" class="md-raised" ng-hide="::(vm.getQuantity(vm.currentUser.auth.uid, product.id)<1)" ng-disabled="::(vm.isLoading)">+</button>
         </md-card-actions>
       </md-card>
     </div>

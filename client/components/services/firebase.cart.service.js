@@ -6,8 +6,11 @@
     var carts = {};
     carts.current = null;
 
+    var users = {};
+    users.current = null;
+
     var products = {};
-    products.current = null;
+    products.current = {};
 
     const self = this;
 
@@ -42,16 +45,24 @@
 
       // Load current cart's products
       const cartsProductsRef = cartsProducts.child(cartId);
-      products.current = $firebaseObject(cartsProductsRef);
 
-      // Update products quantity values
-      products.current.$loaded().then((cartsProducts) => {
-        for (let productId in cartsProducts) {
-          if (!isNaN(productId)) {
-            $rootScope.$broadcast('cart:add:' + productId);
-          }
-        }
+      const cartUsersRef = cartsUsersRef.child(cartId);
+      users.current = $firebaseObject(cartUsersRef);
+
+      users.current.$loaded().then((users) => {
+        angular.forEach(users, function(value, userId) {
+          const cartsUserProductsRef = cartsProductsRef.child(userId);
+          products.current[userId] = $firebaseArray(cartsUserProductsRef);
+        });
+      }).then(() => {
+        // Update products quantity values
+        products.current[currentUser.auth.uid].$loaded().then((cartsProducts) => {
+          cartsProducts.forEach((product) => {
+            $rootScope.$broadcast('cart:add:' + product.$id);
+          });
+        });
       });
+
     };
 
     /**
@@ -127,7 +138,6 @@
       };
 
       return newCartRef.set(newCart).then(() => {
-        console.log("newCartRef.key: ", newCartRef.key);
         joinCart(newCartRef.key);
         return newCartRef.key;
       }).catch((error) => {
@@ -196,18 +206,30 @@
         if (!cartId ||  !cartName ||  !cartCreatedByUserId) return;
 
         if (currentUser) {
+
           const userRef = usersRef.child(currentUser.uid);
           const newCartRef = userRef.child('carts').child(cartId);
+
+          // update users node
           newCartRef.set({
             id: cartId,
             name: cartName,
             createdByUserId: cartCreatedByUserId
           });
 
+          // set current cart id
+          const updates = {};
+          updates["currentCartId"] = cartId;
+
+          userRef.update(updates);
+
+          // update carts-users node
           cartsUsersRef.child(cartId).child(currentUser.uid).set({
             uid: currentUser.uid,
             displayName: currentUser.displayName
           });
+
+          refreshCart(cartId);
         }
       });
     };
@@ -262,7 +284,7 @@
         return new Error('Not authenticated or user not set!');
       }
 
-      const newProductRef = cartsProducts.child(cartId).child(product.id);
+      const newProductRef = cartsProducts.child(cartId).child(currentUser.uid).child(product.id);
 
       // get current cart-products node
       return newProductRef.once('value').then((snapshot) => {
@@ -348,7 +370,7 @@
           totalAmount: totalAmount - (product.price * quantity),
           totalQuantity: totalQuantity - quantity,
         }).then(() => {
-          const productRef = cartsProducts.child(cartId).child(product.id);
+          const productRef = cartsProducts.child(cartId).child(currentUser.auth.uid).child(product.id);
           // get current cart-products node
           return productRef.once('value').then((snapshot) => {
             const oldItem = snapshot.val();
@@ -369,27 +391,50 @@
     /**
      * Get quantity of a product in current shopping cart
      *
+     * @param {String} userId user id
      * @param {String} productId product id
      *
      * @return {Number} Quantity of product
      */
-    const getQuantity = (productId) => {
-      if (!products ||  !products.current  || !products.current[productId]) {
+    const getQuantity = (userId, productId) => {
+      if (!products ||  !products.current  || !products.current[userId] ||  !products.current[userId]) {
         return 0;
       }
-      return products.current[productId].quantity;
+      for (var i = 0; i < products.current[userId].length; i++) {
+        if (products.current[userId][i].$id === productId) {
+          return products.current[userId][i].quantity;
+        }
+      }
+      return 0;
+    };
+
+    const getOrderQuantity = (userId) => {
+      let total = 0;
+      if (products.current[userId]) {
+        for (var i = 0; i < products.current[userId].length; i++) {
+          total += products.current[userId][i].quantity;
+        }
+      }
+      return total;
+    }
+
+    const getOrderValue = (userId) => {
+      let total = 0;
+      if (products.current[userId]) {
+        for (var i = 0; i < products.current[userId].length; i++) {
+          total += products.current[userId][i].quantity * products.current[userId][i].item.price;
+        }
+      }
+      return total.toFixed(2);;
     };
 
     /**
      * Get cart's users
      *
-     * @param {String} cartId cart id
-     *
      * @return {Promise }
      */
-    const getUsersByCart = (cartId) => {
-      const cartRef = cartsUsersRef.child(cartId);
-      return $firebaseObject(cartRef);
+    const getUsers = () => {
+      return users;
     };
 
     const deleteFirebase = () => {
@@ -427,8 +472,10 @@
       getCarts,
       getProducts,
       getQuantity,
-      getUsersByCart,
+      getUsers,
       deleteFirebase,
+      getOrderQuantity,
+      getOrderValue
     };
 
   }

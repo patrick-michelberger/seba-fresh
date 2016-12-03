@@ -2,7 +2,7 @@
 (function() {
 
   class ProductsComponent {
-    constructor($rootScope, $state, $scope, $stateParams, AssortmentService, DialogService, FirebaseCart) {
+    constructor($rootScope, $state, $scope, $stateParams, AssortmentService, DialogService, FirebaseCart, FirebaseUser) {
       // Dependencies
       var self = this;
       this.$state = $state;
@@ -14,6 +14,7 @@
 
       // Attributes
       this.carts = FirebaseCart.getCarts();
+      this.currentUser = FirebaseUser.getCurrentUser();
 
       // Methods
       this.removeFromCart = this.removeFromCart;
@@ -96,12 +97,13 @@
     /**
      * Get product's cart quantity
      *
+     * @param {String} userId userId id
      * @param {String} productId product id
      *
      * @return {Promise}
      */
-    getQuantity(productId) {
-      return this.FirebaseCart.getQuantity(productId);
+    getQuantity(userId, productId) {
+      return this.FirebaseCart.getQuantity(userId, productId);
     }
 
     /**

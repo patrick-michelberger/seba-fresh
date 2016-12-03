@@ -13,31 +13,29 @@
 <minimum-order-value-progress></minimum-order-value-progress>
 <!-- CART LIST -->
 <div class="cart-list" ng-hide="hideCart||shoppingCartCtrl.isGroupAdmin()&&shoppingCartCtrl.freeShipping">
-  <!-- CURRENT USER -->
 
-  shoppingCartCtrl: currentUser: {{shoppingCartCtrl.currentUser}}
+  <!-- CURRENT USER -->
   <div class="single-cart cart-cell">
-    <!--<div class="your-share-hint">Your share:</div>-->
     <div class="user-container cart-cell-container" layout="row">
       <div class="user-picture cart-cell-picture" layout="row" layout-align="start center">
-        <img ng-src="{{shoppingCartCtrl.currentUser.photoURL}}" />
+        <img ng-src="{{shoppingCartCtrl.currentUser.auth.photoURL}}" />
       </div>
       <div class="user-info cart-cell-info">
         <div layout="column">
           <div flex class="user-name cart-cell-title">
-            {{shoppingCartCtrl.currentUser.displayName}}
+            {{shoppingCartCtrl.currentUser.auth.displayName}}
           </div>
           <div flex class="user-cart-quantity cart-cell-description">
-            {{shoppingCartCtrl.calculateOrderAmount(shoppingCartCtrl.currentUserItems.current) }} Items
+            {{shoppingCartCtrl.calculateOrderAmount(shoppingCartCtrl.currentUser.auth.uid) }} Items
           </div>
         </div>
       </div>
       <div flex class="user-cart-total-amount cart-cell-total-amount">
-        $ {{shoppingCartCtrl.calculateOrderValue(shoppingCartCtrl.currentUserItems.current) | price}}
+        $ {{shoppingCartCtrl.calculateOrderValue(shoppingCartCtrl.currentUser.auth.uid) | price}}
       </div>
     </div>
     <!-- ITEMS -->
-    <div class="cart-cell-container" ng-repeat="item in shoppingCartCtrl.currentUserItems.current" layout="column">
+    <div class="cart-cell-container" ng-repeat="item in shoppingCartCtrl.products.current[shoppingCartCtrl.currentUser.auth.uid]" layout="column">
       <div layout="row">
         <div class="cart-cell-picture" layout="row" layout-align="start center">
           <img ng-src="{{item.item.mediumImage}}" />
@@ -67,7 +65,7 @@
     </div>
   </div>
   <!-- FLATMATES -->
-  <div class="single-cart cart-cell" ng-repeat="flatmate in shoppingCartCtrl.flatmates">
+  <div class="single-cart cart-cell" ng-if="flatmate.uid !== shoppingCartCtrl.currentUser.auth.uid" ng-repeat="flatmate in shoppingCartCtrl.users.current">
     <div class="user-container cart-cell-container" layout="row">
       <div class="user-picture cart-cell-picture" layout="row" layout-align="start center">
         <img ng-src="{{flatmate.photoURL}}" />
@@ -75,19 +73,19 @@
       <div class="user-info cart-cell-info">
         <div layout="column">
           <div flex class="user-name cart-cell-title">
-            {{flatmate.first_name}} {{flatmate.last_name}}
+            {{flatmate.displayName}}
           </div>
           <div flex class="user-cart-quantity cart-cell-description">
-            {{shoppingCartCtrl.calculateOrderAmount(flatmate.items) }} Items
+            {{shoppingCartCtrl.calculateOrderAmount(flatmate.uid) }} Items
           </div>
         </div>
       </div>
       <div flex class="user-cart-total-amount cart-cell-total-amount">
-        $ {{shoppingCartCtrl.calculateOrderValue(flatmate.items) | price}}
+        $ {{shoppingCartCtrl.calculateOrderValue(flatmate.uid) | price}}
       </div>
     </div>
     <!-- ITEMS -->
-    <div class="cart-cell-container" ng-repeat="item in flatmate.items" layout="column">
+    <div class="cart-cell-container" ng-repeat="item in shoppingCartCtrl.products.current[flatmate.uid]" layout="column">
       <div layout="row">
         <div class="cart-cell-picture" layout="row" layout-align="start center">
           <img ng-src="{{item.item.mediumImage}}" />
@@ -117,15 +115,15 @@
     <!--<div class="your-share-hint">Your share:</div>-->
     <div class="user-container cart-cell-container" layout="row">
       <div class="user-picture cart-cell-picture" layout="row" layout-align="start center">
-        <img ng-src="{{shoppingCartCtrl.currentUser.photoURL}}" />
+        <img ng-src="{{shoppingCartCtrl.currentUser.auth.photoURL}}" />
       </div>
       <div class="user-info cart-cell-info">
         <div layout="column">
           <div flex class="user-name cart-cell-title">
-            {{shoppingCartCtrl.currentUser.displayName}}
+            {{shoppingCartCtrl.currentUser.auth.displayName}}
           </div>
           <div flex class="user-cart-quantity cart-cell-description">
-            $ {{shoppingCartCtrl.calculateOrderValue(shoppingCartCtrl.currentUserItems.current) | price}} | {{shoppingCartCtrl.calculateOrderAmount(shoppingCartCtrl.currentUserItems.current) }} Items
+            $ {{shoppingCartCtrl.calculateOrderValue(shoppingCartCtrl.currentUser.auth.uid) | price}} | {{shoppingCartCtrl.calculateOrderAmount(shoppingCartCtrl.currentUserItems.current) }} Items
           </div>
         </div>
       </div>
@@ -153,12 +151,12 @@
               {{flatmate.first_name}} {{flatmate.last_name}}
             </div>
             <div flex class="user-cart-quantity cart-cell-description">
-              $ {{shoppingCartCtrl.calculateOrderValue(flatmate.items) | price}} | {{shoppingCartCtrl.calculateOrderAmount(flatmate.items) }} Items
+              $ {{shoppingCartCtrl.calculateOrderValue(flatmate.uid) | price}} | {{shoppingCartCtrl.calculateOrderAmount(flatmate.uid) }} Items
             </div>
           </div>
         </div>
         <div flex class="user-cart-total-amount cart-cell-total-amount">
-          <!--$ {{shoppingCartCtrl.calculateOrderValue(flatmate.items) | price}}-->
+          <!--$ {{shoppingCartCtrl.calculateOrderValue(flatmate.uid) | price}}-->
           <md-checkbox ng-model="data.cb1" aria-label="Paid"> </md-checkbox>
         </div>
       </div>
