@@ -7,6 +7,7 @@
       var self = this;
       this.$state = $state;
       this.$rootScope = $rootScope;
+      this.Utils = $rootScope.Utils;
       this.AssortmentService = AssortmentService;
       this.DialogService = DialogService;
       this.FirebaseCart = FirebaseCart;
@@ -15,6 +16,8 @@
       // Attributes
       this.carts = FirebaseCart.getCarts();
       this.currentUser = FirebaseUser.getCurrentUser();
+      this.users = FirebaseCart.getUsers();
+      this.cartProducts = FirebaseCart.getProducts();
 
       // Methods
       this.removeFromCart = this.removeFromCart;

@@ -47,18 +47,18 @@
       const cartsProductsRef = cartsProducts.child(cartId);
 
       const cartUsersRef = cartsUsersRef.child(cartId);
-      users.current = $firebaseObject(cartUsersRef);
+      users.current = $firebaseArray(cartUsersRef);
 
       users.current.$loaded().then((users) => {
-        angular.forEach(users, function(value, userId) {
-          const cartsUserProductsRef = cartsProductsRef.child(userId);
-          products.current[userId] = $firebaseArray(cartsUserProductsRef);
+        users.forEach((user) => {
+          const cartsUserProductsRef = cartsProductsRef.child(user.uid);
+          products.current[user.uid] = $firebaseObject(cartsUserProductsRef);
         });
       }).then(() => {
         // Update products quantity values
         products.current[currentUser.auth.uid].$loaded().then((cartsProducts) => {
-          cartsProducts.forEach((product) => {
-            $rootScope.$broadcast('cart:add:' + product.$id);
+          angular.forEach(cartsProducts, (value, productId) => {
+            $rootScope.$broadcast('cart:add:' + productId);
           });
         });
       });
@@ -226,7 +226,8 @@
           // update carts-users node
           cartsUsersRef.child(cartId).child(currentUser.uid).set({
             uid: currentUser.uid,
-            displayName: currentUser.displayName
+            displayName: currentUser.displayName,
+            photoURL: currentUser.photoURL,
           });
 
           refreshCart(cartId);
@@ -397,13 +398,8 @@
      * @return {Number} Quantity of product
      */
     const getQuantity = (userId, productId) => {
-      if (!products ||  !products.current  || !products.current[userId] ||  !products.current[userId]) {
-        return 0;
-      }
-      for (var i = 0; i < products.current[userId].length; i++) {
-        if (products.current[userId][i].$id === productId) {
-          return products.current[userId][i].quantity;
-        }
+      if (products.current[userId] && products.current[userId][productId]) {
+        return products.current[userId][productId].quantity;
       }
       return 0;
     };
@@ -411,9 +407,9 @@
     const getOrderQuantity = (userId) => {
       let total = 0;
       if (products.current[userId]) {
-        for (var i = 0; i < products.current[userId].length; i++) {
-          total += products.current[userId][i].quantity;
-        }
+        angular.forEach(products.current[userId], (product, productId) => {
+          total += product.quantity;
+        });
       }
       return total;
     }
@@ -421,9 +417,9 @@
     const getOrderValue = (userId) => {
       let total = 0;
       if (products.current[userId]) {
-        for (var i = 0; i < products.current[userId].length; i++) {
-          total += products.current[userId][i].quantity * products.current[userId][i].item.price;
-        }
+        angular.forEach(products.current[userId], (product, productId) => {
+          total += product.quantity * product.item.price;
+        });
       }
       return total.toFixed(2);;
     };

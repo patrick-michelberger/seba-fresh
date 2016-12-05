@@ -14,7 +14,9 @@ angular.module('sebaFreshApp', [
     'ngAnimate',
     'ngMaterial',
     'ngMap',
-    'firebase'
+    'firebase',
+    'ngFileUpload',
+    'ngImgCrop',
   ])
   .config(function($urlRouterProvider, $locationProvider, $mdThemingProvider, $provide) {
     $urlRouterProvider
@@ -114,4 +116,6 @@ angular.module('sebaFreshApp', [
       .primaryPalette('sebaPrimaryPalette')
       .accentPalette('sebaAccentPalette')
       .warnPalette('sebaWarnPalette');
+  }).run(() => {
+    console.log("firebase: ", firebase.storage);
   });

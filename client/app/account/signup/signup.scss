@@ -4,3 +4,44 @@
     line-height: 45px;
   }
 }
+
+#signup-page .sf-file-input {
+  display: none;
+}
+
+#signup-page .sf-upload-icon,
+#signup-page .sf-remove-icon {
+  font-size: 30px;
+  background: #ff5252;
+  border-radius: 45px;
+  color: white;
+  padding: 20px;
+  position: relative;
+  margin-left: 50%;
+  left: -35px;
+  height: 30px;
+  width: 30px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+
+#signup-page .cropArea {
+  background: #E4E4E4;
+  overflow: hidden;
+  height: 350px;
+  width: 350px;
+  left: 50%;
+  margin-left: -175px;
+  position: relative;
+}
+
+#signup-page .profilePicture {
+  display: none;
+}
+
+
+#signup-page .sf-error-message {
+  margin: 10px 0px;
+  color: rgb(217,72,72);
+}

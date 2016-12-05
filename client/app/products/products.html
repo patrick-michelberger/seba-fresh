@@ -19,6 +19,17 @@
           </button>
           <button recompile-on="cart:add:{{::product.id}}" flex class="md-raised md- md-button md-ink-ripple" ng-click="vm.addToCart(product, quantity)" aria-label="add to cart" class="md-raised" ng-hide="::(vm.getQuantity(vm.currentUser.auth.uid, product.id)<1)" ng-disabled="::(vm.isLoading)">+</button>
         </md-card-actions>
+        <md-list ng-show="vm.users.current.length>1" >
+          <md-subheader class="md-no-sticky">Your flatmates</md-subheader>
+          <md-list-item class="noright" ng-if="flatmate.uid !== vm.currentUser.auth.uid" ng-repeat="flatmate in vm.users.current">
+            <img ng-src="{{flatmate.photoURL}}" class="md-avatar" />
+            <p>{{flatmate.displayName}}</p>
+            <md-button class="md-secondary md-icon-button" disabled>
+              <span ng-show="vm.cartProducts.current[flatmate.uid][product.id]">{{(vm.cartProducts.current[flatmate.uid][product.id].quantity)}}</span>
+              <span ng-hide="vm.cartProducts.current[flatmate.uid][product.id]">0</span>
+            </md-button>
+          </md-list-item>
+        </md-list>
       </md-card>
     </div>
 </div>
