@@ -42,7 +42,9 @@
       checkDetailView();
 
       // Init
-      this.products = this.AssortmentService.fetchAll();
+      this.AssortmentService.fetchAll((err, products) => {
+        self.products = products;
+      });
     }
 
     /**

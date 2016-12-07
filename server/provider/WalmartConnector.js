@@ -13,31 +13,60 @@ class WalmartConnector extends ProviderConnector  {
   }
 
   getSingleProduct(id) {
-    return {};
+    return this.walmartClient.getItem(id).then((response) => {
+      return this._parseJSON(response.product);
+    });
   }
 
   getCategories() {
     return this.walmartClient.taxonomy();
   }
 
-  getProductsByCategory(categoryId) {
-    return [];
+  getProductsByCategory(categoryId, page) {
+    return this._getPaginatedProductsByCategory(categoryId, page);
   }
 
-  getPaginatedProductsByCategory(categoryId, maxId) {
+  _getPaginatedProductsByCategory(categoryId, maxId) {
     const args = {};
+    const self = this;
     if (maxId) {
       args.productId = maxId;
     }
-    return this.walmartClient.paginateByCategory(categoryId, args);
+    return this.walmartClient.paginateByCategory(categoryId, args).then((response) => {
+      return response.items.map(self._parseJSON);
+    });
   }
 
-  getPaginatedProductsByBrand(brandId, maxId) {
+  _getPaginatedProductsByBrand(brandId, maxId) {
     const args = {};
     if (maxId) {
       args.productId = maxId;
     }
     return this.walmartClient.paginateByBrand(categoryId, args);
+  }
+
+  _parseJSON(product) {
+    return {
+      id: product.itemId,
+      name: product.name,
+      price: product.msrp || product.salePrice || false,
+      salePrice: product.salePrice || false,
+      upc: product.upc || false,
+      categoryPath: product.categoryPath,
+      categoryNode: product.categoryNode,
+      shortDescription: product.shortDescription || "",
+      longDescription: product.longDescription || "",
+      brand: product.brandName || "",
+      thumbnailImage: product.thumbnailImage || false,
+      mediumImage: product.mediumImage || false,
+      largeImage: product.largeImage || false,
+      productUrl: product.productUrl,
+      sale: product.salePrice < product.msrp,
+      stock: true,
+      addToCartUrl: product.addToCartUrl || false,
+      productUrl: product.productUrl,
+      vendor: "walmart"
+    };
   }
 }
 

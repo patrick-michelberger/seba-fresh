@@ -1,15 +1,15 @@
 <div id="sf-products-container" flex layout="row" layout-wrap layout-padding>
-  <div class="sf-product" flex-xs="100" flex-sm="50" flex="25" ng-repeat="product in vm.products track by product.id" ng-if="::product.stock=='Available'" layout-padding>
+  <div class="sf-product" flex-xs="100" flex-sm="50" flex="25" ng-repeat="product in vm.products track by product.id" layout-padding>
       <md-card>
         <md-card-title layout="column" layout="center center">
           <md-card-title-text>
-            <span class="md-subhead ">{{::product.brand}}</span>
-            <span class="md-title">{{::product.name}}</span>
+            <span class="md-subhead ">{{product.brand}}</span>
+            <span class="md-title">{{product.name}}</span>
           </md-card-title-text>
           <md-card-title-media layout-padding>
             <img ui-sref="productsDetail(::{ productId: product._id})" ui-sref-opts="{reload: false, notify: false}" ng-src="{{::product.mediumImage}}" />
           </md-card-title-media>
-          <div class="sf-price md-title">{{::product.price}} $</div>
+          <div class="sf-price md-title">{{product.price}} $</div>
         </md-card-title>
         <md-card-actions layout="row " layout-align="end center ">
           <button recompile-on="cart:add:{{::product.id}}" flex class="md-raised md-button md-ink-ripple" ng-click="vm.removeFromCart(product)" class="md-raised" aria-label="remove rom cart" ng-disabled="::(vm.getQuantity(vm.currentUser.auth.uid, product.id)<1||vm.isLoading)">-</button>

@@ -1,23 +1,27 @@
 class ProviderConnector {
-    constructor(options) {
-        this.options = options;
-    }
+  constructor(options) {
+    this.options = options;
+  }
 
-    connect() {
-        // connect to provider
-    }
+  connect() {
+    // connect to provider
+  }
 
-    getSingleProduct(id) {
-        return {};
-    }
+  getSingleProduct(id) {
+    return {};
+  }
 
-    getCategories() {
-        return [];
-    }
+  getCategories() {
+    return [];
+  }
 
-    getProductsByCategory(categoryId) {
-        return [];
-    }
+  getProductsByCategory(categoryId, page) {
+    return [];
+  }
+
+  _parseJSON(product) {
+    return product;
+  }
 }
 
 export default ProviderConnector;

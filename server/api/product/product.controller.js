@@ -13,6 +13,10 @@ import _ from 'lodash';
 import Product from './product.model';
 import WalmartConnector from '../../provider/WalmartConnector';
 
+const walmartClient = new WalmartConnector({
+  apiKey: 'mfx9k9yqyg263ng4x3x9bek2'
+});
+
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
   return function(entity) {
@@ -68,10 +72,9 @@ function handleError(res, statusCode) {
 // }
 
 export function index(req, res) {
-  return new WalmartConnector({
-    apiKey: 'mfx9k9yqyg263ng4x3x9bek2'
-  }).getPaginatedProductsByCategory(976759).then((results) => {
-    res.status(200).send(results.items);
+  const page = req.query.page ||  0;
+  return walmartClient.getProductsByCategory(976759, page).then((products) => {
+    res.status(200).send(products);
   })
 }
 
@@ -85,7 +88,7 @@ export function index(req, res) {
 
 // Gets a single Product from the API
 export function show(req, res) {
-  return Product.findById(req.params.id).exec()
+  return walmartClient.getSingleProduct(req.params.id)
     .then(handleEntityNotFound(res))
     .then(respondWithResult(res))
     .catch(handleError(res));
