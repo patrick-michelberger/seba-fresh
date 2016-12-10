@@ -1,13 +1,32 @@
 'use strict';
 
 angular.module('sebaFreshApp')
-  .config(function ($stateProvider) {
+  .config(function($stateProvider) {
     $stateProvider
       .state('main', {
         url: '/',
-        template: '<main></main>',
-        data: {
-          transparentNavbar: true
+        abstract: true,
+        template: '<main></main>'
+      })
+      .state('main.home', {
+        url: '',
+        views: {
+          'products': {
+            template: '<products/>',
+          }
+        }
+      })
+      .state('categories', {
+        url: '/categories',
+        abstract: true,
+        template: '<main></main>'
+      })
+      .state('categories.single', {
+        url: '/{categoryId}/{categoryName}/',
+        views: {
+          'products': {
+            template: '<products/>',
+          }
         }
       });
   });

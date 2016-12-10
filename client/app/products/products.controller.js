@@ -2,7 +2,7 @@
 (function() {
 
   class ProductsComponent {
-    constructor($rootScope, $state, $scope, $stateParams, AssortmentService, DialogService, FirebaseCart, FirebaseUser) {
+    constructor($rootScope, $state, $stateParams, $scope, AssortmentService, DialogService, FirebaseCart, FirebaseUser) {
       // Dependencies
       var self = this;
       this.$state = $state;
@@ -42,7 +42,10 @@
       checkDetailView();
 
       // Init
-      this.AssortmentService.fetchAll((err, products) => {
+
+      const categoryId = $stateParams.categoryId ||  false;
+
+      this.AssortmentService.fetchAll(categoryId, (err, products) => {
         self.products = products;
       });
     }

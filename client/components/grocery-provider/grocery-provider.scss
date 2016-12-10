@@ -1,0 +1,43 @@
+grocery-provider {
+  margin-left: 15px;
+  position: relative;
+}
+
+grocery-provider .sf-btn-change-provider {
+  cursor: pointer;
+  display: inline-block;
+  padding: 0;
+  top: 10px;
+  position: absolute;
+  left: 170px;
+}
+
+grocery-provider .sf-btn-change-provider i {
+  line-height: 30px;
+  font-size: 30px;
+}
+
+grocery-provider .sf-logo-wrapper {
+  display: inline-block;
+  cursor: pointer;
+}
+
+grocery-provider .sf-walmart-logo {
+  height: 35px;
+}
+
+grocery-provider .sf-zopnow-logo {
+  width: 160px;
+  margin-top: 5px;
+}
+
+grocery-provider .sf-zopnow-logo {
+  position: absolute;
+  top: -20px
+}
+
+grocery-provider .sf-walmart-logo {
+  position: absolute;
+  top: -5px;
+  margin-left: 10px;
+}

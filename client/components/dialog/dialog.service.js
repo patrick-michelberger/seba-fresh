@@ -175,6 +175,62 @@
         }, function(wantsFullScreen) {
           $rootScope.customFullscreen = (wantsFullScreen === true);
         });
+      },
+
+
+      showProviderModal(useFullScreen) {
+        // controller
+        function ProviderDialogController($rootScope, $scope, $state, $mdDialog, FirebaseCart, FirebaseUser) {
+
+          $scope.currentUser = FirebaseUser.getCurrentUser();
+
+          $scope.selected = {};
+
+          var provider = "walmart";
+
+          if ($scope.currentUser.data && $scope.currentUser.data.currentProvider) {
+            provider = $scope.currentUser.data.currentProvider;
+          } else if ($rootScope.currentProvider) {
+            provider = $rootScope.currentProvider;
+          }
+
+          $scope.selected.provider = provider;
+
+          $scope.selectProvider = function() {
+            if ($scope.selected.provider) {
+              //FirebaseCart.setProvider($scope.selected.provider);
+              FirebaseUser.setCurrentProvider($scope.selected.provider);
+              $scope.cancel();
+              // $rootScope.$emit("cart:changed", $scope.selected.cart);
+            }
+          }
+
+          $scope.cancel = function() {
+            $mdDialog.cancel();
+          };
+        }
+
+        // open dialog
+        $mdDialog.show({
+            controller: ['$rootScope', '$scope', '$state', '$mdDialog', 'FirebaseCart', 'FirebaseUser', ProviderDialogController],
+            templateUrl: 'assets/templates/provider-dialog.tmpl.html',
+            parent: angular.element(document.body),
+            //targetEvent: $event,
+            clickOutsideToClose: true,
+            fullscreen: useFullScreen
+          })
+          .then(function(answer) {}, function() {
+            $state.go('products', {}, {
+              reload: false,
+              notify: false
+            });
+          });
+
+        $rootScope.$watch(function() {
+          return $mdMedia('xs') || $mdMedia('sm');
+        }, function(wantsFullScreen) {
+          $rootScope.customFullscreen = (wantsFullScreen === true);
+        });
       }
     };
     return Dialog;

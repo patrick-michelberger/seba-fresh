@@ -1,0 +1,66 @@
+categories md-menu-bar {
+  background: #1a75cf;
+  height: 40px;
+  overflow-y: hidden;
+  padding: 0px;
+  margin-top: 15px;
+  margin: 5px 0px 0px 0px;
+  color: white;
+}
+
+categories .sf-category-breadcrumb {
+  height: 40px;
+  line-height: 40px;
+  background: #fff;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+  color: black;
+  padding: 0px 10px;
+  font-size: 16px;
+  font-weight: 500;
+  position: relative;
+}
+
+categories .sf-current-category {
+  position: absolute;
+  left: 35px;
+}
+
+categories .material-icons {
+  position: absolute;
+  top: 8px;
+}
+
+md-menu-content {
+  padding: 0!important;
+}
+
+md-menu-item {
+  height: 40px!important;
+
+  .md-button {
+    font-size: 16px;
+    line-height: 16px;
+    padding: 0px 15px;
+    font-weight: 500;
+    height: 40px!important;
+  }
+}
+
+md-menu-content > md-menu-item > button > span {
+  font-weight: 400;
+}
+
+categories  md-menu-bar.md-default-theme md-menu.md-open > button,
+categories  md-menu-bar md-menu.md-open > button,
+categories  md-menu-bar.md-default-theme md-menu > button:focus,
+categories  md-menu-bar md-menu > button:focus {
+  background: rgb(253, 187, 48);
+}
+
+categories button {
+  height: 40px;
+  font-size: 16px;
+  line-height: 16px;
+  font-weight: 500;
+  color: #fff;
+}

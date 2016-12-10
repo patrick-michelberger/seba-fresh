@@ -1,0 +1,29 @@
+<md-dialog id="providerDialog" class="sf-dialog" aria-label="User Carts" flex-xs="100" flex-sm="75" flex-gt-sm="60" ng-cloak>
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h3 class="product-name">Your Supermarket Chain</h3>
+        <span flex></span>
+        <i class="sf-close-button material-icons" aria-label="Close dialog" ng-click="cancel()">clear</i>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+      <div class="md-dialog-content" layout="row">
+        <md-list>
+          <md-subheader class="md-no-sticky">Choose a supermarket chain.</md-subheader>
+          <md-radio-group ng-model="selected.provider" ng-change="selectProvider()">
+          <md-list-item class="sf-list-item-walmart">
+            <md-radio-button class="md-warn" value="walmart" selected></md-radio-button>
+            <img src="/assets/images/walmart.svg" width="150"/>
+          </md-list-item>
+          <md-list-item>
+            <md-radio-button class="md-warn" value="zopnow"></md-radio-button>
+            <img src="/assets/images/zopnow.jpeg" width="150"/>
+            <span class="current-cart-label">Coming Soon</span>
+          </md-list-item>
+        </md-radio-group>
+        </md-list>
+      </div>
+    </md-dialog-content>
+  </form>
+</md-dialog>

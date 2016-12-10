@@ -4,7 +4,8 @@
   }
 }
 
-#userCartsDialog {
+#userCartsDialog,
+#providerDialog {
   .md-dialog-content {
     padding: 0;
   }
@@ -48,4 +49,8 @@
     color: black  ;
     top: -2px;
   }
+}
+
+#dialogContent_providerDialog > div > md-list > md-radio-group > md-list-item.sf-list-item-walmart.md-no-proxy._md {
+  margin-top: 10px!important;
 }

@@ -33,8 +33,13 @@
        * @param  {Function|*} callback - optional, funciton(user)
        * @return {Object|Promise}
        */
-      fetchAll(callback)  {
-        return ProductService.query({}, function(data) {
+      fetchAll(categoryId, callback)  {
+        var query = {};
+        if (categoryId) {
+          query.categoryId = categoryId;
+        }
+
+        return ProductService.query(query, function(data) {
           products = data;
           return safeCb(callback)(null, products);
         }, function() {
@@ -45,7 +50,6 @@
 
     return Assortment;
   }
-
 
   angular.module('sebaFreshApp.assortment')
     .factory('AssortmentService', AssortmentService);

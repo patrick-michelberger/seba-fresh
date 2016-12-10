@@ -456,6 +456,15 @@
       });
     };
 
+    const setProvider = (provider) => {
+      if (carts.current.id) {
+        const cartRef = cartsMetadataRef.child(cartId);
+        cartRef.set({
+          provider: provider
+        });
+      }
+    };
+
     return {
       get,
       createCart,
@@ -471,7 +480,8 @@
       getUsers,
       deleteFirebase,
       getOrderQuantity,
-      getOrderValue
+      getOrderValue,
+      setProvider
     };
 
   }

@@ -73,7 +73,10 @@ function handleError(res, statusCode) {
 
 export function index(req, res) {
   const page = req.query.page ||  0;
-  return walmartClient.getProductsByCategory(976759, page).then((products) => {
+
+  const categoryId = req.query.categoryId || "976759";
+
+  return walmartClient.getProductsByCategory(categoryId, page).then((products) => {
     res.status(200).send(products);
   })
 }

@@ -1,7 +1,7 @@
 'use strict';
 
 (function() {
-  function FirebaseUserService($firebaseObject, FirebaseAuth, $q) {
+  function FirebaseUserService($rootScope, $firebaseObject, FirebaseAuth, $q) {
 
     const usersRef = firebase.database().ref().child("users");
 
@@ -72,15 +72,25 @@
       return user.data.$save();
     };
 
+    const setCurrentProvider = (provider) => {
+      if (user.data) {
+        user.data.currentProvider = provider;
+        return user.data.$save();
+      } else {
+        $rootScope.currentProvider = provider;
+      }
+    };
+
     return {
       getCurrentUser,
       createUser,
       loadMetadata,
       logoutUser,
       setCurrentCart,
+      setCurrentProvider
     };
   }
 
   angular.module('sebaFreshApp.services')
-    .factory('FirebaseUser', ["$firebaseObject", "FirebaseAuth", "$q", FirebaseUserService]);
+    .factory('FirebaseUser', ["$rootScope", "$firebaseObject", "FirebaseAuth", "$q", FirebaseUserService]);
 })();
