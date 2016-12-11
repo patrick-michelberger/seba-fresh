@@ -15,7 +15,7 @@
         <div class="product-details" layout="column" layout-align="center center" flex="50">
           <md-content layout-padding>
             <!--<h4 flex class="product-brand">{{product.brand}}</h4>-->
-            <p class="product-description" ng-bind-html="product.description "></p>
+            <p class="product-description" ng-bind-html="productDescription"></p>
             <span class="product-price-container">
                 <span class="product-price-currency-sign">
                   $
@@ -27,9 +27,6 @@
                   {{product.price | cents}}
                 </span>
             </span>
-            <p>
-              <span>Stock: {{product.stock}}</span>
-            </p>
           </md-content>
         </div>
       </div>

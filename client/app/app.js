@@ -116,6 +116,4 @@ angular.module('sebaFreshApp', [
       .primaryPalette('sebaPrimaryPalette')
       .accentPalette('sebaAccentPalette')
       .warnPalette('sebaWarnPalette');
-  }).run(() => {
-    console.log("firebase: ", firebase.storage);
   });

@@ -53,7 +53,8 @@ md-menu-content > md-menu-item > button > span {
 categories  md-menu-bar.md-default-theme md-menu.md-open > button,
 categories  md-menu-bar md-menu.md-open > button,
 categories  md-menu-bar.md-default-theme md-menu > button:focus,
-categories  md-menu-bar md-menu > button:focus {
+categories  md-menu-bar md-menu > button:focus,
+categories  button.active {
   background: rgb(253, 187, 48);
 }
 

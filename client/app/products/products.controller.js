@@ -26,6 +26,7 @@
       this._emitChangeEvent = this._emitChangeEvent;
 
       // TODO Is this watcher still necessary?
+      /*
       $scope.$on('$locationChangeSuccess', function(event) {
         checkDetailView();
       });
@@ -40,6 +41,7 @@
         }
       };
       checkDetailView();
+      */
 
       // Init
 
@@ -48,6 +50,11 @@
       this.AssortmentService.fetchAll(categoryId, (err, products) => {
         self.products = products;
       });
+    }
+
+    openQuickview(product) {
+      //self.selectedProduct = product;
+      this.DialogService.showProductModal(product);
     }
 
     /**

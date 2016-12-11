@@ -1,7 +1,7 @@
 <md-menu-bar>
   <md-menu ng-repeat="category in categories">
 
-    <button ng-click="openCategory(category, this)">
+    <button ng-click="openCategory(category, this)" ng-class="{'active': isCategorySelected(state.categoryId, category.id)}">
       {{::category.name}}
     </button>
 
@@ -12,7 +12,7 @@
 </md-menu-bar>
 
 <div class="sf-category-breadcrumb">
-  <i class="material-icons">keyboard_arrow_right</i>
+  <i ng-show="state.categoryName" class="material-icons">keyboard_arrow_right</i>
   <span class="sf-current-category">{{state.categoryName}}</span>
 </div>
 

@@ -28,8 +28,9 @@ md-dialog .close {
 #productDialog .md-dialog-content {
   padding: 15px 15px 0 25px;
 }
-#productDialog .product-details {
-  padding: 0 0 0 40px;
+#productDialog .product-details md-content {
+  padding: 0px;
+  background-color: #fff!important;
 }
 #productDialog .product-brand,
 #productDialog .product-stock {

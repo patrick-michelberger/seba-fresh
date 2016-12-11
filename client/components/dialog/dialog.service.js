@@ -61,14 +61,17 @@
 
       showProductModal(product, useFullScreen) {
         // controller
-        function ProductDialogController($rootScope, $scope, $state, $mdDialog, FirebaseCart) {
+        function ProductDialogController($sce, $rootScope, $scope, $state, $mdDialog, FirebaseCart) {
           var carts = FirebaseCart.getCarts();
           $scope.product = product;
+          $scope.productDescription = $sce.trustAsHtml(product.description);
+
           $scope.cancel = function() {
             $mdDialog.cancel();
           };
 
           $scope.addToCart = function(product) {
+            console.log("product: ", product);
             if (!product ||  !carts ||  !carts.current) {
               $state.go('login');
               $scope.cancel();
@@ -82,19 +85,14 @@
 
         // open dialog
         $mdDialog.show({
-            controller: ['$rootScope', '$scope', '$state', '$mdDialog', 'FirebaseCart', ProductDialogController],
+            controller: ['$sce', '$rootScope', '$scope', '$state', '$mdDialog', 'FirebaseCart', ProductDialogController],
             templateUrl: 'assets/templates/product-dialog.tmpl.html',
             parent: angular.element(document.body),
             //targetEvent: $event,
             clickOutsideToClose: true,
             fullscreen: useFullScreen
           })
-          .then(function(answer) {}, function() {
-            $state.go('products', {}, {
-              reload: false,
-              notify: false
-            });
-          });
+          .then(function(answer) {}, function() {});
 
         $rootScope.$watch(function() {
           return $mdMedia('xs') || $mdMedia('sm');
@@ -164,10 +162,11 @@
             fullscreen: useFullScreen
           })
           .then(function(answer) {}, function() {
-            $state.go('products', {}, {
+            /*$state.go('products', {}, {
               reload: false,
               notify: false
             });
+            */
           });
 
         $rootScope.$watch(function() {
@@ -220,10 +219,11 @@
             fullscreen: useFullScreen
           })
           .then(function(answer) {}, function() {
-            $state.go('products', {}, {
+            /*$state.go('products', {}, {
               reload: false,
               notify: false
             });
+            */
           });
 
         $rootScope.$watch(function() {

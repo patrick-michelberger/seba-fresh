@@ -27,8 +27,8 @@
   <!-- endbuild -->
 </head>
 
-<body ng-app="sebaFreshApp" id="sf-popup-container" map-lazy-load="https://maps.google.com/maps/api/js" flex ng-cloak>
-  <div id="fb-root"></div>
+<body ng-app="sebaFreshApp" id="sf-popup-container" map-lazy-load="https://maps.google.com/maps/api/js" layout="row" ng-cloak>
+  <div id=" fb-root "></div>
   <!--[if lt IE 7]>
       <p class="browserupgrade ">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/ ">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -36,9 +36,9 @@
   <!-- Add your site or application content here -->
   <sidebar></sidebar>
 
-  <div layout="column" layout-fill>
+  <div flex layout="column">
     <navbar></navbar>
-    <div id="sf-root" ng-class="{transparentNavbar: navbar.transparent}" flex ui-view=""></div>
+    <md-content id="sf-root" ng-class="{transparentNavbar: navbar.transparent} " ui-view="" flex></md-content>
   </div>
 
 
