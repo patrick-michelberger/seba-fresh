@@ -36,7 +36,8 @@
     "serve-favicon": "^2.3.0",
     "socket.io": "^1.3.5",
     "socket.io-client": "^1.3.5",
-    "socketio-jwt": "^4.2.0"
+    "socketio-jwt": "^4.2.0",
+    "walmart-api": "0.0.3"
   },
   "devDependencies": {
     "autoprefixer": "^6.0.0",
