@@ -1,4 +1,4 @@
-import walmart from 'walmart';
+import walmart from 'walmart-api';
 import ProviderConnector from './ProviderConnector';
 import Promise from 'bluebird';
 
