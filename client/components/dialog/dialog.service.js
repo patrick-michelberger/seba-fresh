@@ -29,15 +29,10 @@
             $mdDialog.cancel();
           };
           $scope.usePaypal = function() {
-
-
-            /*
-            console.log("use paypal");
             $http.post('/api/payments/send', {
               payer: cart.users[0]._id, // ObjectId("5776686397019a3c23834304")
               cart: cart._id //ObjectId("5776687a97019a3c23834306")
             });
-            */
           }
         };
 

@@ -5,6 +5,9 @@ angular.module('sebaFreshApp')
     return {
       templateUrl: 'components/minimumOrderValueProgress/minimumOrderValueProgress.html',
       restrict: 'EA',
+      scope: {
+        freeShipping: "="
+      },
       link: function(scope, element, attrs) {
         var self = this;
 

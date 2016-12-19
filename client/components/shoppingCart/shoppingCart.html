@@ -1,18 +1,22 @@
+<!-- Header START -->
 <md-toolbar class="group-cart-total">
-  <div ng-hide="hideCart||shoppingCartCtrl.isGroupAdmin()&&shoppingCartCtrl.freeShipping">
-    <span class="description">Total (Flat): </span>
+  <div ng-hide="shoppingCartCtrl.isGroupAdmin()&&shoppingCartCtrl.freeShipping">
+    <span class="description">Total </span>
     <div class="cart-order-info">
       <span class="cart-total-quantity">{{shoppingCartCtrl.carts.current.totalQuantity}} Items </span>
       <span class="cart-total-amount">$ {{shoppingCartCtrl.carts.current.totalAmount | price}}</span>
     </div>
   </div>
-  <div ng-show="hideCart||shoppingCartCtrl.isGroupAdmin()&&shoppingCartCtrl.freeShipping">
+  <div ng-show="shoppingCartCtrl.isGroupAdmin()&&shoppingCartCtrl.freeShipping">
     <span class="description">Shared Payment</span>
   </div>
 </md-toolbar>
-<minimum-order-value-progress></minimum-order-value-progress>
-<!-- CART LIST -->
-<div class="cart-list" ng-hide="hideCart||shoppingCartCtrl.isGroupAdmin()&&shoppingCartCtrl.freeShipping">
+<!-- Header END -->
+
+<minimum-order-value-progress free-shipping="shoppingCartCtrl.freeShipping"></minimum-order-value-progress>
+
+<!-- Cart START-->
+<div class="cart-list" ng-hide="shoppingCartCtrl.isGroupAdmin()&&shoppingCartCtrl.freeShipping">
 
   <!-- CURRENT USER -->
   <div class="single-cart cart-cell">
@@ -107,29 +111,33 @@
     </div>
   </div>
 </div>
+<!-- Cart END -->
 
-<!-- SHARED PAYMENT -->
-<div class="shared-payment" ng-show="hideCart||shoppingCartCtrl.isGroupAdmin()&&shoppingCartCtrl.freeShipping">
-  <!-- CURRENT USER -->
-  <div class="single-cart cart-cell">
-    <!--<div class="your-share-hint">Your share:</div>-->
-    <div class="user-container cart-cell-container" layout="row">
-      <div class="user-picture cart-cell-picture" layout="row" layout-align="start center">
-        <img ng-src="{{shoppingCartCtrl.currentUser.data.photoURL}}" />
-      </div>
-      <div class="user-info cart-cell-info">
-        <div layout="column">
-          <div flex class="user-name cart-cell-title">
-            {{shoppingCartCtrl.currentUser.auth.displayName}}
-          </div>
-          <div flex class="user-cart-quantity cart-cell-description">
-            $ {{shoppingCartCtrl.calculateOrderValue(shoppingCartCtrl.currentUser.auth.uid) | price}} | {{shoppingCartCtrl.calculateOrderAmount(shoppingCartCtrl.currentUserItems.current) }} Items
+<!-- Payment START-->
+<div class="shared-payment" ng-show="shoppingCartCtrl.freeShipping">
+  <div ng-show="shoppingCartCtrl.isGroupAdmin()">
+    <!-- CURRENT USER -->
+    <div class="single-cart cart-cell">
+      <div class="user-container cart-cell-container" layout="row">
+        <div class="user-picture cart-cell-picture" layout="row" layout-align="start center">
+          <img ng-src="{{shoppingCartCtrl.currentUser.data.photoURL}}" />
+        </div>
+        <div class="user-info cart-cell-info">
+          <div layout="column">
+            <div flex class="user-name cart-cell-title">
+              {{shoppingCartCtrl.currentUser.auth.displayName}}
+            </div>
+            <div flex class="user-cart-quantity cart-cell-description">
+              $ {{shoppingCartCtrl.calculateOrderValue(shoppingCartCtrl.currentUser.auth.uid) | price}} | {{shoppingCartCtrl.calculateOrderAmount(shoppingCartCtrl.currentUserItems.current) }} Items
+            </div>
           </div>
         </div>
+        <div flex class="user-cart-total-amount cart-cell-total-amount">
+        </div>
       </div>
-      <div flex class="user-cart-total-amount cart-cell-total-amount">
-      </div>
-    </div>
+
+    <!-- FLATMATES -->
+    <div ng-if="shoppingCartCtrl.getNumberOfMembers(shoppingCartCtrl.users.current) > 1">
     <div class="header">
       <div class="flatmates">
         Flatmates
@@ -138,9 +146,7 @@
         Paid
       </div>
     </div>
-
-    <!-- FLATMATES -->
-    <div class="single-cart cart-cell single-cart-flatmate" ng-repeat="flatmate in shoppingCartCtrl.flatmates">
+    <div class="single-cart cart-cell single-cart-flatmate" ng-if="flatmate.uid !== shoppingCartCtrl.currentUser.auth.uid" ng-repeat="flatmate in shoppingCartCtrl.users.current">
       <div class="user-container cart-cell-container" layout="row">
         <div class="user-picture cart-cell-picture" layout="row" layout-align="start center">
           <img ng-src="{{flatmate.photoURL}}" />
@@ -148,7 +154,7 @@
         <div class="user-info cart-cell-info">
           <div layout="column">
             <div flex class="user-name cart-cell-title">
-              {{flatmate.first_name}} {{flatmate.last_name}}
+              {{flatmate.displayName}}
             </div>
             <div flex class="user-cart-quantity cart-cell-description">
               $ {{shoppingCartCtrl.calculateOrderValue(flatmate.uid) | price}} | {{shoppingCartCtrl.calculateOrderAmount(flatmate.uid) }} Items
@@ -159,6 +165,9 @@
           <!--$ {{shoppingCartCtrl.calculateOrderValue(flatmate.uid) | price}}-->
           <md-checkbox ng-model="data.cb1" aria-label="Paid"> </md-checkbox>
         </div>
+      </div>
+      <div ng-show="shoppingCartCtrl.isGroupAdmin()" layout="row">
+        <md-button ng-click="shoppingCartCtrl.sendPaymentRequest()">Send Payment Request</md-button>
       </div>
     </div>
     <hr/>
@@ -184,6 +193,12 @@
       </div>
     </div>
     <hr/>
-    <!-- CHECKOUT FOR ADMIN -->
-    <md-button ng-click="shoppingCartCtrl.checkout()" class="btn-pay-now md-raised md-warn">Checkout</md-button>
   </div>
+</div>
+</div>
+
+  <!-- CHECKOUT FOR ADMIN -->
+  <md-button ng-show="shoppingCartCtrl.isGroupAdmin()" ng-click="shoppingCartCtrl.checkout()" class="btn-pay-now md-raised md-warn">Checkout</md-button>
+  <md-button ng-click="shoppingCartCtrl.pay()" class="btn-pay-now md-raised md-warn">Pay</md-button>
+</div>
+<!-- Payment END -->

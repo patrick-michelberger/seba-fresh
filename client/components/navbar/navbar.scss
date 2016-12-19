@@ -2,8 +2,8 @@ navbar md-toolbar {
   position: fixed;
   background-color: #fff!important;
   box-shadow: 0 2px 0 0 rgba(0,0,0,.15);
-  z-index: 9999;
 }
+
 navbar md-toolbar.sf-transparent {
   background: transparent;
 }
@@ -157,4 +157,43 @@ navbar .sf-cart-badge {
   navbar .sf-navigation-bar .md-button {
     line-height: 60px;
   }
+}
+
+/** XS **/
+@media only screen and (max-width: 599px) {
+  navbar .sf-mini-cart {
+    margin-right: 10px;
+  }
+}
+
+/** GT-XS **/
+@media only screen and (min-width: 600px) {
+
+}
+
+/** SM **/
+@media only screen and (min-width: 600px) and (max-width: 959px) {
+}
+
+/** GT-SM **/
+@media only screen and (min-width: 960px) {
+
+}
+
+/** MD **/
+@media only screen and (min-width: 960px) and (max-width: 1279px) {
+}
+
+/** GT-MD **/
+@media only screen and (min-width: 1280px) {
+}
+
+/** LG **/
+@media only screen and (min-width: 1280px) and (max-width: 1919px) {
+
+}
+
+/** GT-LG **/
+@media only screen and (min-width: 1920px) {
+
 }

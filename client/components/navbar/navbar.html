@@ -5,11 +5,11 @@
     <md-button hide-gt-xs ng-click="nav.toggleLeft()" class="md-icon-button" aria-label="Settings">
       <i class="material-icons">menu</i>
     </md-button>
-    <a class="sf-brand" href="/">
+    <a hide-xs class="sf-brand" href="/">
       <i class="material-icons sf-home-icon">home</i>
     </a>
 
-    <grocery-provider data-user="nav.currentUser"></grocery-provider>
+    <grocery-provider  hide-xs data-user="nav.currentUser"></grocery-provider>
     <div class="sf-navigation-bar">
       <!-- Menu LOGGED OUT -->
       <div ng-hide="nav.currentUser.auth" layout="row" hide-xs flex>
@@ -44,7 +44,7 @@
             </span>
           </div>
         </a>
-        <div class="sf-switch-carts" ng-show="nav.carts.current" ng-click="nav.switchCart()">
+        <div hide-xs class="sf-switch-carts" ng-show="nav.carts.current" ng-click="nav.switchCart()">
           <i class="sf-switch-carts-icon material-icons">swap_horiz</i>
         </div>
       </div>

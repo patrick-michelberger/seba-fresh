@@ -65,3 +65,12 @@ categories button {
   font-weight: 500;
   color: #fff;
 }
+
+/** XS **/
+@media only screen and (max-width: 599px) {
+  categories .sf-category-breadcrumb {
+    margin-top: 7px;
+    background: #1a75cf;
+    color: #fff;
+  }
+}

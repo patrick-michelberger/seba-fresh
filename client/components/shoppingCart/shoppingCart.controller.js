@@ -28,27 +28,19 @@ class ShoppingCartController {
     this.calculateOrderValue = this.calculateOrderValue;
     this.calculateOrderAmount = this.calculateOrderAmount;
     this._emitChangeEvent = this._emitChangeEvent;
+    this.getNumberOfMembers = this.getNumberOfMembers;
+    this.sendPaymentRequest = this.sendPaymentRequest;
+    this.pay = this.pay;
   }
 
-  $onInit() {
-    var self = this;
+  getNumberOfMembers(users) {
+    if (users) {
+      return Object.keys(users).length;
+    }
+  }
 
-    /*
-    this.$scope.$watch(function() {
-      return self.ShopService.getCurrentCart();
-    }, function(currentCart) {
-      if (currentCart) {
-        self.currentCart = currentCart;
-        currentCart.$promise.then(function() {
-          // TODO More efficient method?
-          var groupedItems = self.calculatedGroupedItems(currentCart.users);
-          self.flatmates = groupedItems.flatmates;
-          self.currentUserItems = groupedItems.currentUser;
-          self.freeShipping = currentCart.totalAmount && currentCart.totalAmount > 0 && ((currentCart.totalAmount / 50) >= 1) ? true : false;
-        });
-      }
-    });
-    */
+  sendPaymentRequest() {
+    this.DialogService.showPayModal(this.carts.current);
   }
 
   pay() {
@@ -57,15 +49,16 @@ class ShoppingCartController {
 
   _getAddToCartUrl(cart) {
     var items = "";
-    var users = cart.users;
+    var users = this.users.current;
     for (var i = 0; i < users.length; i++) {
       var user = users[i];
-      for (var x = 0; x < user.items.length; x++) {
-        var item = user.items[x];
-        var quantity = user.items[x].quantity;
-        items += item.product.id + "|" + quantity;
+      var userItems = this.products.current[user.uid];
+
+      angular.forEach(userItems, (item, itemId) => {
+        var quantity = item.quantity;
+        items += item.item.id + "|" + quantity;
         items += ',';
-      }
+      });
     }
     if (items.length < 1) {
       return false;

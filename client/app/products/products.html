@@ -1,16 +1,14 @@
-<div id="sf-products-container" flex layout="row" layout-wrap layout-padding layout-fill>
-  <div class="sf-product" flex-xs="100" flex-sm="50" flex="25" ng-repeat="product in vm.products track by product.id" layout-padding>
+<div id="sf-products-container" flex layout="row" layout-wrap layout-padding>
+  <div class="sf-product" flex-xs="50" flex-sm="33" flex-md="25" flex="20" ng-repeat="product in vm.products track by product.id" layout-padding>
       <md-card>
-        <md-card-title layout="column" layout="center center">
-          <md-card-title-text>
-            <span class="md-subhead ">{{product.brand}}</span>
-            <span class="md-title">{{product.name}}</span>
-          </md-card-title-text>
-          <md-card-title-media layout-padding>
-            <img ng-click="vm.openQuickview(product)" ui-sref-opts="{reload: false, notify: false}" ng-src="{{::product.mediumImage}}" />
-          </md-card-title-media>
-          <div class="sf-price md-title">{{product.price}} $</div>
-        </md-card-title>
+        <md-card-title-text layout="column">
+          <span class="md-subhead ">{{product.brand}}</span>
+          <span class="md-title">{{product.name}}</span>
+        </md-card-title-text>
+        <md-card-title-media class="sf-image-wrapper" layout="row"  layout-padding>
+          <img ng-click="vm.openQuickview(product)" ui-sref-opts="{reload: false, notify: false}" ng-src="{{::product.mediumImage}}" />
+        </md-card-title-media>
+        <div layout="column"  class="sf-price md-title">{{product.price}} $</div>
         <md-card-actions layout="row " layout-align="end center ">
           <button recompile-on="cart:add:{{::product.id}}" flex class="md-raised md-button md-ink-ripple" ng-click="vm.removeFromCart(product)" class="md-raised" aria-label="remove rom cart" ng-disabled="::(vm.getQuantity(vm.currentUser.auth.uid, product.id)<1||vm.isLoading)">-</button>
           <button recompile-on="cart:add:{{::product.id}}" flex class="product-quantity md-raised md-button md-ink-ripple" ng-class="::{highlight:(vm.getQuantity(vm.currentUser.auth.uid, product.id)>0)}" aria-label="quantity" ng-disabled="::(vm.getQuantity(vm.currentUser.auth.uid, product.id)<1)">{{::vm.getQuantity(vm.currentUser.auth.uid, product.id)}}</button>
@@ -19,14 +17,14 @@
           </button>
           <button recompile-on="cart:add:{{::product.id}}" flex class="md-raised md- md-button md-ink-ripple" ng-click="vm.addToCart(product, quantity)" aria-label="add to cart" class="md-raised" ng-hide="::(vm.getQuantity(vm.currentUser.auth.uid, product.id)<1)" ng-disabled="::(vm.isLoading)">+</button>
         </md-card-actions>
-        <md-list ng-show="vm.users.current.length>1" >
-          <md-subheader class="md-no-sticky">Your flatmates</md-subheader>
-          <md-list-item class="noright" ng-if="flatmate.uid !== vm.currentUser.auth.uid" ng-repeat="flatmate in vm.users.current">
+        <md-list hide-xs class="sf-flatmate-list" ng-show="vm.users.current.length>1" >
+          <md-subheader class="sf-flatmates-headline md-no-sticky">Your flatmates</md-subheader>
+          <md-list-item class="sf-flatmate-item noright" ng-if="flatmate.uid !== vm.currentUser.auth.uid" ng-repeat="flatmate in vm.users.current">
             <img ng-src="{{flatmate.photoURL}}" class="md-avatar" />
-            <p>{{flatmate.displayName}}</p>
+            <p class="sf-flatmate-name">{{flatmate.displayName}}</p>
             <md-button class="md-secondary md-icon-button" disabled>
-              <span ng-show="vm.cartProducts.current[flatmate.uid][product.id]">{{(vm.cartProducts.current[flatmate.uid][product.id].quantity)}}</span>
-              <span ng-hide="vm.cartProducts.current[flatmate.uid][product.id]">0</span>
+              <span class="sf-flatmate-quantity" ng-show="vm.cartProducts.current[flatmate.uid][product.id]">{{(vm.cartProducts.current[flatmate.uid][product.id].quantity)}}</span>
+              <span class="sf-flatmate-quantity" ng-hide="vm.cartProducts.current[flatmate.uid][product.id]">0</span>
             </md-button>
           </md-list-item>
         </md-list>

@@ -16,7 +16,6 @@ angular.module('sebaFreshApp')
         const isParent = (currentCategoryId, categoryId) => {
 
           const regex = new RegExp(categoryId, "g");
-          console.log("regex: ", regex);
           const str = `976759_976783_1006979`;
 
           const result = regex.exec(currentCategoryId);

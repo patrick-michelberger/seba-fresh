@@ -80,7 +80,6 @@ export function show(req, res) {
 
 // Creates a new Invitation in the DB
 export function create(req, res) {
-  console.log("req.body: ", req.body);
   const to = req.body.to;
   const fromId = req.body.from ? req.body.from.id : false;
   const fromName = req.body.from ? req.body.from.name : false;

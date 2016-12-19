@@ -465,6 +465,22 @@
       }
     };
 
+    /**
+     * Pay shopping cart
+     *
+     * @param {String} cartId cart id
+     * @param {String} paymentId payment id
+     *
+     * @return {Promise}
+     */
+    const payCart = (cartId, paymentId) => {
+      const self = this;
+      const currentUser = FirebaseAuth.$getAuth();
+      return cartsUsersRef.child(cartId).child(currentUser.uid).update({
+        payment: paymentId
+      });
+    };
+
     return {
       get,
       createCart,
@@ -481,7 +497,8 @@
       deleteFirebase,
       getOrderQuantity,
       getOrderValue,
-      setProvider
+      setProvider,
+      payCart
     };
 
   }

@@ -1,18 +1,39 @@
 #sf-products-container {
   background-color: #f4f5f7;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 .sf-product {
   min-height: 450px;
+  padding: 5px;
 }
 .sf-product md-card {
   position: relative;
-  height: 100%;
+  padding: 0;
+  margin: 0;
 }
+
+.sf-product .layout-column {
+  padding-left: 10px!important;
+  padding-right: 10px!important;
+}
+
+.sf-product md-card-title-text {
+  padding: 16px;
+  min-height: 75px;
+}
+
+#sf-products-container > div > md-card > md-card-title-media {
+  display: flex!important;
+  flex-flow: row nowrap!important;
+  align-items: center!important;
+}
+
 .sf-product .sf-price {
   text-align: right!important;
   font-weight: bold;
-  font-size: 16px!important;
-  height: 25px!important;
+  font-size: 16px;
+  height: 25px;
   margin-top: 15px;
 }
 .sf-product md-card {
@@ -38,4 +59,110 @@
 .sf-product .product-quantity.highlight span {
   color: #444;
   font-weight: 700;
+}
+
+/** XS **/
+@media only screen and (max-width: 599px) {
+  .sf-product {
+    min-height: auto!important;
+
+    .sf-price {
+      margin-top: 10px;
+    }
+
+    .sf-flatmate-list {
+      padding-bottom: 0px;
+    }
+
+    .sf-flatmates-headline  {
+      .md-subheader-inner {
+        padding: 8px 10px;
+        line-height: 12px;
+        font-size: 12px;
+      }
+    }
+
+    .sf-flatmate-item {
+      padding: 0px 10px;
+
+      img {
+        margin-right: 5px;
+      }
+    }
+
+    .sf-flatmate-name,
+    .sf-flatmate-quantity {
+      font-size: 12px;
+      line-height: 12px;
+    }
+
+    md-card-title-text {
+      padding: 10px 5px;
+      min-height: 50px;
+    }
+
+    .md-subhead {
+      font-size: 12px;
+      line-height: 12px;
+    }
+
+    .md-title {
+      font-size: 12px;
+      height: 14px;
+      overflow: hidden;
+    }
+
+    .sf-image-wrapper {
+      padding: 0px;
+
+      img {
+        padding: 0px;
+      }
+    }
+  }
+}
+
+/** GT-XS **/
+@media only screen and (min-width: 600px) {
+
+}
+
+/** SM **/
+@media only screen and (min-width: 600px) and (max-width: 959px) {
+  .sf-product .sf-image-wrapper {
+    padding: 0px;
+
+    img {
+      padding: 0px;
+    }
+  }
+}
+
+/** GT-SM **/
+@media only screen and (min-width: 960px) {
+
+}
+
+/** MD **/
+@media only screen and (min-width: 960px) and (max-width: 1279px) {
+  .sf-product .sf-image-wrapper img {
+    padding: 16px;
+  }
+}
+
+/** GT-MD **/
+@media only screen and (min-width: 1280px) {
+  .sf-product .sf-image-wrapper img {
+    padding: 25px;
+  }
+}
+
+/** LG **/
+@media only screen and (min-width: 1280px) and (max-width: 1919px) {
+
+}
+
+/** GT-LG **/
+@media only screen and (min-width: 1920px) {
+
 }
