@@ -42,11 +42,12 @@
      *
      * @return {Promise}
      */
-    const createUser = (userId, displayName, photoURL) => {
+    const createUser = (userId, displayName, photoURL, email) => {
       const newUserRef = usersRef.child(userId);
       const newUser = {
         id: userId,
         displayName: displayName,
+        email: email,
         createdAt: firebase.database.ServerValue.TIMESTAMP,
       };
       if (photoURL)  {

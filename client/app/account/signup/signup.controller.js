@@ -55,7 +55,7 @@ class SignupController {
           });
         });
       }).then((currentUser) => {
-        return self.FirebaseUser.createUser(currentUser.uid, currentUser.displayName, currentUser.photoURL).then(() => {
+        return self.FirebaseUser.createUser(currentUser.uid, currentUser.displayName, currentUser.photoURL, currentUser.email).then(() => {
           if (self.redirectUrl) {
             self.$location.path(self.$stateParams.redirectUrl);
           } else {
