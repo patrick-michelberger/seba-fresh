@@ -47,11 +47,13 @@
       const newUser = {
         id: userId,
         displayName: displayName,
-        email: email,
         createdAt: firebase.database.ServerValue.TIMESTAMP,
       };
       if (photoURL)  {
         newUser.photoURL = photoURL;
+      }
+      if (email) {
+        newUser.email = email;
       }
       return newUserRef.set(newUser);
     }
