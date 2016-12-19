@@ -1,6 +1,12 @@
 import config from './config/environment';
-import * as firebase from 'firebase';
+var admin = require("firebase-admin");
 
-firebase.initializeApp(config.firebase);
-export const auth = firebase.auth();
-export const database = firebase.database();
+var serviceAccount = require("./config/fresh-9a83f6531cd7.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: config.firebase.databaseURL
+});
+
+export const auth = admin.auth();
+export const database = admin.database();

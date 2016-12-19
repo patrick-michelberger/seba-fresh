@@ -17,26 +17,32 @@ import config from '../../config/environment';
 import Cart from '../cart/cart.model';
 import User from '../user/user.model';
 import request from 'request';
+import Q from 'q';
 
+// FIREBASE DATABASE CONNECTOR
+import {
+  database
+} from '../../firebaseApp';
 
 function calculateOrderAmount(items) {
   var value = 0;
   if (items) {
     items = items ||  [];
-    items.forEach(function (item) {
+    items.forEach(function(item) {
       value += item.quantity;
     });
   }
   return value;
 }
 
-function sendPaymentRequest(sender, receiver, amount, cart, callback) {
+function sendPaymentRequest(payerEmail, payerDisplayName, payerId, receiverEmail, receiverDisplayName, receiverId, amount, cartId, callback) {
+
   var paypalAPIkey = '';
   var paymentURL = '';
-  var returnUrl = config.domain + '/carts/' + cart._id + '/pay';
-  var failUrl = config.domain + '/carts/' + cart._id + '/cancel';
+  var returnUrl = config.domain + '/carts/' + cartId + '/pay';
+  var failUrl = config.domain + '/carts/' + cartId + '/cancel';
 
-  sender.email = "patrick.michelberger@tum.de";
+  payerEmail = "patrick.michelberger@tum.de";
 
   // Get the api key from paypal, form the url and then send it to the individualUsers
   //checking paypal post request
@@ -46,7 +52,7 @@ function sendPaymentRequest(sender, receiver, amount, cart, callback) {
     "receiverList": {
       "receiver": [{
         "amount": amount, // Payment amount
-        "email": sender.email // Payment ReceiTODOver's email address
+        "email": receiverEmail // Payment ReceiTODOver's email address
       }]
     },
     "returnUrl": returnUrl, // Where to redirect the Sender following a successful payment approval
@@ -80,7 +86,8 @@ function sendPaymentRequest(sender, receiver, amount, cart, callback) {
     json: true,
     url: url
   };
-  request(options, function (err, res, body) {
+
+  return request(options, function(err, res, body) {
     if (err) {
       console.log('error in response: ' + err)
       return
@@ -110,16 +117,29 @@ function sendPaymentRequest(sender, receiver, amount, cart, callback) {
       // Form the mail data
       var data = {
         //  to: createPayment.to,
-        to: 'mohamed.riswan.1n1ly@gmail.com', // should have the user id
+        to: 'pmichelberger@gmail.com', // should have the user id
         template: 'paymentEmail.hbs',
         subject: 'SEBA fresh Payments',
         payload: {
-          paidbyUser: sender,
-          user: receiver,
+          payer: {
+            email: payerEmail,
+            displayName: payerDisplayName,
+            id: payerId,
+          },
+          receiver: {
+            email: receiverEmail,
+            displayName: receiverDisplayName,
+            id: receiverId,
+          },
+          cart: {
+            id: cartId
+          },
+          amount: amount,
           url: paymentURL
         }
       };
-      mail.send(data, function (err) {
+
+      mail.send(data, function(err) {
         if (err) {
           console.log("Error: sending payment mail: ", err);
         }
@@ -133,7 +153,7 @@ function sendPaymentRequest(sender, receiver, amount, cart, callback) {
 
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
-  return function (entity) {
+  return function(entity) {
     if (entity) {
       res.status(statusCode).json(entity);
     }
@@ -141,7 +161,7 @@ function respondWithResult(res, statusCode) {
 }
 
 function saveUpdates(updates) {
-  return function (entity) {
+  return function(entity) {
     var updated = _.merge(entity, updates);
     return updated.save()
       .then(updated => {
@@ -151,7 +171,7 @@ function saveUpdates(updates) {
 }
 
 function removeEntity(res) {
-  return function (entity) {
+  return function(entity) {
     if (entity) {
       return entity.remove()
         .then(() => {
@@ -162,7 +182,7 @@ function removeEntity(res) {
 }
 
 function handleEntityNotFound(res) {
-  return function (entity) {
+  return function(entity) {
     if (!entity) {
       res.status(404).end();
       return null;
@@ -173,7 +193,7 @@ function handleEntityNotFound(res) {
 
 function handleError(res, statusCode) {
   statusCode = statusCode || 500;
-  return function (err) {
+  return function(err) {
     res.status(statusCode).send(err);
   };
 }
@@ -193,32 +213,38 @@ export function show(req, res) {
     .catch(handleError(res));
 }
 
-
 export function sendRequest(req, res) {
-  var payerId = req.body.payer;
-  var cartId = req.body.cart;
-  return Cart.findById(cartId)
-    .populate('group')
-    .populate('users')
-    .exec()
-    .then(handleEntityNotFound(res))
-    .then(function (foundCart) {
-      var user = {};
-      for (var i = 0; i < foundCart.users.length; i++) {
-        if (String(foundCart.users[i]._id) === payerId) {
-          user = foundCart.users[i];
-        }
-      }
-      var amount = calculateOrderAmount(user.items);
-      User.findById(payerId).exec(function (err, payer) {
-        var admin = foundCart.group.admin;
-        sendPaymentRequest(payer, admin, amount, foundCart, function () {
-          respondWithResult(res)({
-            "paymentRequestSent": true
-          });
+  const payerId = req.body.payerId;
+  const cartId = req.body.cartId;
+  const receiverId = req.body.receiverId;
+  const amount = req.body.amount;
+
+  let payerRef = database.ref('users/' + payerId);
+  let receiverRef = database.ref('users/' + receiverId);
+  return payerRef.once('value').then((snapshot) => {
+    const payer = snapshot.val();
+    const payerDisplayName = payer.displayName;
+    const payerEmail = payer.email
+
+    return receiverRef.once('value').then((snapshot) => {
+      const receiver = snapshot.val();
+      const receiverDisplayName = receiver.displayName;
+      const receiverEmail = receiver.email;
+
+      var deferred = Q.defer();
+
+      console.log("deffer");
+
+      sendPaymentRequest(payerEmail, payerDisplayName, payerId, receiverEmail, receiverDisplayName, receiverId, amount, cartId, () => {
+        console.log("respondWithResult");
+        deferred.resolve({
+          "hallo": payerEmail
         });
       });
+
+      return deferred.promise;
     });
+  });
 }
 
 // Creates a new Payment in the DB and sends the payment request to individual users of a group

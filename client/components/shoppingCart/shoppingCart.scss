@@ -1,6 +1,13 @@
 /**
  * Group Cart total
  */
+
+shopping-cart .btn-hide-payment-view {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
 shopping-cart .group-cart-total {
   background-color: #0066a3;
 }

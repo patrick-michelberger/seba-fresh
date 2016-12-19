@@ -477,7 +477,25 @@
       const self = this;
       const currentUser = FirebaseAuth.$getAuth();
       return cartsUsersRef.child(cartId).child(currentUser.uid).update({
-        payment: paymentId
+        payment: paymentId,
+        status: "paid"
+      });
+    };
+
+    /**
+     * Set payment request
+     *
+     * @param {String} cartId cart id
+     * @param {String} userId user id
+     * @param {String} paymentId payment id
+     *
+     * @return {Promise}
+     */
+    const setPayment = (cartId, userId, paymentId) => {
+      const self = this;
+      return cartsUsersRef.child(cartId).child(userId).update({
+        payment: paymentId,
+        status: "pending"
       });
     };
 

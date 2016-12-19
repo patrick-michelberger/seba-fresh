@@ -16,6 +16,7 @@ class ShoppingCartController {
 
     // Dynamic attributes
     this.freeShipping = false;
+    this.hidePaymentView = false;
     this.carts = FirebaseCart.getCarts();
     this.currentUserItems = [];
     this.flatmatesItems = [];
@@ -31,20 +32,21 @@ class ShoppingCartController {
     this.getNumberOfMembers = this.getNumberOfMembers;
     this.sendPaymentRequest = this.sendPaymentRequest;
     this.pay = this.pay;
-  }
-
-  getNumberOfMembers(users) {
-    if (users) {
-      return Object.keys(users).length;
-    }
+    this.onHidePaymentView = this.onHidePaymentView;
   }
 
   sendPaymentRequest() {
-    this.DialogService.showPayModal(this.carts.current);
+    const userId = this.currentUser.auth.uid;
+    this.DialogService.showPayModal(this.carts.current, userId);
+  }
+
+  onHidePaymentView() {
+    this.hidePaymentView = !this.hidePaymentView;
   }
 
   pay() {
-    this.DialogService.showPayModal(this.carts.current);
+    const userId = this.currentUser.auth.uid;
+    this.DialogService.showPayModal(this.carts.current, userId);
   }
 
   _getAddToCartUrl(cart) {

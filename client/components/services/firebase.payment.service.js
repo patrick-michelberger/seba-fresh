@@ -17,6 +17,50 @@
     };
 
     /**
+     * Create payment request
+     *
+     * @param {Object} payer payer
+     * @param {String} payer.email payer email
+     * @param {String} payer.uid payer uid
+     * @param {String} payer.displayName payer display name
+     * @param {Object} receiver receiver
+     * @param {String} receiver.email receiver email
+     * @param {String} receiver.uid receiver uid
+     * @param {String} receiver.displayName receiver display name
+     * @param {Number} amount amount
+     * @param {String} cartId cart id
+     * @return {Promise}
+     */
+    const create = (payer, receiver, amount, cartId) => {
+      var self = this,
+        newPaymentRef = paymentsRef.push();
+
+      if (!payer.uid || !payer.displayName || !payer.email || !sender.uid || !sender.displayName || !sender.email || !amount ||  !cartId) {
+        return;
+      }
+
+      const newPayment = {
+        id: newPaymentRef.key,
+        createdAt: firebase.database.ServerValue.TIMESTAMP,
+        paypalId: String,
+        payerId: payer.uid,
+        payerDisplayName: payer.displayName,
+        payerEmail: payer.email,
+        senderId: sender.uid,
+        senderDisplayName: sender.displayName,
+        senderEmail: sender.email,
+        cartId: cartId,
+      };
+
+      return newPaymentRef.set(newPayment).then(() => {
+        FirebaseCart.setPayment(cartId, payer.uid, newPaymentRef.key);
+        return newPaymentRef.key;
+      }).catch((error) => {
+        console.log("Error: ", error);
+      });
+    }
+
+    /**
      * Pay via paypal
      *
      * @param {String} paymentId payment id

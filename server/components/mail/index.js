@@ -8,6 +8,8 @@ var ses = require('nodemailer-ses-transport');
 var nodemailer = require('nodemailer');
 //var sesTransport = require('nodemailer-ses-transport'); // needed for Amazon AWS
 
+console.log("config.aws: ", config.aws);
+
 var transport = nodemailer.createTransport(ses({
   accessKeyId: config.aws.accessKey,
   secretAccessKey: config.aws.secretAccessKey,
@@ -65,12 +67,12 @@ mailer.send = function(data, callback) {
     html: html
   };
   transport.sendMail(payload,
-    function(err) {
+    function(err, result) {
       if (err) {
         console.log('Send mail:', err);
         return callback(err);
       }
-      console.log("email sent");
+      console.log("email sent: ", result);
       callback();
     });
 };

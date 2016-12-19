@@ -21,24 +21,28 @@
         );
       },
 
-      showPayModal(cart, useFullScreen) {
+      showPayModal(cart, userId, useFullScreen) {
         // controller
-        function PayDialogController($scope, $state, $mdDialog, $http) {
+        function PayDialogController($scope, $state, $mdDialog, $http, FirebaseCart, FirebasePaymentService) {
           $scope.cart = cart;
           $scope.cancel = function() {
             $mdDialog.cancel();
           };
+
           $scope.usePaypal = function() {
+            const amount = FirebaseCart.getOrderValue(userId);
             $http.post('/api/payments/send', {
-              payer: cart.users[0]._id, // ObjectId("5776686397019a3c23834304")
-              cart: cart._id //ObjectId("5776687a97019a3c23834306")
+              payerId: userId,
+              cartId: cart.id,
+              receiverId: cart.createdByUserId,
+              amount: amount
             });
-          }
+          };
         };
 
         // open dialog
         $mdDialog.show({
-            controller: ['$scope', '$state', '$mdDialog', '$http', PayDialogController],
+            controller: ['$scope', '$state', '$mdDialog', '$http', 'FirebaseCart', 'FirebasePaymentService', PayDialogController],
             templateUrl: 'assets/templates/pay-dialog.tmpl.html',
             parent: angular.element(document.body),
             //targetEvent: $event,
@@ -66,7 +70,6 @@
           };
 
           $scope.addToCart = function(product) {
-            console.log("product: ", product);
             if (!product ||  !carts ||  !carts.current) {
               $state.go('login');
               $scope.cancel();

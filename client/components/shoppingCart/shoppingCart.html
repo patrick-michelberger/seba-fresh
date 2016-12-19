@@ -1,14 +1,18 @@
 <!-- Header START -->
 <md-toolbar class="group-cart-total">
-  <div ng-hide="shoppingCartCtrl.isGroupAdmin()&&shoppingCartCtrl.freeShipping">
-    <span class="description">Total </span>
-    <div class="cart-order-info">
-      <span class="cart-total-quantity">{{shoppingCartCtrl.carts.current.totalQuantity}} Items </span>
-      <span class="cart-total-amount">$ {{shoppingCartCtrl.carts.current.totalAmount | price}}</span>
+  <div>
+    <div ng-hide="shoppingCartCtrl.isGroupAdmin()&&shoppingCartCtrl.freeShipping||shoppingCartCtrl.hidePaymentView">
+      <span class="description">Total </span>
+      <div class="cart-order-info">
+        <span class="cart-total-quantity">{{shoppingCartCtrl.carts.current.totalQuantity}} Items </span>
+        <span class="cart-total-amount">$ {{shoppingCartCtrl.carts.current.totalAmount | price}}</span>
+      </div>
     </div>
+    <button class="btn-hide-payment-view" ng-show="shoppingCartCtrl.isGroupAdmin()&&shoppingCartCtrl.freeShipping&&shoppingCartCtrl.hidePaymentView" ng-click="shoppingCartCtrl.onHidePaymentView()">Show Payment</button>
   </div>
-  <div ng-show="shoppingCartCtrl.isGroupAdmin()&&shoppingCartCtrl.freeShipping">
+  <div ng-show="shoppingCartCtrl.isGroupAdmin()&&shoppingCartCtrl.freeShipping&&!shoppingCartCtrl.hidePaymentView">
     <span class="description">Shared Payment</span>
+    <button class="btn-hide-payment-view" ng-click="shoppingCartCtrl.onHidePaymentView()">X</button>
   </div>
 </md-toolbar>
 <!-- Header END -->
@@ -16,7 +20,7 @@
 <minimum-order-value-progress free-shipping="shoppingCartCtrl.freeShipping"></minimum-order-value-progress>
 
 <!-- Cart START-->
-<div class="cart-list" ng-hide="shoppingCartCtrl.isGroupAdmin()&&shoppingCartCtrl.freeShipping">
+<div class="cart-list" ng-hide="shoppingCartCtrl.isGroupAdmin()&&(shoppingCartCtrl.freeShipping&&!shoppingCartCtrl.hidePaymentView)">
 
   <!-- CURRENT USER -->
   <div class="single-cart cart-cell">
@@ -114,7 +118,7 @@
 <!-- Cart END -->
 
 <!-- Payment START-->
-<div class="shared-payment" ng-show="shoppingCartCtrl.freeShipping">
+<div class="shared-payment" ng-show="shoppingCartCtrl.freeShipping&&!shoppingCartCtrl.hidePaymentView">
   <div ng-show="shoppingCartCtrl.isGroupAdmin()">
     <!-- CURRENT USER -->
     <div class="single-cart cart-cell">
@@ -137,7 +141,7 @@
       </div>
 
     <!-- FLATMATES -->
-    <div ng-if="shoppingCartCtrl.getNumberOfMembers(shoppingCartCtrl.users.current) > 1">
+    <div ng-if="shoppingCartCtrl.users.current.length > 1">
     <div class="header">
       <div class="flatmates">
         Flatmates
@@ -199,6 +203,6 @@
 
   <!-- CHECKOUT FOR ADMIN -->
   <md-button ng-show="shoppingCartCtrl.isGroupAdmin()" ng-click="shoppingCartCtrl.checkout()" class="btn-pay-now md-raised md-warn">Checkout</md-button>
-  <md-button ng-click="shoppingCartCtrl.pay()" class="btn-pay-now md-raised md-warn">Pay</md-button>
+  <md-button ng-hide="shoppingCartCtrl.isGroupAdmin()||shoppingCartCtrl.calculateOrderValue(shoppingCartCtrl.currentUser.auth.uid) == '0.00'" ng-click="shoppingCartCtrl.pay()" class="btn-pay-now md-raised md-warn">Pay</md-button>
 </div>
 <!-- Payment END -->
