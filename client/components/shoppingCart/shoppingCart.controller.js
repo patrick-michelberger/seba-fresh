@@ -43,7 +43,7 @@ class ShoppingCartController {
 
   sendPaymentRequest() {
     const userId = this.currentUser.auth.uid;
-    this.DialogService.showPayModal(this.carts.current, userId);
+    this.DialogService.showPaymentRequestModal(this.carts.current, userId);
   }
 
   onHidePaymentView() {

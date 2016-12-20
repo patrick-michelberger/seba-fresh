@@ -21,6 +21,56 @@
         );
       },
 
+      showPaymentRequestModal(cart, userId, useFullScreen) {
+        // controller
+        function PaymentRequestDialogController($timeout, $scope, $state, $mdDialog, $http, FirebaseCart, FirebasePaymentService, DialogService) {
+          const self = this;
+
+          $scope.cart = cart;
+          $scope.cancel = function() {
+            $mdDialog.cancel();
+          };
+
+          $scope.usePaypal = function() {
+            const amount = FirebaseCart.getOrderValue(userId);
+            $http.post('/api/payments/send', {
+              payerId: userId,
+              cartId: cart.id,
+              receiverId: cart.createdByUserId,
+              amount: amount
+            }).then(() => {
+              $timeout(function() {
+                $scope.isSending = false;
+                var title = "We've sent a payment request!";
+                var content = "As soon as the payment request has been fulfilled, you get notified.";
+                var popupLabel = "Next";
+                DialogService.showAlert(title, content, popupLabel);
+              }, 300);
+            }).catch((error) => {
+              console.log("Error: ", error);
+            });
+          };
+        };
+
+        // open dialog
+        $mdDialog.show({
+            controller: ['$timeout', '$scope', '$state', '$mdDialog', '$http', 'FirebaseCart', 'FirebasePaymentService', 'DialogService', PaymentRequestDialogController],
+            templateUrl: 'assets/templates/payment-request-dialog.tmpl.html',
+            parent: angular.element(document.body),
+            //targetEvent: $event,
+            clickOutsideToClose: true,
+            fullscreen: useFullScreen
+          })
+          .then(function(answer) {}, function() {});
+
+        $rootScope.$watch(function() {
+          return $mdMedia('xs') || $mdMedia('sm');
+        }, function(wantsFullScreen) {
+          $rootScope.customFullscreen = (wantsFullScreen === true);
+        });
+      },
+
+
       showPayModal(cart, userId, useFullScreen) {
         // controller
         function PayDialogController($scope, $state, $mdDialog, $http, FirebaseCart, FirebasePaymentService) {

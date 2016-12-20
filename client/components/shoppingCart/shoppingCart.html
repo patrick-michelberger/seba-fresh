@@ -207,7 +207,8 @@
         </div>
       </div>
       <div ng-show="shoppingCartCtrl.isGroupAdmin()" layout="row">
-        <md-button ng-click="shoppingCartCtrl.sendPaymentRequest()">Send Payment Request</md-button>
+        <a class="btn-payment-request"
+           ng-click="shoppingCartCtrl.sendPaymentRequest()">Send Payment Request</a>
       </div>
     </div>
     <hr/>

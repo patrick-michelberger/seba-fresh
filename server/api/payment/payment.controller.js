@@ -221,11 +221,14 @@ export function sendRequest(req, res) {
 
   let payerRef = database.ref('users/' + payerId);
   let receiverRef = database.ref('users/' + receiverId);
+
+  // Fetch payer 
   return payerRef.once('value').then((snapshot) => {
     const payer = snapshot.val();
     const payerDisplayName = payer.displayName;
     const payerEmail = payer.email
 
+    // Fetch receiver
     return receiverRef.once('value').then((snapshot) => {
       const receiver = snapshot.val();
       const receiverDisplayName = receiver.displayName;
@@ -233,12 +236,9 @@ export function sendRequest(req, res) {
 
       var deferred = Q.defer();
 
-      console.log("deffer");
-
       sendPaymentRequest(payerEmail, payerDisplayName, payerId, receiverEmail, receiverDisplayName, receiverId, amount, cartId, () => {
-        console.log("respondWithResult");
-        deferred.resolve({
-          "hallo": payerEmail
+        respondWithResult(res)({
+          "success": true
         });
       });
 
