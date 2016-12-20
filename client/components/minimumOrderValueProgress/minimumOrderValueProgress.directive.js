@@ -20,7 +20,8 @@ angular.module('sebaFreshApp')
         // Methods
         scope.updateProgressStyle = function(currentCart) {
           if (currentCart) {
-            var percent = Math.round((currentCart.totalAmount / 50) * 100);
+            const amount = currentCart.totalAmount ||  0;
+            var percent = Math.round((amount / 50) * 100);
             percent = percent < 0 ? 0 : percent;
             scope.freeShipping = currentCart.totalAmount && currentCart.totalAmount > 0 && ((currentCart.totalAmount / 50) >= 1) ? true : false;
             return {
