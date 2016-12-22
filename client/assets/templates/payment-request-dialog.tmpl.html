@@ -2,19 +2,58 @@
   <form>
     <md-toolbar>
       <div class="md-toolbar-tools">
-        <h3 class="product-name">Send payment request</h3>
+        <h3 class="product-name">Tell us your paypal.me link</h3>
         <span flex></span>
         <i class="material-icons">close</i>
       </div>
     </md-toolbar>
     <md-dialog-content>
       <div class="md-dialog-content" layout="row">
+        <form name="form" novalidate>
+          <!-- Email Input -->
+          <md-input-container ng-hide="isLoading"  class="md-block" flex="100">
+            <label for="input_username">paypal.me/</label>
+            <input ng-disabled="submitted" ng-model="currentUser.data.paypal.username" ng-change="changeUsernname()" type="text" class="md-input" name="username" id="input_username">
+            <div class="md-errors-spacer"></div>
+          </md-input-container>
+
+          <!-- Loading -->
+          <div ng-show="isLoading" layout="row" layout-fill layout-align="center center">
+              <svg flex width='102px' height='102px' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="uil-default"><rect x="0" y="0" width="100" height="100" fill="none" class="bk"></rect><rect  x='46.5' y='40' width='7' height='20' rx='5' ry='5' fill='#1a75cf' transform='rotate(0 50 50) translate(0 -30)'>  <animate attributeName='opacity' from='1' to='0' dur='1s' begin='0s' repeatCount='indefinite'/></rect><rect  x='46.5' y='40' width='7' height='20' rx='5' ry='5' fill='#1a75cf' transform='rotate(30 50 50) translate(0 -30)'>  <animate attributeName='opacity' from='1' to='0' dur='1s' begin='0.08333333333333333s' repeatCount='indefinite'/></rect><rect  x='46.5' y='40' width='7' height='20' rx='5' ry='5' fill='#1a75cf' transform='rotate(60 50 50) translate(0 -30)'>  <animate attributeName='opacity' from='1' to='0' dur='1s' begin='0.16666666666666666s' repeatCount='indefinite'/></rect><rect  x='46.5' y='40' width='7' height='20' rx='5' ry='5' fill='#1a75cf' transform='rotate(90 50 50) translate(0 -30)'>  <animate attributeName='opacity' from='1' to='0' dur='1s' begin='0.25s' repeatCount='indefinite'/></rect><rect  x='46.5' y='40' width='7' height='20' rx='5' ry='5' fill='#1a75cf' transform='rotate(120 50 50) translate(0 -30)'>  <animate attributeName='opacity' from='1' to='0' dur='1s' begin='0.3333333333333333s' repeatCount='indefinite'/></rect><rect  x='46.5' y='40' width='7' height='20' rx='5' ry='5' fill='#1a75cf' transform='rotate(150 50 50) translate(0 -30)'>  <animate attributeName='opacity' from='1' to='0' dur='1s' begin='0.4166666666666667s' repeatCount='indefinite'/></rect><rect  x='46.5' y='40' width='7' height='20' rx='5' ry='5' fill='#1a75cf' transform='rotate(180 50 50) translate(0 -30)'>  <animate attributeName='opacity' from='1' to='0' dur='1s' begin='0.5s' repeatCount='indefinite'/></rect><rect  x='46.5' y='40' width='7' height='20' rx='5' ry='5' fill='#1a75cf' transform='rotate(210 50 50) translate(0 -30)'>  <animate attributeName='opacity' from='1' to='0' dur='1s' begin='0.5833333333333334s' repeatCount='indefinite'/></rect><rect  x='46.5' y='40' width='7' height='20' rx='5' ry='5' fill='#1a75cf' transform='rotate(240 50 50) translate(0 -30)'>  <animate attributeName='opacity' from='1' to='0' dur='1s' begin='0.6666666666666666s' repeatCount='indefinite'/></rect><rect  x='46.5' y='40' width='7' height='20' rx='5' ry='5' fill='#1a75cf' transform='rotate(270 50 50) translate(0 -30)'>  <animate attributeName='opacity' from='1' to='0' dur='1s' begin='0.75s' repeatCount='indefinite'/></rect><rect  x='46.5' y='40' width='7' height='20' rx='5' ry='5' fill='#1a75cf' transform='rotate(300 50 50) translate(0 -30)'>  <animate attributeName='opacity' from='1' to='0' dur='1s' begin='0.8333333333333334s' repeatCount='indefinite'/></rect><rect  x='46.5' y='40' width='7' height='20' rx='5' ry='5' fill='#1a75cf' transform='rotate(330 50 50) translate(0 -30)'>  <animate attributeName='opacity' from='1' to='0' dur='1s' begin='0.9166666666666666s' repeatCount='indefinite'/></rect></svg>
+          </div>
+          <!-- Errors -->
+          <div class="md-errors-spacer">
+            <div ng-show="form.username.$error.required && submitted">
+              Please enter your paypal.me username.
+            </div>
+            <div ng-show="form.username.$error.username && submitted">
+              Please enter a valid paypal.me username.
+            </div>
+          </div>
+        </form>
       </div>
     </md-dialog-content>
     <md-dialog-actions layout="row">
-      <md-button class="md-raised md-primary" ng-click="usePaypal()">
+
+      <a href="https://www.paypal.com/paypalme/grab?locale.x=de_DE&country.x=DE"
+         ng-hide="(isLoading||currentUser.data.paypal.username||editUsername)&&submitted" target="_blank">
+        <md-button class="md-raised">
+          Create a Paypal.me Username
+        </md-button>
+      </a>
+
+      <md-button ng-show="submitted" class="md-raised" ng-click="reset()">
+        Reset
+      </md-button>
+
+      <md-button ng-show="submitted" class="md-raised md-primary" ng-click="usePaypal()">
         Send Paypal Request
       </md-button>
+
+      <md-button
+        ng-hide="(isLoading||currentUser.data.paypal.username||editUsername)&&submitted"
+        class="md-raised md-primary" type="submit" ng-click="updateProfile()"
+        ng-disabled="currentUser.data.paypal.username.length<1">Update Profile</md-button>
     </md-dialog-actions>
   </form>
 </md-dialog>

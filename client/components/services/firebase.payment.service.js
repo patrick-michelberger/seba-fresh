@@ -173,9 +173,23 @@
       });
     };
 
+    const checkPaypalLink = (username) => {
+      $http({
+        //url: 'https://www.paypal.com/paypalme/api/slug/available/' + username,
+        url: 'https://www.paypal.me/' + username,
+        method: 'GET',
+        data: {}
+      }).then((response) => {
+        console.log("response: ", response);
+      }, (data, status) => {
+        console.log("error: ", data);
+      });
+    };
+
     return {
       get,
-      paypal
+      paypal,
+      checkPaypalLink
     };
 
   }

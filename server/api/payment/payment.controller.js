@@ -35,14 +35,53 @@ function calculateOrderAmount(items) {
   return value;
 }
 
-function sendPaymentRequest(payerEmail, payerDisplayName, payerId, receiverEmail, receiverDisplayName, receiverId, amount, cartId, callback) {
+function sendPaypalMeLink(payerEmail, payerDisplayName, payerId, receiverEmail, receiverDisplayName, receiverId, amount, cartId, paypalUsername, callback) {
+
+  const paymentURL = "https://paypal.me/" + paypalUsername + "/" + amount;
+
+  // Form the mail data
+  var data = {
+    //  to: createPayment.to,
+    to: 'patrick.michelberger@tum.de', // should have the user id
+    template: 'paymentEmail.hbs',
+    subject: 'SEBA fresh Payments',
+    payload: {
+      payer: {
+        email: payerEmail,
+        displayName: payerDisplayName,
+        id: payerId,
+      },
+      receiver: {
+        email: receiverEmail,
+        displayName: receiverDisplayName,
+        id: receiverId,
+      },
+      cart: {
+        id: cartId
+      },
+      amount: amount,
+      url: paymentURL
+    }
+  };
+
+  mail.send(data, function(err) {
+    if (err) {
+      console.log("Error: sending payment mail: ", err);
+    }
+    callback();
+  });
+}
+
+
+function sendPaymentRequestLegacy(payerEmail, payerDisplayName, payerId, receiverEmail, receiverDisplayName, receiverId, amount, cartId, callback) {
 
   var paypalAPIkey = '';
   var paymentURL = '';
   var returnUrl = config.domain + '/carts/' + cartId + '/pay';
   var failUrl = config.domain + '/carts/' + cartId + '/cancel';
 
-  payerEmail = "patrick.michelberger@tum.de";
+  payerEmail = "pmichelberger@gmail.com";
+  receiverEmail = "patrick.michelberger@tum.de";
 
   // Get the api key from paypal, form the url and then send it to the individualUsers
   //checking paypal post request
@@ -117,7 +156,7 @@ function sendPaymentRequest(payerEmail, payerDisplayName, payerId, receiverEmail
       // Form the mail data
       var data = {
         //  to: createPayment.to,
-        to: 'pmichelberger@gmail.com', // should have the user id
+        to: 'patrick.michelberger@tum.de', // should have the user id
         template: 'paymentEmail.hbs',
         subject: 'SEBA fresh Payments',
         payload: {
@@ -222,7 +261,7 @@ export function sendRequest(req, res) {
   let payerRef = database.ref('users/' + payerId);
   let receiverRef = database.ref('users/' + receiverId);
 
-  // Fetch payer 
+  // Fetch payer
   return payerRef.once('value').then((snapshot) => {
     const payer = snapshot.val();
     const payerDisplayName = payer.displayName;
@@ -233,10 +272,11 @@ export function sendRequest(req, res) {
       const receiver = snapshot.val();
       const receiverDisplayName = receiver.displayName;
       const receiverEmail = receiver.email;
+      const receiverPaypalUsername = receiver.paypal.username ||  "michelberger";
 
       var deferred = Q.defer();
 
-      sendPaymentRequest(payerEmail, payerDisplayName, payerId, receiverEmail, receiverDisplayName, receiverId, amount, cartId, () => {
+      sendPaypalMeLink(payerEmail, payerDisplayName, payerId, receiverEmail, receiverDisplayName, receiverId, amount, cartId, receiverPaypalUsername, () => {
         respondWithResult(res)({
           "success": true
         });

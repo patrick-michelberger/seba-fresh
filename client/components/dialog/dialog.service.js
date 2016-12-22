@@ -23,13 +23,41 @@
 
       showPaymentRequestModal(cart, userId, useFullScreen) {
         // controller
-        function PaymentRequestDialogController($timeout, $scope, $state, $mdDialog, $http, FirebaseCart, FirebasePaymentService, DialogService) {
+        function PaymentRequestDialogController($timeout, $scope, $state, $mdDialog, $http, FirebaseCart, FirebaseUser, FirebasePaymentService, DialogService) {
           const self = this;
 
           $scope.cart = cart;
-          $scope.cancel = function() {
+          $scope.paypal = {};
+          $scope.isLoading = false;
+          $scope.currentUser = FirebaseUser.getCurrentUser();
+          $scope.submitted = $scope.currentUser.data.paypal.username ||  false;
+
+          $scope.cancel = () => {
             $mdDialog.cancel();
           };
+
+          $scope.reset = () => {
+            $scope.currentUser.data.paypal.username = "";
+            $scope.submitted = false;
+            $scope.currentUser.data.$save();
+          }
+
+          $scope.updateProfile = () => {
+
+            FirebasePaymentService.checkPaypalLink($scope.currentUser.data.paypal.username);
+            $scope.isLoading = true;
+            $scope.currentUser.data.$save().then(() => {
+              $scope.isLoading = false;
+              $scope.submitted = true;
+            });
+          };
+
+          $scope.changeUsernname = () => {
+            console.log("change username: ", );
+            $scope.submitted = false;
+
+            //if ($scope.currentUser.data.paypal.username < 1) {}
+          }
 
           $scope.usePaypal = function() {
             const amount = FirebaseCart.getOrderValue(userId);
@@ -54,7 +82,7 @@
 
         // open dialog
         $mdDialog.show({
-            controller: ['$timeout', '$scope', '$state', '$mdDialog', '$http', 'FirebaseCart', 'FirebasePaymentService', 'DialogService', PaymentRequestDialogController],
+            controller: ['$timeout', '$scope', '$state', '$mdDialog', '$http', 'FirebaseCart', 'FirebaseUser', 'FirebasePaymentService', 'DialogService', PaymentRequestDialogController],
             templateUrl: 'assets/templates/payment-request-dialog.tmpl.html',
             parent: angular.element(document.body),
             //targetEvent: $event,
