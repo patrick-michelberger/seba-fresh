@@ -4,6 +4,10 @@
   }
 }
 
+md-dialog .sf-close-btn {
+  cursor: pointer;
+}
+
 #userCartsDialog,
 #providerDialog {
   .md-dialog-content {

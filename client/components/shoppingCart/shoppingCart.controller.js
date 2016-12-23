@@ -41,9 +41,8 @@ class ShoppingCartController {
     this.showInviteDialog = this.showInviteDialog;
   }
 
-  sendPaymentRequest() {
-    const userId = this.currentUser.auth.uid;
-    this.DialogService.showPaymentRequestModal(this.carts.current, userId);
+  sendPaymentRequest(uid) {
+    this.DialogService.showPaymentRequestModal(this.carts.current, uid);
   }
 
   onHidePaymentView() {

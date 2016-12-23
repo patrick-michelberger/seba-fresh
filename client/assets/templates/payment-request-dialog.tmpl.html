@@ -4,7 +4,7 @@
       <div class="md-toolbar-tools">
         <h3 class="product-name">Tell us your paypal.me link</h3>
         <span flex></span>
-        <i class="material-icons">close</i>
+        <i class="material-icons sf-close-btn" ng-click="cancel()">close</i>
       </div>
     </md-toolbar>
     <md-dialog-content>
@@ -33,7 +33,7 @@
         </form>
       </div>
     </md-dialog-content>
-    <md-dialog-actions layout="row">
+    <md-dialog-actions ng-hide="isLoading" layout="row">
 
       <a href="https://www.paypal.com/paypalme/grab?locale.x=de_DE&country.x=DE"
          ng-hide="(isLoading||currentUser.data.paypal.username||editUsername)&&submitted" target="_blank">
@@ -46,7 +46,7 @@
         Reset
       </md-button>
 
-      <md-button ng-show="submitted" class="md-raised md-primary" ng-click="usePaypal()">
+        <md-button ng-show="submitted" class="md-raised md-primary" ng-click="sendPaymentRequest()">
         Send Paypal Request
       </md-button>
 

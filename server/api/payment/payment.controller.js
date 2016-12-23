@@ -12,10 +12,7 @@
 import _ from 'lodash';
 import Payment from './payment.model';
 import mail from '../../components/mail';
-import Group from '../group/group.model';
 import config from '../../config/environment';
-import Cart from '../cart/cart.model';
-import User from '../user/user.model';
 import request from 'request';
 import Q from 'q';
 

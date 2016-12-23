@@ -5,10 +5,14 @@
   /**
    * The Dialog service
    */
-  function DialogService($rootScope, $state, $mdDialog, $mdMedia) {
+  function DialogService($rootScope, $state, $mdDialog, $mdMedia, $q) {
     var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) ||  $rootScope.customFullscreen;
 
     var Dialog = {
+
+      /**
+       * Alert Modal (generic)
+       */
       showAlert(title, content, actionLabel) {
         $mdDialog.show(
           $mdDialog.alert()
@@ -21,6 +25,9 @@
         );
       },
 
+      /**
+       * Payment Request Modal (for cart owner)
+       */
       showPaymentRequestModal(cart, userId, useFullScreen) {
         // controller
         function PaymentRequestDialogController($timeout, $scope, $state, $mdDialog, $http, FirebaseCart, FirebaseUser, FirebasePaymentService, DialogService) {
@@ -30,6 +37,7 @@
           $scope.paypal = {};
           $scope.isLoading = false;
           $scope.currentUser = FirebaseUser.getCurrentUser();
+          $scope.users = FirebaseCart.getUsers();
           $scope.submitted = $scope.currentUser.data.paypal.username ||  false;
 
           $scope.cancel = () => {
@@ -43,7 +51,6 @@
           }
 
           $scope.updateProfile = () => {
-
             FirebasePaymentService.checkPaypalLink($scope.currentUser.data.paypal.username);
             $scope.isLoading = true;
             $scope.currentUser.data.$save().then(() => {
@@ -53,29 +60,54 @@
           };
 
           $scope.changeUsernname = () => {
-            console.log("change username: ", );
             $scope.submitted = false;
 
             //if ($scope.currentUser.data.paypal.username < 1) {}
           }
 
-          $scope.usePaypal = function() {
+          $scope.sendPaymentRequest = () => {
+            sendRequest(userId);
+          };
+
+          $scope.sendPaymentRequestToAllUsers = function() {
+            $scope.isLoading = true;
+
+            // Send Payment Request to all cart users
+            var paymentCalls = [];
+            angular.forEach($scope.users.current, (user) => {
+              if (user.uid !== $scope.cart.createdByUserId) {
+                paymentCalls.push(sendRequest(user.uid));
+              }
+            });
+
+            $q.all(paymentCalls)
+              .then(() => {
+                $timeout(function() {
+                  $scope.isLoading = false;
+                  var title = "We've sent a payment request!";
+                  var content = "As soon as the payment request has been fulfilled, you get notified.";
+                  var popupLabel = "Next";
+                  DialogService.showAlert(title, content, popupLabel);
+                }, 300);
+              }, (error) => {
+                console.log("Error: ", error);
+              });
+          };
+
+
+          const sendRequest = (userId) => {
             const amount = FirebaseCart.getOrderValue(userId);
-            $http.post('/api/payments/send', {
+            return $http.post('/api/payments/send', {
               payerId: userId,
               cartId: cart.id,
               receiverId: cart.createdByUserId,
               amount: amount
             }).then(() => {
-              $timeout(function() {
-                $scope.isSending = false;
-                var title = "We've sent a payment request!";
-                var content = "As soon as the payment request has been fulfilled, you get notified.";
-                var popupLabel = "Next";
-                DialogService.showAlert(title, content, popupLabel);
-              }, 300);
-            }).catch((error) => {
-              console.log("Error: ", error);
+              angular.forEach($scope.users.current, (user, index) => {
+                if (user.uid === userId) {
+                  $scope.users.current[i].payment = "REQUEST_SENT";
+                }
+              });
             });
           };
         };
@@ -98,7 +130,9 @@
         });
       },
 
-
+      /**
+       * Pay Modal (for cart member)
+       */
       showPayModal(cart, userId, useFullScreen) {
         // controller
         function PayDialogController($scope, $state, $mdDialog, $http, FirebaseCart, FirebasePaymentService) {
@@ -136,6 +170,9 @@
         });
       },
 
+      /**
+       * Product Modal (for ADS)
+       */
       showProductModal(product, useFullScreen) {
         // controller
         function ProductDialogController($sce, $rootScope, $scope, $state, $mdDialog, FirebaseCart) {
@@ -177,6 +214,9 @@
         });
       },
 
+      /**
+       *  User Carts Modal (for shopping cart selection)
+       */
       showUserCartsModal(useFullScreen) {
         // controller
         function UserCartsDialogController($rootScope, $scope, $state, $mdDialog, FirebaseCart, FirebaseUser) {
@@ -191,17 +231,6 @@
           $scope.selected.cart = $scope.currentUser.data.currentCartId;
 
           $scope.deleteCarts = function() {
-            /*let cartIds = [];
-
-            for (const key in $scope.selectedCarts) {
-              if ($scope.selectedCarts[key].selected) {
-                cartIds.push(key);
-              }
-            }
-            cartIds.forEach((cartId) => {
-              FirebaseCart.deleteCart(cartId);
-            });
-            */
             if ($scope.selected.cart) {
               FirebaseCart.deleteCart($scope.selected.cart).then(() => {
                 if ($scope.carts.length > 0) {
@@ -252,7 +281,9 @@
         });
       },
 
-
+      /**
+       * Provider Modal (for grocery chain selection)
+       */
       showProviderModal(useFullScreen) {
         // controller
         function ProviderDialogController($rootScope, $scope, $state, $mdDialog, FirebaseCart, FirebaseUser) {
