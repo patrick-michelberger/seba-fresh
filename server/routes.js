@@ -10,8 +10,9 @@ import path from 'path';
 export default function(app) {
 
   // Insert routes below
-  app.use('/api/invitations', require('./api/invitation'));
+  app.use('/api/categories', require('./api/category'));
   app.use('/api/payments', require('./api/payment'));
+  app.use('/api/products', require('./api/product'));
 
   app.route('/channel.html').get((req, res) => {
     res.sendFile(path.resolve(app.get('serverPath') + '/views/channel.html'));
