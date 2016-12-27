@@ -66,7 +66,19 @@
           }
 
           $scope.sendPaymentRequest = () => {
-            sendRequest(userId);
+            $scope.isLoading = true;
+            sendRequest(userId)
+              .then(() => {
+                $timeout(function() {
+                  $scope.isLoading = false;
+                  var title = "We've sent a payment request!";
+                  var content = "As soon as the payment request has been fulfilled, you get notified.";
+                  var popupLabel = "Next";
+                  DialogService.showAlert(title, content, popupLabel);
+                }, 300);
+              }, (error) => {
+                console.log("Error: ", error);
+              });
           };
 
           $scope.sendPaymentRequestToAllUsers = function() {
@@ -94,7 +106,6 @@
               });
           };
 
-
           const sendRequest = (userId) => {
             const amount = FirebaseCart.getOrderValue(userId);
             return $http.post('/api/payments/send', {
@@ -103,11 +114,17 @@
               receiverId: cart.createdByUserId,
               amount: amount
             }).then(() => {
+              var updateIndex = false;
               angular.forEach($scope.users.current, (user, index) => {
                 if (user.uid === userId) {
-                  $scope.users.current[i].payment = "REQUEST_SENT";
+                  $scope.users.current[index].paymentStatus = "REQUEST_SENT";
+                  updateIndex = index;
+                  return;
                 }
               });
+              if (updateIndex) {
+                return $scope.users.current.$save(updateIndex);
+              }
             });
           };
         };
@@ -173,7 +190,7 @@
       /**
        * Product Modal (for ADS)
        */
-      showProductModal(product, useFullScreen) {
+      showProductModal(product) {
         // controller
         function ProductDialogController($sce, $rootScope, $scope, $state, $mdDialog, FirebaseCart) {
           var carts = FirebaseCart.getCarts();
@@ -195,6 +212,9 @@
             });
           };
         }
+
+        console.log("$mdMedia('sm'): ", $mdMedia('xs'));
+        console.log("useFullScreen: ", useFullScreen);
 
         // open dialog
         $mdDialog.show({

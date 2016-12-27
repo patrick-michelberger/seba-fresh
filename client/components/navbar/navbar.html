@@ -9,12 +9,22 @@
       <i class="material-icons sf-home-icon">home</i>
     </a>
 
-    <grocery-provider  hide-xs data-user="nav.currentUser"></grocery-provider>
+    <grocery-provider data-user="nav.currentUser"></grocery-provider>
+    
     <div class="sf-navigation-bar">
       <!-- Menu LOGGED OUT -->
       <div ng-hide="nav.currentUser.auth" layout="row" hide-xs flex>
         <md-button ui-sref="signup">sign up</md-button>
         <md-button ui-sref="login">login</md-button>
+      </div>
+
+      <div ng-show="!nav.currentUser.auth" hide-sm hide-md hide-lg>
+        <div class="sf-action-shopping-cart" ng-click="nav.openCart()">
+          <i class="material-icons sf-action-shopping-cart-icon">shopping_cart</i>
+        </div>
+        <div class="sf-action-account" ui-sref="login">
+          <i class="material-icons sf-action-account-icon">account_circle</i>
+        </div>
       </div>
 
       <!-- Menu LOGGED IN -->

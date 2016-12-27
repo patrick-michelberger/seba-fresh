@@ -435,25 +435,15 @@
 
     const deleteFirebase = () => {
       const ref1 = firebase.database().ref().child('carts-metadata');
-      ref1.remove(() => {
-        console.log("removedd...");
-      });
+      ref1.remove(() => {});
       const ref2 = firebase.database().ref().child('carts-products');
-      ref2.remove(() => {
-        console.log("removedd...");
-      });
+      ref2.remove(() => {});
       const ref3 = firebase.database().ref().child('carts-users');
-      ref3.remove(() => {
-        console.log("removedd...");
-      });
+      ref3.remove(() => {});
       const ref4 = firebase.database().ref().child('users');
-      ref4.remove(() => {
-        console.log("removedd...");
-      });
+      ref4.remove(() => {});
       const ref5 = firebase.database().ref().child('cart-users');
-      ref5.remove(() => {
-        console.log("removedd...");
-      });
+      ref5.remove(() => {});
     };
 
     const setProvider = (provider) => {

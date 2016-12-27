@@ -1,4 +1,8 @@
 /* POS upsell progress */
+minimum-order-value-progress {
+  margin-top: 50px;
+}
+
 minimum-order-value-progress .pos-upsell {
   height: 60px;
   margin-top: 10px;
@@ -50,13 +54,13 @@ minimum-order-value-progress .upsell-message {
   padding: 0 35px;
 }
 minimum-order-value-progress .free-shipping {
-  font-size: 14px;
+  font-size: 12px;
   text-align: center;
-  height: 65px;
+  height: 50px;
   background-color: $sf-color-green;
 }
 minimum-order-value-progress .free-shipping .hint {
-  top: 25px;
+  top: 18px;
   position: relative;
   color: #fff;
 }

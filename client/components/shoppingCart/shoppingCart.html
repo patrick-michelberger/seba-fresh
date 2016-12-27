@@ -1,6 +1,7 @@
 <!-- Header START -->
 <md-toolbar class="group-cart-total">
   <div>
+    <!-- Logged In -->
     <div ng-hide="shoppingCartCtrl.isGroupAdmin()
           &&shoppingCartCtrl.freeShipping
           &&shoppingCartCtrl.users.current.length>1">
@@ -28,21 +29,27 @@
     <i ng-click="shoppingCartCtrl.onHidePaymentView()"
        class="btn-hide-payment-view material-icons">shopping_cart</i>
   </div>
+
+  <!-- Logged out -->
+  <div ng-show="!shoppingCartCtrl.users.current||!shoppingCartCtrl.currentUser.auth">
+    <span class="description">My Cart</span>
+  </div>
+
 </md-toolbar>
 <!-- Header END -->
 
 <minimum-order-value-progress
-  free-shipping="shoppingCartCtrl.freeShipping"></minimum-order-value-progress>
+  free-shipping="shoppingCartCtrl.freeShipping" ng-show="shoppingCartCtrl.currentUser.auth"></minimum-order-value-progress>
 
 <!-- Cart START-->
-<div class="cart-list"
+<div layout-fill class="cart-list"
      ng-hide="shoppingCartCtrl.isGroupAdmin()
             &&shoppingCartCtrl.freeShipping
             &&!shoppingCartCtrl.hidePaymentView
             &&shoppingCartCtrl.users.current.length>1">
 
   <!-- CURRENT USER -->
-  <div class="single-cart cart-cell">
+  <div class="single-cart cart-cell" ng-show="shoppingCartCtrl.users.current&&shoppingCartCtrl.currentUser.auth">
     <div class="user-container cart-cell-container" layout="row">
       <div class="user-picture cart-cell-picture" layout="row" layout-align="start center">
         <img ng-src="{{shoppingCartCtrl.currentUser.data.photoURL}}" />
@@ -63,46 +70,54 @@
     </div>
     <!-- ITEMS -->
     <div class="cart-cell-container"
-         ng-repeat="item in shoppingCartCtrl.products.current[shoppingCartCtrl.currentUser.auth.uid]"
+         ng-repeat="item in ::shoppingCartCtrl.products.current[shoppingCartCtrl.currentUser.auth.uid]"
          layout="column">
       <div layout="row">
         <div class="cart-cell-picture" layout="row" layout-align="start center">
-          <img ng-src="{{item.item.mediumImage}}" />
+          <img ng-src="{{::item.item.mediumImage}}" />
         </div>
         <div class="cart-cell-info">
           <div layout="column">
             <div flex class="cart-cell-title">
-              {{item.item.name}}
+              {{::item.item.name}}
             </div>
             <div flex class="cart-cell-description">
               <span>Sold by:</span> Walmart.com
             </div>
+            <div flex class="cart-cell-total-amount">
+              $ {{::item.item.price}}
+            </div>
           </div>
         </div>
-        <div flex class="cart-cell-total-amount">
-          $ {{item.item.price}}
-        </div>
       </div>
-      <div flex layout="row" class="cart-item-actions">
-        <md-button flex ng-click="shoppingCartCtrl.removeFromCart(item.item, quantity)" class="md-raised" aria-label="remove rom cart" ng-disabled="!item.quantity||item.quantity<1">-</md-button>
-        <md-button flex class="product-quantity md-raised" ng-class="{'highlight': item.quantity>0}" aria-label="quantity" ng-disabled="true">{{item.quantity}}</md-button>
-        <md-button ng-hide="item.quantity>0" flex ng-click="shoppingCartCtrl.addToCart(item.item)" aria-label="add to cart" class="md-raised md-warn ">
+      <div flex layout="row" class="cart-item-actions" recompile-on="cart:add:{{::item.item.id}}">
+        <button flex ng-click="shoppingCartCtrl.removeFromCart(item.item, quantity)" class="md-raised" aria-label="remove rom cart" ng-disabled="::(!item.quantity||item.quantity<1)">-</button>
+        <button flex class="product-quantity md-raised" ng-class="::{'highlight': item.quantity>0}" aria-label="quantity" ng-disabled="true">{{::item.quantity}}</button>
+        <button ng-hide="::item.quantity>0" flex ng-click="shoppingCartCtrl.addToCart(item.item)" aria-label="add to cart" class="md-raised md-warn ">
           <i class="sf-md-cart-icon material-icons">shopping_cart</i>
-        </md-button>
-        <md-button ng-show="item.quantity>0" flex ng-click="shoppingCartCtrl.addToCart(item.item)" aria-label="add to cart" class="md-raised">+</md-button>
+        </button>
+        <button ng-show="::item.quantity>0" flex ng-click="shoppingCartCtrl.addToCart(item.item)" aria-label="add to cart" class="md-raised">+</button>
       </div>
     </div>
   </div>
+  <div layout-fill layout="row" ng-hide="shoppingCartCtrl.users.current&&shoppingCartCtrl.currentUser.auth">
+    <div class="sf-cart-empty" layout="column" layout-align="center center">
+      <h2>Your Cart is empty!</h2>
+      <p>Add items to it now</p>
+    </div>
+  </div>
   <!-- FLATMATES -->
-  <div class="single-cart cart-cell" ng-if="flatmate.uid !== shoppingCartCtrl.currentUser.auth.uid" ng-repeat="flatmate in shoppingCartCtrl.users.current">
+  <div class="single-cart cart-cell"
+       ng-if="::flatmate.uid !== shoppingCartCtrl.currentUser.auth.uid"
+       ng-repeat="flatmate in ::shoppingCartCtrl.users.current">
     <div class="user-container cart-cell-container" layout="row">
       <div class="user-picture cart-cell-picture" layout="row" layout-align="start center">
-        <img ng-src="{{flatmate.photoURL}}" />
+        <img ng-src="{{::flatmate.photoURL}}" />
       </div>
       <div class="user-info cart-cell-info">
         <div layout="column">
           <div flex class="user-name cart-cell-title">
-            {{flatmate.displayName}}
+            {{::flatmate.displayName}}
           </div>
           <div flex class="user-cart-quantity cart-cell-description">
             {{shoppingCartCtrl.calculateOrderAmount(flatmate.uid) }} Items
@@ -114,7 +129,9 @@
       </div>
     </div>
     <!-- ITEMS -->
-    <div class="cart-cell-container" ng-repeat="item in shoppingCartCtrl.products.current[flatmate.uid]" layout="column">
+    <div class="cart-cell-container"
+         ng-repeat="item in shoppingCartCtrl.products.current[flatmate.uid]"
+         layout="column">
       <div layout="row">
         <div class="cart-cell-picture" layout="row" layout-align="start center">
           <img ng-src="{{item.item.mediumImage}}" />
@@ -122,15 +139,15 @@
         <div class="cart-cell-info">
           <div layout="column">
             <div flex class="cart-cell-title">
-              {{item.item.name}}
+              {{::item.item.name}}
             </div>
             <div flex class="cart-cell-description">
               <span>Sold by:</span> Walmart.com
             </div>
+            <div flex class="cart-cell-total-amount">
+              $ {{::item.item.price}}
+            </div>
           </div>
-        </div>
-        <div flex class="cart-cell-total-amount">
-          $ {{item.item.price}}
         </div>
       </div>
     </div>
@@ -186,15 +203,15 @@
         Paid
       </div>
     </div>
-    <div class="single-cart cart-cell single-cart-flatmate" ng-if="flatmate.uid !== shoppingCartCtrl.currentUser.auth.uid" ng-repeat="flatmate in shoppingCartCtrl.users.current">
+    <div class="single-cart cart-cell single-cart-flatmate" ng-if="::flatmate.uid !== shoppingCartCtrl.currentUser.auth.uid" ng-repeat="flatmate in shoppingCartCtrl.users.current">
       <div class="user-container cart-cell-container" layout="row">
         <div class="user-picture cart-cell-picture" layout="row" layout-align="start center">
-          <img ng-src="{{flatmate.photoURL}}" />
+          <img ng-src="{{::flatmate.photoURL}}" />
         </div>
         <div class="user-info cart-cell-info">
           <div layout="column">
             <div flex class="user-name cart-cell-title">
-              {{flatmate.displayName}}
+              {{::flatmate.displayName}}
             </div>
             <div flex class="user-cart-quantity cart-cell-description">
               $ {{shoppingCartCtrl.calculateOrderValue(flatmate.uid) | price}} | {{shoppingCartCtrl.calculateOrderAmount(flatmate.uid) }} Items
@@ -207,8 +224,14 @@
         </div>
       </div>
       <div ng-show="shoppingCartCtrl.isGroupAdmin()" layout="row">
-        <a class="btn-payment-request"
-           ng-click="shoppingCartCtrl.sendPaymentRequest(flatmate.uid)">Send Payment Request to {{flatmate.displayName}}</a>
+        <a ng-hide="flatmate.paymentStatus ==='REQUEST_SENT'" class="btn-payment-request"
+           ng-click="shoppingCartCtrl.sendPaymentRequest(flatmate.uid)">
+           Send Payment Request to {{::flatmate.displayName}}
+        </a>
+        <a ng-show="flatmate.paymentStatus==='REQUEST_SENT'" class="btn-payment-request"
+           ng-click="shoppingCartCtrl.sendPaymentRequest(flatmate.uid)">
+           Request sent.
+        </a>
       </div>
     </div>
     <hr/>

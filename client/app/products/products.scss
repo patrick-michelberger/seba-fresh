@@ -1,73 +1,112 @@
-#sf-products-container {
-  background-color: #f4f5f7;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-.sf-product {
-  min-height: 450px;
-  padding: 5px;
-}
-.sf-product md-card {
-  position: relative;
-  padding: 0;
-  margin: 0;
-}
+products {
+  height: 100%;
 
-.sf-product .layout-column {
-  padding-left: 10px!important;
-  padding-right: 10px!important;
-}
+  #sf-products-container {
+    background-color: #f4f5f7;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 40px;
+    height: calc(100vh - 50px);
+  }
 
-.sf-product md-card-title-text {
-  padding: 16px;
-  min-height: 75px;
-}
+  .sf-product {
+    min-height: 450px;
+    padding: 5px;
 
-#sf-products-container > div > md-card > md-card-title-media {
-  display: flex!important;
-  flex-flow: row nowrap!important;
-  align-items: center!important;
-}
+  }
+  .sf-product md-card {
+    position: relative;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+  }
 
-.sf-product .sf-price {
-  text-align: right!important;
-  font-weight: bold;
-  font-size: 16px;
-  height: 25px;
-  margin-top: 15px;
-}
-.sf-product md-card {
-  box-shadow: none!important;
-}
-.sf-product .sf-md-cart-icon {
-  top: 0px;
-  position: relative;
-}
-.sf-product .md-title {
-  font-size: 16px;
-  text-align: left;
-  height: 18px;
-  overflow: hidden;
-}
-.sf-product .product-quantity.highlight {
-  background-color: #ffc120;
-  color: #fff;
-  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
-  border-radius: 0.75em;
-  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.2);
-}
-.sf-product .product-quantity.highlight span {
-  color: #444;
-  font-weight: 700;
+  .sf-product .layout-column {
+    padding-left: 10px!important;
+    padding-right: 10px!important;
+  }
+
+  .sf-product md-card-title-text {
+    padding: 16px;
+    min-height: 75px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  #sf-products-container > div > md-card > md-card-title-media {
+    display: flex!important;
+    flex-flow: row nowrap!important;
+    align-items: center!important;
+  }
+
+  .sf-product .sf-price {
+    text-align: right!important;
+    font-weight: bold;
+    font-size: 16px;
+    height: 25px;
+    margin-top: 15px;
+  }
+  .sf-product md-card {
+    box-shadow: none!important;
+  }
+  .sf-product .sf-md-cart-icon {
+    top: 0px;
+    position: relative;
+    font-size: 18px;
+    line-height: 20px;
+  }
+  .sf-product .md-title {
+    font-size: 14px;
+    height: 18px;
+    overflow: hidden;
+    text-align: left!important;
+    margin-top: 5px;
+  }
+  .sf-product .product-quantity.highlight {
+    background-color: #ffc120;
+    color: #fff;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+    border-radius: 0.75em;
+    box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.2);
+  }
+  .sf-product .product-quantity.highlight span {
+    color: #444;
+    font-weight: 700;
+  }
 }
 
 /** XS **/
 @media only screen and (max-width: 599px) {
+  #sf-products-container > div:nth-child(1) > md-card > div.hide-lg.hide-md.hide-sm > div > md-card-title-text {
+    padding-right: 0px !important;
+  }
+
+
   .sf-product {
     min-height: auto!important;
 
+    md-card-actions {
+      position: absolute;
+      width: 100%;
+      bottom: 0px;
+      right: 0px;
+    }
+
+    .md-button {
+      min-height: 30px;
+      padding-right: 0;
+      padding-left: 0;
+      max-width: 40px;
+    }
+
+    .sf-description {
+      margin-top: 0px;
+      margin-bottom: 10px;
+    }
+
     .sf-price {
       margin-top: 10px;
+      font-weight: bold!important;
     }
 
     .sf-flatmate-list {
@@ -97,8 +136,8 @@
     }
 
     md-card-title-text {
-      padding: 10px 5px;
       min-height: 50px;
+      padding: 0!important;
     }
 
     .md-subhead {
@@ -107,9 +146,14 @@
     }
 
     .md-title {
-      font-size: 12px;
-      height: 14px;
       overflow: hidden;
+      font-size: 15px;
+      height: 18px;
+      overflow: hidden;
+      text-transform: lowercase;
+      font-weight: 400;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .sf-image-wrapper {

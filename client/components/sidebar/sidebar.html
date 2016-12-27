@@ -1,22 +1,47 @@
 <!-- Sidebar Left -->
 <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
-  <md-toolbar>
-    <h1 class="md-toolbar-tools sf-brand">project&nbsp;<span>fresh.</span></h1>
-  </md-toolbar>
+  <!-- <md-toolbar ng-class="{'loggedIn':nav.currentUser.auth}">
+    <!--<h1 class="md-toolbar-tools sf-brand">project&nbsp;<span>fresh.</span></h1>-->
+    <!-- <grocery-provider ng-hide="vm.currentUser.auth" data-user="nav.currentUser"></grocery-provider>
+    <div class="sf-welcome-user" ng-show="vm.currentUser.auth">
+      <img class="sf-welcome-user-picture" ng-src="{{vm.currentUser.data.photoURL}}"/>
+      <span class="sf-welcome-user-message">Hi {{ vm.currentUser.auth.displayName}}</span>
+    </div> 
+  </md-toolbar> -->
   <section class="sf-sidebar-nav">
-    <md-list-item ng-hide="vm.isLoggedIn()" ui-sref-active="active" ng-click="vm.close()" ui-sref="signup">
+    <!-- Categories -->
+
+    <!-- <md-list-item  ng-repeat="category in vm.categories" ng-class="{'active': vm.isCategorySelected(vm.$stateParams.categoryId, category.id)}" ng-click="vm.selectCategory(category.id, category.name, $event)">
+      <p>{{category.name}}</p>
+    </md-list-item> -->
+
+    <!-- Account Links -->
+    <hr/>
+    <md-list-item ui-sref-active="active" ng-click="vm.close()" ui-sref="signup">
+      <p>My Cart</p>
+    </md-list-item>
+    <md-list-item ui-sref-active="active" ng-click="vm.close()" ui-sref="signup">
+      <p>My Orders</p>
+    </md-list-item>
+    <md-list-item ui-sref-active="active" ng-click="vm.close()" ui-sref="account">
+      <p>My Account</p>
+    </md-list-item>
+
+    <!-- Legal -->
+    <hr/>
+    <md-list-item ui-sref-active="active" ng-click="vm.close()" ui-sref="imprint">
+      <p>Imprint</p>
+    </md-list-item>
+    <md-list-item ng-hide="vm.currentUser.auth" ui-sref-active="active" ng-click="vm.close()" ui-sref="signup">
       <p>Sign up</p>
     </md-list-item>
-    <md-list-item ng-hide="vm.isLoggedIn()" ui-sref-active="active" ng-click="vm.close()" ui-sref="login">
+    <md-list-item ng-hide="vm.currentUser.auth" ui-sref-active="active" ng-click="vm.close()" ui-sref="login">
       <p>Login</p>
     </md-list-item>
-    <md-list-item ng-show="vm.isLoggedIn()">
-      <p class="navbar-text">Hello {{ vm.getCurrentUser().first_name }} {{vm.getCurrentUser().last_name }}</p>
-    </md-list-item>
-    <md-list-item ng-show="vm.isLoggedIn()" ui-sref-active="active" ng-click="vm.close()" ui-sref="settings">
+    <md-list-item ng-show="vm.currentUser.auth" ui-sref-active="active" ng-click="vm.close()" ui-sref="settings">
       <p>Settings</p>
     </md-list-item>
-    <md-list-item ng-show="vm.isLoggedIn()" ui-sref-active="active" ng-click="vm.close()" ui-sref="logout">
+    <md-list-item ng-show="vm.currentUser.auth" ui-sref-active="active" ng-click="vm.close()" ui-sref="logout">
       <p>Logout</p>
     </md-list-item>
   </section>
@@ -25,6 +50,6 @@
 <!-- Sidebar Right-->
 <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
   <md-content layout-fill>
-    <shopping-cart></shopping-cart>
+    <shopping-cart layout="column" layout-fill></shopping-cart>
   </md-content>
 </md-sidenav>

@@ -2,39 +2,45 @@
   <form>
     <md-toolbar>
       <div class="md-toolbar-tools">
+        <i class="material-icons sf-btn-back" +
+           ng-click="cancel()"
+           hide-sm hide-md hide-lg>chevron_left</i>
         <h3 class="product-name">{{product.name}}</h3>
         <span flex></span>
-        <i class="material-icons" aria-label="Close dialog" ng-click="cancel()">clear</i>
+        <i class="material-icons" aria-label="Close dialog"
+           ng-click="cancel()"
+           hide-xs>clear</i>
       </div>
     </md-toolbar>
     <md-dialog-content>
-      <div class="md-dialog-content" layout="row">
-        <div flex="50" layout="column" layout-align="center center">
-          <img ng-src="{{product.largeImage}}" />
-        </div>
-        <div class="product-details" layout="column" layout-align="center center" flex="50">
-          <md-content layout-padding>
-            <!--<h4 flex class="product-brand">{{product.brand}}</h4>-->
-            <p class="product-description" ng-bind-html="productDescription"></p>
-            <span class="product-price-container">
-                <span class="product-price-currency-sign">
-                  $
-                </span>
-            <span class="product-price-dollars">
-                  {{product.price | floor}}
+      <div class="md-dialog-content" layout="column">
+        <img flex ng-src="{{product.largeImage}}" />
+        <div flex class="product-details">
+          <md-content layout="column" layout-padding>
+            <h4 flex class="product-brand">{{product.brand}}</h4>
+            <div flex>
+              <span class="product-price-container">
+                  <span class="product-price-currency-sign">
+                    $
                   </span>
-            <span class="product-price-cents">
-                  {{product.price | cents}}
-                </span>
-            </span>
+              <span class="product-price-dollars">
+                    {{product.price | floor}}
+                    </span>
+              <span class="product-price-cents">
+                    {{product.price | cents}}
+                  </span>
+              </span>
+            </div>
+              <p flex class="product-description" ng-bind-html="productDescription"></p>
           </md-content>
         </div>
       </div>
     </md-dialog-content>
     <md-dialog-actions layout="row ">
-      <a class="product-url" ng-href="{{product.productUrl}}" target="_blank"><img src="/assets/images/walmart-logo.png" /></a>
-      <md-button class="md-raised md-warn" ng-click="addToCart(product)">
-        <i class="material-icons" aria-label="add to cart">shopping_cart</i>
+      <!--<a class="product-url" ng-href="{{product.productUrl}}" target="_blank"><img src="/assets/images/walmart-logo.png" /></a>-->
+      <md-button class="md-raised md-warn sf-btn-add-to-cart" ng-click="addToCart(product)">
+        <span class="sf-btn-text" hide-sm hide-md hide-lg>ADD TO CART</span>
+        <i class="material-icons" aria-label="add to cart" hide-xs>shopping_cart</i>
       </md-button>
     </md-dialog-actions>
   </form>

@@ -22,12 +22,18 @@ categories .sf-category-breadcrumb {
 
 categories .sf-current-category {
   position: absolute;
-  left: 35px;
+  left: 30px;
+  text-decoration: none;
+  color: white;
+  font-size: 13px;
+  line-height: 31px;
 }
 
 categories .material-icons {
   position: absolute;
-  top: 8px;
+  top: 4px;
+  font-size: 18px;
+  line-height: 24px;
 }
 
 md-menu-content {
@@ -69,8 +75,12 @@ categories button {
 /** XS **/
 @media only screen and (max-width: 599px) {
   categories .sf-category-breadcrumb {
-    margin-top: 7px;
+    margin-top: 5px;
     background: #1a75cf;
     color: #fff;
+    height: 30px;
+    position: fixed;
+    width: 100%;
+    z-index: 10;
   }
 }

@@ -1,4 +1,9 @@
-<div class="sf-logo-wrapper" ng-click="changeProvider()">
+<div class="sf-logo-wrapper" ng-click="changeProvider()" hide-xs>
+  <img class="sf-walmart-logo" ng-show="user.data.currentProvider=='walmart' || !rootScope.currentProvider  || rootScope.currentProvider =='walmart'" src="/assets/images/walmart.svg"/>
+  <img class="sf-zopnow-logo" ng-show="user.data.currentProvider=='zopnow' || rootScope.currentProvider =='zopnow'" src="/assets/images/zopnow.jpeg"/>
+</div>
+
+<div class="sf-logo-wrapper" ui-sref="main.home" hide-sm hide-md hide-lg>
   <img class="sf-walmart-logo" ng-show="user.data.currentProvider=='walmart' || !rootScope.currentProvider  || rootScope.currentProvider =='walmart'" src="/assets/images/walmart.svg"/>
   <img class="sf-zopnow-logo" ng-show="user.data.currentProvider=='zopnow' || rootScope.currentProvider =='zopnow'" src="/assets/images/zopnow.jpeg"/>
 </div>

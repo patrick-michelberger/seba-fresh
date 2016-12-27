@@ -62,6 +62,7 @@ navbar .sf-navigation-bar {
   color: black;
   position: absolute;
   right: 0;
+  top: 0;
 }
 navbar .sf-navigation-bar .md-button {}
 navbar .sf-mini-cart {
@@ -141,12 +142,20 @@ navbar .sf-cart-badge {
   top: 0;
 }
 @media only screen and (max-width: 959px) and (min-width: 0) and (orientation: portrait) {
-  .md-toolbar-tools {
-    height: 65px;
+  navbar .md-toolbar-tools {
+    height: 50px;
     font-weight: bold;
+    padding: 10px;
   }
   navbar .sf-navigation-bar .md-button {
     line-height: 60px;
+  }
+
+  navbar md-toolbar {
+    min-height: 50px;
+    max-height: 50px;
+    height: 50px;
+    box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.15);
   }
 }
 @media only screen and (max-width: 959px) and (min-width: 0) and (orientation: landscape) {
@@ -161,8 +170,64 @@ navbar .sf-cart-badge {
 
 /** XS **/
 @media only screen and (max-width: 599px) {
-  navbar .sf-mini-cart {
-    margin-right: 10px;
+  navbar {
+    .sf-mini-cart {
+      margin-right: 10px;
+
+      .sf-cart-amount-dollars {
+        font-size: 18px;
+        top: -17px;
+      }
+
+      .sf-cart-total-icon {
+        margin-top: -21px;
+        height: 35px;
+        width: 35px;
+      }
+
+      .sf-cart-total-amount {
+        min-width: 110px;
+        height: 23px;
+        margin-top: 15px;
+        right: 8px;
+      }
+
+      .sf-cart-badge {
+        font-size: 10px;
+      }
+
+      .sf-cart-currency-sign,
+      .sf-cart-amount-cents {
+        top: -21px;
+        font-size: 12px;
+      }
+
+      .sf-cart-currency-sign {
+        top: -21px;
+      }
+      .sf-md-cart-icon {
+        font-size: 18px;
+        top: -5px;
+      }
+    }
+
+
+    .sf-action-shopping-cart-icon,
+    .sf-action-account-icon {
+      line-height: 32px;
+      cursor: pointer;
+    }
+
+    .sf-action-shopping-cart,
+    .sf-action-account {
+      display: inline-block;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .sf-action-account {
+
+    }
   }
 }
 

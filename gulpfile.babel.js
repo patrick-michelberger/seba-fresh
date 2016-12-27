@@ -36,9 +36,9 @@ const paths = {
     assets: `${clientPath}/assets/**/*`,
     images: `${clientPath}/assets/images/**/*`,
     scripts: [
-            `${clientPath}/**/!(*.spec|*.mock).js`,
-            `!${clientPath}/bower_components/**/*`
-        ],
+      `${clientPath}/**/!(*.spec|*.mock).js`,
+      `!${clientPath}/bower_components/**/*`
+    ],
     styles: [`${clientPath}/{app,components}/**/*.scss`],
     mainStyle: `${clientPath}/app/app.scss`,
     views: `${clientPath}/{app,components}/**/*.html`,
@@ -49,10 +49,10 @@ const paths = {
   },
   server: {
     scripts: [
-          `${serverPath}/**/!(*.spec|*.integration).js`,
-          `!${serverPath}/config/local.env.sample.js`
-        ],
-    json: [`${serverPath}/**/*.json`],
+      `${serverPath}/**/!(*.spec|*.integration).js`,
+      `!${serverPath}/config/local.env.sample.js`
+    ],
+    json: [`${serverPath}/**/*.json`, `!${serverPath}/config/fresh-9a83f6531cd7.json`],
     test: {
       integration: [`${serverPath}/**/*.integration.js`, 'mocha.global.js'],
       unit: [`${serverPath}/**/*.spec.js`, 'mocha.global.js']
@@ -151,9 +151,9 @@ let transpileServer = lazypipe()
   .pipe(plugins.sourcemaps.init)
   .pipe(plugins.babel, {
     plugins: [
-            'transform-class-properties',
-            'transform-runtime'
-        ]
+      'transform-class-properties',
+      'transform-runtime'
+    ]
   })
   .pipe(plugins.sourcemaps.write, '.');
 
@@ -162,8 +162,8 @@ let mocha = lazypipe()
     reporter: 'spec',
     timeout: 5000,
     require: [
-            './mocha.conf'
-        ]
+      './mocha.conf'
+    ]
   });
 
 let istanbul = lazypipe()
@@ -441,13 +441,13 @@ gulp.task('wiredep:client', () => {
   return gulp.src(paths.client.mainView)
     .pipe(wiredep({
       exclude: [
-                /bootstrap.js/,
-                '/json3/',
-                '/es5-shim/',
-                /font-awesome\.css/,
-                /bootstrap\.css/,
-                /bootstrap-sass-official/
-            ],
+        /bootstrap.js/,
+        '/json3/',
+        '/es5-shim/',
+        /font-awesome\.css/,
+        /bootstrap\.css/,
+        /bootstrap-sass-official/
+      ],
       ignorePath: clientPath
     }))
     .pipe(gulp.dest(`${clientPath}/`));
@@ -457,13 +457,13 @@ gulp.task('wiredep:test', () => {
   return gulp.src(paths.karma)
     .pipe(wiredep({
       exclude: [
-                /bootstrap.js/,
-                '/json3/',
-                '/es5-shim/',
-                /font-awesome\.css/,
-                /bootstrap\.css/,
-                /bootstrap-sass-official/
-            ],
+        /bootstrap.js/,
+        '/json3/',
+        '/es5-shim/',
+        /font-awesome\.css/,
+        /bootstrap\.css/,
+        /bootstrap-sass-official/
+      ],
       devDependencies: true
     }))
     .pipe(gulp.dest('./'));
@@ -476,20 +476,20 @@ gulp.task('wiredep:test', () => {
 //FIXME: looks like font-awesome isn't getting loaded
 gulp.task('build', cb => {
   runSequence(
-        [
-            'clean:dist',
-            'clean:tmp'
-        ],
+    [
+      'clean:dist',
+      'clean:tmp'
+    ],
     'inject',
     'wiredep:client', [
-            'build:images',
-            'copy:extras',
-            'copy:fonts',
-            'copy:assets',
-            'copy:server',
-            'transpile:server',
-            'build:client'
-        ],
+      'build:images',
+      'copy:extras',
+      'copy:fonts',
+      'copy:assets',
+      'copy:server',
+      'transpile:server',
+      'build:client'
+    ],
     cb);
 });
 
@@ -537,7 +537,7 @@ gulp.task('build:client', ['transpile:client', 'styles', 'html', 'constant', 'bu
     .pipe(gulp.dest(`${paths.dist}/${clientPath}`));
 });
 
-gulp.task('html', function () {
+gulp.task('html', function() {
   return gulp.src(`${clientPath}/{app,components}/**/*.html`)
     .pipe(plugins.angularTemplatecache({
       module: 'sebaFreshApp'
@@ -545,7 +545,7 @@ gulp.task('html', function () {
     .pipe(gulp.dest('.tmp'));
 });
 
-gulp.task('constant', function () {
+gulp.task('constant', function() {
   let sharedConfig = require(`./${serverPath}/config/environment/shared`);
   return plugins.ngConstant({
       name: 'sebaFreshApp.constants',
@@ -580,9 +580,9 @@ gulp.task('build:images', () => {
 
 gulp.task('copy:extras', () => {
   return gulp.src([
-        `${clientPath}/favicon.ico`,
-        `${clientPath}/robots.txt`,
-        `${clientPath}/.htaccess`
+      `${clientPath}/favicon.ico`,
+      `${clientPath}/robots.txt`,
+      `${clientPath}/.htaccess`
     ], {
       dot: true
     })
@@ -603,12 +603,13 @@ gulp.task('copy:assets', () => {
 
 gulp.task('copy:server', () => {
   return gulp.src([
-        'package.json',
-        'bower.json',
-        '.bowerrc',
-        'server/bin/**/*',
-        'server/i18n/**/*',
-        'server/views/**/*'
+      'package.json',
+      'bower.json',
+      '.bowerrc',
+      'server/bin/**/*',
+      'server/i18n/**/*',
+      'server/views/**/*',
+      'server/config/fresh-9a83f6531cd7.json'
     ], {
       cwdbase: true
     })
@@ -693,24 +694,24 @@ grunt.initConfig({
 
 grunt.loadNpmTasks('grunt-build-control');
 
-gulp.task('buildcontrol:heroku', function (done) {
+gulp.task('buildcontrol:heroku', function(done) {
   grunt.tasks(
-        ['buildcontrol:heroku'], //you can add more grunt tasks in this array
+    ['buildcontrol:heroku'], //you can add more grunt tasks in this array
     {
       gruntfile: false
     }, //don't look for a Gruntfile - there is none. :-)
-    function () {
+    function() {
       done();
     }
   );
 });
-gulp.task('buildcontrol:openshift', function (done) {
+gulp.task('buildcontrol:openshift', function(done) {
   grunt.tasks(
-        ['buildcontrol:openshift'], //you can add more grunt tasks in this array
+    ['buildcontrol:openshift'], //you can add more grunt tasks in this array
     {
       gruntfile: false
     }, //don't look for a Gruntfile - there is none. :-)
-    function () {
+    function() {
       done();
     }
   );

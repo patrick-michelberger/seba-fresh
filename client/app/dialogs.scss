@@ -16,10 +16,57 @@ md-dialog .close {
   background-color: #0066a3;
   color: #fff;
 }
-#productDialog .product-name {
-  font-size: 21px;
-  font-weight: 400;
+
+#productDialog {
+  .product-name {
+    font-size: 16px;
+    font-weight: 400;
+    text-transform: lowercase;
+    position: absolute;
+    left: 50px;
+    overflow: hidden;
+    top: 50%;
+    margin-top: -10px;
+    overflow: hidden;
+    height: 18px;
+  }
+
+  md-dialog-content {
+    padding-bottom: 65px;
+  }
+
+  md-dialog-actions {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    padding: 0;
+  }
+
+  .sf-btn-add-to-cart {
+    width: 100%;
+    margin: 0;
+    height: 50px;
+    border-radius: 0;
+
+    .sf-btn-text {
+      font-weight: bolder;
+      position: absolute;
+      left: 50%;
+      margin-left: -55px;
+      font-size: 16px;
+      top: 20px;
+    }
+  }
+
+  .sf-btn-back {
+    font-size: 40px;
+    position: absolute;
+    left: 0;
+    top: 8px;
+  }
 }
+
+
 #productDialog .product-description {
   color: #939394;
   text-align: justify;
@@ -40,18 +87,18 @@ md-dialog .close {
   top: 5px;
   font-weight: 400;
   text-align: right;
+  height: 30px;
 }
 #productDialog .product-stock {
   font-size: 14px;
 }
 #productDialog .product-price-container {
-  border-radius: 10px;
-  background-color: #0066a3;
-  color: #fff;
+  border-radius: 5px;
+  background-color: #ffc120;
+  color: black;
   font-weight: bold;
   font-size: 26px;
   padding: 5px;
-  float: right;
   margin-right: 5px;
 }
 #productDialog .product-price-cents {

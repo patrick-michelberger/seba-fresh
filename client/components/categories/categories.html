@@ -12,8 +12,9 @@
 </md-menu-bar>
 
 <div class="sf-category-breadcrumb">
-  <i ng-show="state.categoryName" class="material-icons">keyboard_arrow_right</i>
-  <span class="sf-current-category">{{state.categoryName}}</span>
+  <i class="material-icons">keyboard_arrow_right</i>
+  <span ng-show="state.categoryName" class="sf-current-category">{{state.categoryName}}</span>
+  <a href="/" ng-hide="state.categoryName" class="sf-current-category">Home</a>
 </div>
 
 <script type="text/ng-template" id="menu_item.html">

@@ -37,11 +37,19 @@ md-backdrop.md-opaque {
 }
 
 #sf-root {
+  background-color: #f4f5f7;
   margin-top: 60px;
 }
 
 #sf-root.transparentNavbar {
   margin-top: 0;
+}
+
+/** XS **/
+@media only screen and (max-width: 599px) {
+  #sf-root {
+    margin-top: 45px;
+  }
 }
 
 /* SEBA fresh CI Colors */
