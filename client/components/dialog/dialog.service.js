@@ -304,7 +304,7 @@
       /**
        * Provider Modal (for grocery chain selection)
        */
-      showProviderModal(useFullScreen) {
+      showProviderModal() {
         // controller
         function ProviderDialogController($rootScope, $scope, $state, $mdDialog, FirebaseCart, FirebaseUser) {
 

@@ -2,22 +2,6 @@
   <div flex-xs="100" flex-sm="66" flex-md="50" flex-lg="33" flex-gt-lg="20">
       <form name="form" ng-submit="vm.register(form)" novalidate>
 
-        <!-- Profile Picture -->
-        <div class="md-block" ng-class="{ 'has-success': vm.user.picture && vm.submitted,
-                                          'has-error': !vm.user.picture && vm.submitted }">
-          <div ngf-drop ng-model="vm.user.picture" ngf-pattern="image/*" class="cropArea">
-                <img-crop area-type="square" area-min-size="350" result-image-size="350" result-image-format="image/png" image="vm.user.picture | ngfDataUrl"
-                result-image="vm.user.croppedDataUrl" ng-init="vm.user.croppedDataUrl=''">
-           </div>
-           <div class="md-errors-spacer sf-error-message" ng-show="!vm.user.picture && vm.submitted">
-             A picture is required
-           </div>
-           <i ng-hide="vm.user.picture" class="material-icons sf-upload-icon" ngf-select ng-model="vm.user.picture" accept="image/*">file_upload</i>
-           <i ng-show="vm.user.picture" class="material-icons sf-remove-icon" ng-click="vm.resetPicture()">close</i>
-           <img class="profilePicture" ng-src={{vm.user.croppedDataUrl}} />
-        </div>
-
-
         <!-- First Name Input -->
         <md-input-container class="md-block" ng-class="{ 'has-success': form.first_name.$valid && vm.submitted,
                                           'has-error': form.first_name.$invalid && vm.submitted }">
@@ -83,6 +67,21 @@
 
           </div>
         </md-input-container>
+
+        <!-- Profile Picture -->
+        <div class="md-block" ng-class="{ 'has-success': vm.user.picture && vm.submitted,
+                                          'has-error': !vm.user.picture && vm.submitted }">
+          <div ngf-drop ng-model="vm.user.picture" ngf-pattern="image/*" class="cropArea">
+                <img-crop area-type="square" area-min-size="350" result-image-size="350" result-image-format="image/png" image="vm.user.picture | ngfDataUrl"
+                result-image="vm.user.croppedDataUrl" ng-init="vm.user.croppedDataUrl=''">
+           </div>
+           <div class="md-errors-spacer sf-error-message" ng-show="!vm.user.picture && vm.submitted">
+             A picture is required
+           </div>
+           <i ng-hide="vm.user.picture" class="material-icons sf-upload-icon" ngf-select ng-model="vm.user.picture" accept="image/*">file_upload</i>
+           <i ng-show="vm.user.picture" class="material-icons sf-remove-icon" ng-click="vm.resetPicture()">close</i>
+           <img class="profilePicture" ng-src={{vm.user.croppedDataUrl}} />
+        </div>
 
         <!-- Action buttons -->
         <section layout-xs="column" layout="row">

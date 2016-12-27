@@ -6,7 +6,7 @@
     <div class="sf-welcome-user" ng-show="vm.currentUser.auth">
       <img class="sf-welcome-user-picture" ng-src="{{vm.currentUser.data.photoURL}}"/>
       <span class="sf-welcome-user-message">Hi {{ vm.currentUser.auth.displayName}}</span>
-    </div> 
+    </div>
   </md-toolbar> -->
   <section class="sf-sidebar-nav">
     <!-- Categories -->
@@ -29,6 +29,9 @@
 
     <!-- Legal -->
     <hr/>
+    <md-list-item ui-sref-active="active" ng-click="vm.changeProvider()">
+      <p>Change Grocery Store</p>
+    </md-list-item>
     <md-list-item ui-sref-active="active" ng-click="vm.close()" ui-sref="imprint">
       <p>Imprint</p>
     </md-list-item>
