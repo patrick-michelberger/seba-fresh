@@ -30,7 +30,6 @@
     }
 
     const logoutUser = () => {
-      alert("logout user");
       user.auth = null;
       user.data = null;
     }
