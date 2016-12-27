@@ -42,7 +42,7 @@
   free-shipping="shoppingCartCtrl.freeShipping" ng-show="shoppingCartCtrl.currentUser.auth"></minimum-order-value-progress>
 
 <!-- Cart START-->
-<div layout-fill class="cart-list"
+<div class="cart-list"
      ng-hide="shoppingCartCtrl.isGroupAdmin()
             &&shoppingCartCtrl.freeShipping
             &&!shoppingCartCtrl.hidePaymentView
@@ -70,7 +70,7 @@
     </div>
     <!-- ITEMS -->
     <div class="cart-cell-container"
-         ng-repeat="item in ::shoppingCartCtrl.products.current[shoppingCartCtrl.currentUser.auth.uid]"
+         ng-repeat="item in shoppingCartCtrl.products.current[shoppingCartCtrl.currentUser.auth.uid]"
          layout="column">
       <div layout="row">
         <div class="cart-cell-picture" layout="row" layout-align="start center">
@@ -91,12 +91,12 @@
         </div>
       </div>
       <div flex layout="row" class="cart-item-actions" recompile-on="cart:add:{{::item.item.id}}">
-        <button flex ng-click="shoppingCartCtrl.removeFromCart(item.item, quantity)" class="md-raised" aria-label="remove rom cart" ng-disabled="::(!item.quantity||item.quantity<1)">-</button>
-        <button flex class="product-quantity md-raised" ng-class="::{'highlight': item.quantity>0}" aria-label="quantity" ng-disabled="true">{{::item.quantity}}</button>
+        <button flex ng-click="shoppingCartCtrl.removeFromCart(item.item, quantity)" class="md-raised md-button md-ink-ripple" aria-label="remove rom cart" ng-disabled="::(!item.quantity||item.quantity<1)">-</button>
+        <button flex class="product-quantity md-raised md-button md-ink-ripple" ng-class="::{'highlight': item.quantity>0}" aria-label="quantity" ng-disabled="true">{{::item.quantity}}</button>
         <button ng-hide="::item.quantity>0" flex ng-click="shoppingCartCtrl.addToCart(item.item)" aria-label="add to cart" class="md-raised md-warn ">
           <i class="sf-md-cart-icon material-icons">shopping_cart</i>
         </button>
-        <button ng-show="::item.quantity>0" flex ng-click="shoppingCartCtrl.addToCart(item.item)" aria-label="add to cart" class="md-raised">+</button>
+        <button ng-show="::item.quantity>0" flex ng-click="shoppingCartCtrl.addToCart(item.item)" aria-label="add to cart" class="md-raised md-button md-ink-ripple">+</button>
       </div>
     </div>
   </div>
@@ -109,7 +109,7 @@
   <!-- FLATMATES -->
   <div class="single-cart cart-cell"
        ng-if="::flatmate.uid !== shoppingCartCtrl.currentUser.auth.uid"
-       ng-repeat="flatmate in ::shoppingCartCtrl.users.current">
+       ng-repeat="flatmate in shoppingCartCtrl.users.current">
     <div class="user-container cart-cell-container" layout="row">
       <div class="user-picture cart-cell-picture" layout="row" layout-align="start center">
         <img ng-src="{{::flatmate.photoURL}}" />
@@ -152,19 +152,21 @@
       </div>
     </div>
   </div>
-  <!-- INVITE -->
-  <md-button ng-click="shoppingCartCtrl.showInviteDialog(shoppingCartCtrl.carts.current)"
-             class="btn-pay-now md-raised md-warn"
-             ng-hide="shoppingCartCtrl.freeShipping">
-    Invite Friend
-  </md-button>
-  <!-- CHECKOUT -->
-  <md-button ng-click="shoppingCartCtrl.checkout()"
-             class="btn-pay-now md-raised md-warn"
-             ng-show="shoppingCartCtrl.isGroupAdmin()&&shoppingCartCtrl.freeShipping">
-      Checkout
-  </md-button>
 </div>
+
+<!-- INVITE -->
+<md-button ng-click="shoppingCartCtrl.showInviteDialog(shoppingCartCtrl.carts.current)"
+           class="btn-pay-now md-raised md-warn"
+           ng-hide="shoppingCartCtrl.freeShipping">
+  Invite Friend
+</md-button>
+<!-- CHECKOUT -->
+<md-button ng-click="shoppingCartCtrl.checkout()"
+           class="btn-pay-now md-raised md-warn"
+           ng-show="shoppingCartCtrl.isGroupAdmin()&&shoppingCartCtrl.freeShipping">
+    Checkout
+</md-button>
+
 <!-- Cart END -->
 
 <!-- Payment START-->
@@ -259,14 +261,13 @@
     <hr/>
   </div>
 </div>
+<!-- CHECKOUT FOR ADMIN -->
+<md-button ng-show="shoppingCartCtrl.isGroupAdmin()"
+           ng-click="shoppingCartCtrl.checkout()"
+           class="btn-pay-now md-raised md-warn">Checkout</md-button>
+<md-button ng-hide="shoppingCartCtrl.isGroupAdmin()
+    ||shoppingCartCtrl.calculateOrderValue(shoppingCartCtrl.currentUser.auth.uid) == '0.00'"
+    ng-click="shoppingCartCtrl.pay()" class="btn-pay-now md-raised md-warn">Pay</md-button>
 </div>
-
-  <!-- CHECKOUT FOR ADMIN -->
-  <md-button ng-show="shoppingCartCtrl.isGroupAdmin()"
-             ng-click="shoppingCartCtrl.checkout()"
-             class="btn-pay-now md-raised md-warn">Checkout</md-button>
-  <md-button ng-hide="shoppingCartCtrl.isGroupAdmin()
-      ||shoppingCartCtrl.calculateOrderValue(shoppingCartCtrl.currentUser.auth.uid) == '0.00'"
-      ng-click="shoppingCartCtrl.pay()" class="btn-pay-now md-raised md-warn">Pay</md-button>
 </div>
 <!-- Payment END -->
