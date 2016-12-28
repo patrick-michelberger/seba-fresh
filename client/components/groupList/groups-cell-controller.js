@@ -17,7 +17,6 @@ class GroupCellController {
     this.isAdmin = FirebaseCart.userIsAdmin;
 
     this.currentUser = FirebaseAuth.$getAuth();
-    console.log("this.currentUser: ", this.currentUser);
   }
 
   deleteCart(cart) {

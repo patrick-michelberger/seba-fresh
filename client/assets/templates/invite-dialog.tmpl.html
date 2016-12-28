@@ -14,7 +14,7 @@
           <label>Email</label>
           <input ng-model="invitee.email" type="email" required>
           <md-button type="submit" ng-hide="isSending" class="md-raised md-warn" ng-disabled="inviteForm.$invalid">Send Invitation</md-button>
-          <md-button ng-show="isSending" ng-disabled="true">is sending ...</md-button>
+          <md-button ng-show="isSending" disabled>is sending ...</md-button>
         </md-input-container>
       </form>
     </div>

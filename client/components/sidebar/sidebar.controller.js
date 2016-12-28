@@ -20,6 +20,10 @@ class SidebarController {
     });
   }
 
+  isLoggedIn() {
+    return !!this.currentUser.auth;
+  }
+
   /**
    * Close sidebar
    */

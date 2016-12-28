@@ -92,8 +92,8 @@
       </div>
       <div flex layout="row" class="cart-item-actions" recompile-on="cart:add:{{::item.item.id}}">
         <button flex ng-click="shoppingCartCtrl.removeFromCart(item.item, quantity)" class="md-raised md-button md-ink-ripple" aria-label="remove rom cart" ng-disabled="::(!item.quantity||item.quantity<1)">-</button>
-        <button flex class="product-quantity md-raised md-button md-ink-ripple" ng-class="::{'highlight': item.quantity>0}" aria-label="quantity" ng-disabled="true">{{::item.quantity}}</button>
-        <button ng-hide="::item.quantity>0" flex ng-click="shoppingCartCtrl.addToCart(item.item)" aria-label="add to cart" class="md-raised md-warn ">
+        <button flex class="product-quantity md-raised md-button md-ink-ripple" ng-class="::{'highlight': item.quantity>0}" aria-label="quantity" disabled>{{::item.quantity}}</button>
+        <button ng-hide="::item.quantity>0" flex ng-click="shoppingCartCtrl.addToCart(item.item)" aria-label="add to cart" class="md-raised md-warn md-button md-ink-ripple">
           <i class="sf-md-cart-icon material-icons">shopping_cart</i>
         </button>
         <button ng-show="::item.quantity>0" flex ng-click="shoppingCartCtrl.addToCart(item.item)" aria-label="add to cart" class="md-raised md-button md-ink-ripple">+</button>

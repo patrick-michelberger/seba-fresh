@@ -6,7 +6,7 @@
     </button>
 
     <md-menu-content>
-       <md-menu-item ng-repeat="category in category.children" ng-include='"menu_item.html"'></md-menu-item>
+       <md-menu-item ng-repeat="category in ::category.children" ng-include='"menu_item.html"'></md-menu-item>
      </md-menu-content>
   </md-menu>
 </md-menu-bar>

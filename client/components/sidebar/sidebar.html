@@ -1,19 +1,18 @@
 <!-- Sidebar Left -->
 <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
-  <!-- <md-toolbar ng-class="{'loggedIn':nav.currentUser.auth}">
-    <!--<h1 class="md-toolbar-tools sf-brand">project&nbsp;<span>fresh.</span></h1>-->
-    <!-- <grocery-provider ng-hide="vm.currentUser.auth" data-user="nav.currentUser"></grocery-provider>
+  <md-toolbar ng-class="{'loggedIn': vm.isLoggedIn}">
+    <grocery-provider ng-hide="vm.currentUser.auth" data-user="vm.currentUser"></grocery-provider>
     <div class="sf-welcome-user" ng-show="vm.currentUser.auth">
       <img class="sf-welcome-user-picture" ng-src="{{vm.currentUser.data.photoURL}}"/>
       <span class="sf-welcome-user-message">Hi {{ vm.currentUser.auth.displayName}}</span>
     </div>
-  </md-toolbar> -->
+  </md-toolbar>
   <section class="sf-sidebar-nav">
     <!-- Categories -->
 
-    <!-- <md-list-item  ng-repeat="category in vm.categories" ng-class="{'active': vm.isCategorySelected(vm.$stateParams.categoryId, category.id)}" ng-click="vm.selectCategory(category.id, category.name, $event)">
-      <p>{{category.name}}</p>
-    </md-list-item> -->
+    <md-list-item  ng-repeat="category in ::vm.categories" ng-class="{'active': vm.isCategorySelected(vm.$stateParams.categoryId, category.id)}" ng-click="vm.selectCategory(category.id, category.name, $event)">
+      <p>{{::category.name}}</p>
+    </md-list-item>
 
     <!-- Account Links -->
     <hr/>
