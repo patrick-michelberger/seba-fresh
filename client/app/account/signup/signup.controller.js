@@ -36,35 +36,61 @@ class SignupController {
     });
   }
 
+  sendVerificationEmail() {
+    const currentUser = this.FirebaseAuth.$getAuth();
+    if (!currentUser) {
+      return;
+    }
+    return currentUser.sendEmailVerification();
+  }
+
+  updateProfile(data) {
+    const currentUser = this.FirebaseAuth.$getAuth();
+    if (!currentUser || !data) {
+      return;
+    }
+    return currentUser.updateProfile(data);
+  }
+
+  createUserByEmail(email) {
+    const currentUser = this.FirebaseAuth.$getAuth();
+    if (!currentUser || !email) {
+      return;
+    }
+    return this.FirebaseUser.createUser(currentUser.uid, currentUser.displayName, currentUser.photoURL, email);
+  }
+
   register(form) {
     var self = this;
     this.submitted = true;
 
     if (form.$valid) {
-      this.FirebaseAuth.$createUserWithEmailAndPassword(this.user.email, this.user.password).then((createdUser) => {
-        return self.uploadProfilePicture(self.user.croppedDataUrl).then((photoURL) => {
-          return createdUser.updateProfile({
+      this.FirebaseAuth.$createUserWithEmailAndPassword(this.user.email, this.user.password)
+        .then(() => {
+          return self.sendVerificationEmail();
+        })
+        .then(() => {
+          return self.uploadProfilePicture(self.user.croppedDataUrl);
+        })
+        .then((photoURL) => {
+          return self.updateProfile({
             displayName: self.user.first_name + " " + self.user.last_name,
             photoURL: photoURL
-          }).then(() => {
-            return {
-              uid: createdUser.uid,
-              displayName: self.user.first_name + " " + self.user.last_name,
-              photoURL: photoURL
-            }
           });
-        });
-      }).then((currentUser) => {
-        return self.FirebaseUser.createUser(currentUser.uid, currentUser.displayName, currentUser.photoURL, self.user.email).then(() => {
+        })
+        .then(() => {
+          return self.createUserByEmail(self.user.email);
+        })
+        .then(() => {
           if (self.redirectUrl) {
             self.$location.path(self.$stateParams.redirectUrl);
           } else {
             self.$state.go('onboarding');
           }
+        })
+        .catch((error) => {
+          self.errors.other = error.message;
         });
-      }).catch((error) => {
-        self.errors.other = error.message;
-      });
     }
   }
 

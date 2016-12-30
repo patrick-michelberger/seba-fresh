@@ -11,13 +11,11 @@
 
     // Auth listener
     FirebaseAuth.$onAuthStateChanged((authUser) => {
-
       if (authUser) {
         user.auth = authUser;
         const userRef = usersRef.child(authUser.uid);
         user.data = $firebaseObject(userRef);
       }
-
     });
 
     /**
