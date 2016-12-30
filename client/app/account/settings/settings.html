@@ -1,51 +1,13 @@
-<div class="container">
-  <div class="row">
-    <div class="col-sm-12">
-      <h1>Change Password</h1>
-    </div>
-    <div class="col-sm-12">
-      <form class="form" name="form" ng-submit="vm.changePassword(form)" novalidate>
-
-        <div class="form-group">
-          <label>Current Password</label>
-
-          <input type="password" name="password" class="form-control" ng-model="vm.user.oldPassword"
-                 mongoose-error/>
-          <p class="help-block" ng-show="form.password.$error.mongoose">
-              {{ vm.errors.other }}
-          </p>
-        </div>
-
-        <div class="form-group">
-          <label>New Password</label>
-
-          <input type="password" name="newPassword" class="form-control" ng-model="vm.user.newPassword"
-                 ng-minlength="3"
-                 required/>
-          <p class="help-block"
-             ng-show="(form.newPassword.$error.minlength || form.newPassword.$error.required) && (form.newPassword.$dirty || vm.submitted)">
-            Password must be at least 3 characters.
-          </p>
-        </div>
-
-        <div class="form-group">
-          <label>Confirm New Password</label>
-
-          <input type="password" name="confirmPassword" class="form-control" ng-model="vm.user.confirmPassword"
-                 match="vm.user.newPassword"
-                 ng-minlength="3"
-                 required=""/>
-          <p class="help-block"
-             ng-show="form.confirmPassword.$error.match && vm.submitted">
-            Passwords must match.
-          </p>
-
-        </div>
-
-        <p class="help-block"> {{ vm.message }} </p>
-
-        <button class="btn btn-lg btn-primary" type="submit">Save changes</button>
-      </form>
-    </div>
+<div id="settings-page" layout-padding layout="row" layout-fill layout-align="center start">
+  <div class="sf-settings-container" flex-xs="100" flex-sm="66" flex-md="50" flex-lg="33" flex-gt-lg="20">
+    <h1>Settings</h1>
+    <md-input-container class="md-block" flex-gt-sm>
+      <label>New Password</label>
+      <input name="newPassword" ng-model="vm.user.password" type="password" />
+      <md-button class="sf-btn-update-password md-raised md-primary" ng-hide="vm.submitted" ng-click="vm.changePassword()" ng-disabled="!vm.user.password||vm.user.password.length<6">Update</md-button>
+    </md-input-container>
+    <p>
+      {{vm.message}}
+    </p>
   </div>
 </div>

@@ -1,27 +1,44 @@
 'use strict';
 
 class SettingsController {
-  constructor() {
-    this.errors = {};
+  constructor(FirebaseUser, $scope, $timeout) {
+    this.error = false;
     this.submitted = false;
+    this.currentUser = FirebaseUser.getCurrentUser();
+    this.message = "";
+
+    this.user = {};
+    this.changePassword = this.changePassword;
+    this.$scope = $scope;
+    this.$timeout = $timeout;
   }
 
-  changePassword(form) {
+  changePassword() {
+    const self = this;
     this.submitted = true;
+    this.errors = false;
+    self.message = "Updating password ...";
 
-    if (form.$valid) {
-      /* TODO Write with firebase auth
-      this.Auth.changePassword(this.user.oldPassword, this.user.newPassword)
-        .then(() => {
-          this.message = 'Password successfully changed.';
-        })
-        .catch(() => {
-          form.password.$setValidity('mongoose', false);
-          this.errors.other = 'Incorrect password';
-          this.message = '';
-        });
-        */
-    }
+    this.currentUser.auth.updatePassword(this.user.password).then(function() {
+      // Update successful.
+      self.$scope.$apply(() => {
+        self.submitted = false;
+        self.user.password = "";
+        self.message = 'Password successfully changed.';
+        self.$timeout(() => {
+          self.message = '';
+        }, 2000);
+      });
+    }, function(error) {
+      // An error happened.
+      self.errors = error;
+      self.submitted = false;
+      self.user.password = "";
+      self.message = 'Invalid password.';
+      self.$timeout(() => {
+        self.message = '';
+      }, 2000);
+    });
   }
 }
 
