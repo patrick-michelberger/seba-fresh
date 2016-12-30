@@ -55,6 +55,7 @@ $sf-color-red: #D94848;
 $sf-color-orange: #F47421;
 $sf-color-yellow: #FFC120; // Component styles are injected through grunt
 /* inject:scss */
+@import 'account/forgotpassword/forgotpassword';
 @import 'account/login/login';
 @import 'account/logout/logout';
 @import 'account/settings/settings';

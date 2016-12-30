@@ -37,6 +37,12 @@ angular.module('sebaFreshApp')
             return FirebaseAuth.$requireSignIn();
           }]
         }
+      })
+      .state('reset', {
+        url: '/reset',
+        templateUrl: 'app/account/forgotpassword/forgotpassword.html',
+        controller: 'ForgotpasswordController',
+        controllerAs: 'vm'
       });
   })
   .run(function($rootScope, $state) {
